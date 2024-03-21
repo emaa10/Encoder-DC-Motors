@@ -74,6 +74,8 @@ void setup()
 
   pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP); 
   pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP); 
+  pinMode(RIGHT_ENC_A_PHASE, INPUT_PULLUP); 
+  pinMode(RIGHT_ENC_B_PHASE, INPUT_PULLUP); 
   attachInterrupt(0, ai0, RISING);
   attachInterrupt(1, ai1, RISING);
   attachInterrupt(5, bi0, RISING);
@@ -86,7 +88,6 @@ void setup()
 
 void loop()
 {
-  Serial.println(digitalPinToInterrupt(19));
   Serial.print(counterLEFT);
   Serial.print(",");
   Serial.println(counterRIGHT);
