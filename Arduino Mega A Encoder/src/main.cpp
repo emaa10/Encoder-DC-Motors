@@ -74,12 +74,17 @@ void setup()
 
   pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP); 
   pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP); 
-  attachInterrupt(0, ai0, RISING);
-  attachInterrupt(1, ai1, RISING);
+  attachInterrupt(digitalPinToInterrupt(LEFT_ENC_A_PHASE), ai0, RISING);
+  attachInterrupt(digitalPinToInterrupt(LEFT_ENC_B_PHASE), ai1, RISING);
+  attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), bi0, RISING);
+  attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi1, RISING);
+  // attachInterrupt(0, ai0, RISING);
+  // attachInterrupt(1, ai1, RISING);
 }
 
 void loop()
 {
-  Serial.println(counterLEFT);
+  Serial.println(counterLEFT + "," + counterRIGHT);
+  // Serial.println(counterLEFT);
   delay(20);
 }
