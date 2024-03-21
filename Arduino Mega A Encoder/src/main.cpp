@@ -1,47 +1,44 @@
 #include <Arduino.h>
-
-// Encoder pins
-const int LEFT_ENC_A_PHASE = 3;
-const int LEFT_ENC_B_PHASE = 2;
-const int RIGHT_ENC_A_PHASE = 18;
-const int RIGHT_ENC_B_PHASE = 19;
-
-volatile float leftEncoderCount = 0;
-volatile float rightEncoderCount = 0;
-
-void leftEncoderISR() {
-  if (digitalRead(LEFT_ENC_B_PHASE) == HIGH) {
-    leftEncoderCount++;
-  } else {
-    leftEncoderCount--;
-  }
-}
-
-void rightEncoderISR() {
-  if (digitalRead(RIGHT_ENC_B_PHASE) == HIGH) {
-    rightEncoderCount--;
-  } else {
-    rightEncoderCount++;
-  }
-}
-
+volatile unsigned int temp, counter = 0; //This variable will increase or decrease depending on the rotation of encoder
+    
 void setup() {
-  pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP);
-  pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP);
-  pinMode(RIGHT_ENC_A_PHASE, INPUT_PULLUP);
-  pinMode(RIGHT_ENC_B_PHASE, INPUT_PULLUP);
+  Serial.begin (9600);
 
-  attachInterrupt(digitalPinToInterrupt(LEFT_ENC_A_PHASE), leftEncoderISR, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), rightEncoderISR, CHANGE);
-
-  Serial.begin(9600);
-}
-
-void loop() {
-  // Send encoder counts to Raspberry Pi
-  Serial.print("LeftEncoder:");
-  Serial.print(leftEncoderCount);
-  Serial.print(",RightEncoder:");
-  Serial.println(rightEncoderCount);
-  delay(100); // Adjust delay as needed
-}
+  pinMode(2, INPUT_PULLUP); // internal pullup input pin 2 
+  
+  pinMode(3, INPUT_PULLUP); // internalเป็น pullup input pin 3
+//Setting up interrupt
+  //A rising pulse from encodenren activated ai0(). AttachInterrupt 0 is DigitalPin nr 2 on moust Arduino.
+  attachInterrupt(0, ai0, RISING);
+   
+  //B rising pulse from encodenren activated ai1(). AttachInterrupt 1 is DigitalPin nr 3 on moust Arduino.
+  attachInterrupt(1, ai1, RISING);
+  }
+   
+  void loop() {
+  // Send the value of counter
+  if( counter != temp ){
+  Serial.println (counter);
+  temp = counter;
+  }
+  }
+   
+  void ai0() {
+  // ai0 is activated if DigitalPin nr 2 is going from LOW to HIGH
+  // Check pin 3 to determine the direction
+  if(digitalRead(3)==LOW) {
+  counter++;
+  }else{
+  counter--;
+  }
+  }
+   
+  void ai1() {
+  // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
+  // Check with pin 2 to determine the direction
+  if(digitalRead(2)==LOW) {
+  counter--;
+  }else{
+  counter++;
+  }
+  }
