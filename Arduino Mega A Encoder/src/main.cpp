@@ -1,6 +1,6 @@
 #include <Arduino.h>
 volatile unsigned int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
-volatile unsigned int counterRIGHT = 0; // This variable will increase or decrease depending on the rotation of encoder
+volatile unsigned int counterRIGHT = 0;
 
 // Encoder pins
 const int LEFT_ENC_A_PHASE = 3;
@@ -26,8 +26,6 @@ void ai0()
 // LEFT_2
 void ai1()
 {
-  // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
-  // Check with pin 2 to determine the direction
   if (digitalRead(LEFT_ENC_B_PHASE) == LOW)
   {
     counterLEFT--;
@@ -41,8 +39,6 @@ void ai1()
 // RIGHT_1
 void bi0()
 {
-  // ai0 is activated if DigitalPin nr 2 is going from LOW to HIGH
-  // Check pin 3 to determine the direction
   if (digitalRead(RIGHT_ENC_A_PHASE) == LOW)
   {
     counterRIGHT--;
@@ -56,8 +52,6 @@ void bi0()
 // RIGHT_2
 void bi1()
 {
-  // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
-  // Check with pin 2 to determine the direction
   if (digitalRead(RIGHT_ENC_B_PHASE) == LOW)
   {
     counterRIGHT++;
@@ -80,10 +74,6 @@ void setup()
   attachInterrupt(1, ai1, RISING);
   attachInterrupt(4, bi0, RISING);
   attachInterrupt(5, bi1, RISING);
-  // attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), bi0, RISING);
-  // attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi1, RISING);
-  // attachInterrupt(0, ai0, RISING);
-  // attachInterrupt(1, ai1, RISING);
 }
 
 void loop()
