@@ -21,7 +21,3 @@ jobs:
 
     - name: Compile Arduino Mega A Encoder
       run: platformio run -d "Arduino Mega A Encoder"
-      continue-on-error: true
-
-    - name: Compile Arduino Mega B Motor
-      run: platformio run -d "Arduino Mega B Motor"
