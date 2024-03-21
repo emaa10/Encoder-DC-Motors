@@ -1,5 +1,5 @@
 #include <Arduino.h>
-volatile unsigned int temp, counter = 0; // This variable will increase or decrease depending on the rotation of encoder
+volatile unsigned int counter = 0; // This variable will increase or decrease depending on the rotation of encoder
 
 void ai0()
 {
@@ -46,10 +46,6 @@ void setup()
 
 void loop()
 {
-  // Send the value of counter
-  if (counter != temp)
-  {
-    Serial.println(counter);
-    temp = counter;
-  }
+  Serial.println(counter);
+  delay(20);
 }
