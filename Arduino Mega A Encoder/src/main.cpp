@@ -29,7 +29,7 @@ void ai1()
   }
 }
 
-void setup()
+// void setup()
 {
   Serial.begin(9600);
 
