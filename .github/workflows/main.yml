@@ -1,0 +1,46 @@
+name: Compile Arduino Projects
+
+on: [push]
+
+jobs:
+  build:
+    name: Build Arduino Projects
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install PlatformIO
+      run: pip install platformio
+
+    - name: Compile Arduino Mega A Encoder
+      run: platformio run -d "Arduino Mega A Encoder"
+      continue-on-error: true
+
+    - name: Compile Arduino Mega B Motor
+      run: platformio run -d "Arduino Mega B Motor"
+      continue-on-error: true
+
+    - name: Check for errors
+      run: exit $(($(cat "Arduino Mega A Encoder/.pio/build/default/src/*.o" "Arduino Mega B Motor/.pio/build/default/src/*.o" | grep -c 'error') + $(cat "Arduino Mega A Encoder/.pio/build/default/lib/*.o" "Arduino Mega B Motor/.pio/build/default/lib/*.o" | grep -c 'error')))
+
+    - name: Set build status
+      if: ${{ failure() }}
+      run: echo "::set-output name=status::failure"
+      
+    - name: Set build status
+      if: ${{ success() }}
+      run: echo "::set-output name=status::success"
+      
+    - name: Build status
+      run: echo "Build Status: ${{ steps.set_build_status.outputs.status }}"
+
+    - name: Final status check
+      if: ${{ eq(steps.set_build_status.outputs.status, 'success') }}
+      run: echo "All builds succeeded!"
