@@ -25,22 +25,3 @@ jobs:
 
     - name: Compile Arduino Mega B Motor
       run: platformio run -d "Arduino Mega B Motor"
-      continue-on-error: true
-
-    - name: Check for errors
-      run: exit $(($(cat "Arduino Mega A Encoder/.pio/build/default/src/*.o" "Arduino Mega B Motor/.pio/build/default/src/*.o" | grep -c 'error') + $(cat "Arduino Mega A Encoder/.pio/build/default/lib/*.o" "Arduino Mega B Motor/.pio/build/default/lib/*.o" | grep -c 'error')))
-
-    - name: Set build status
-      if: ${{ failure() }}
-      run: echo "::set-output name=status::failure"
-      
-    - name: Set build status
-      if: ${{ success() }}
-      run: echo "::set-output name=status::success"
-      
-    - name: Build status
-      run: echo "Build Status: ${{ steps.set_build_status.outputs.status }}"
-
-    - name: Final status check
-      if: ${{ eq(steps.set_build_status.outputs.status, 'success') }}
-      run: echo "All builds succeeded!"
