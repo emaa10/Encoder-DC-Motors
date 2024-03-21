@@ -1,4 +1,4 @@
-name: Compile Arduino Projects
+name: Compile Mega A
 
 on: [push]
 
