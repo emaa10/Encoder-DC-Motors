@@ -45,11 +45,11 @@ void bi0()
   // Check pin 3 to determine the direction
   if (digitalRead(RIGHT_ENC_A_PHASE) == LOW)
   {
-    counterRIGHT++;
+    counterRIGHT--;
   }
   else
   {
-    counterRIGHT--;
+    counterRIGHT++;
   }
 }
 
@@ -60,11 +60,11 @@ void bi1()
   // Check with pin 2 to determine the direction
   if (digitalRead(RIGHT_ENC_B_PHASE) == LOW)
   {
-    counterRIGHT--;
+    counterRIGHT++;
   }
   else
   {
-    counterRIGHT++;
+    counterRIGHT--;
   }
 }
 
@@ -78,8 +78,8 @@ void setup()
   pinMode(RIGHT_ENC_B_PHASE, INPUT_PULLUP); 
   attachInterrupt(0, ai0, RISING);
   attachInterrupt(1, ai1, RISING);
-  attachInterrupt(5, bi0, RISING);
-  attachInterrupt(4, bi1, RISING);
+  attachInterrupt(4, bi0, RISING);
+  attachInterrupt(5, bi1, RISING);
   // attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), bi0, RISING);
   // attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi1, RISING);
   // attachInterrupt(0, ai0, RISING);
