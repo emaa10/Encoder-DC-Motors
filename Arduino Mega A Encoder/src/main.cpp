@@ -15,6 +15,7 @@ void ai0()
   }
 }
 
+// interrup
 void ai1()
 {
   // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
