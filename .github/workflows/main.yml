@@ -1,0 +1,18 @@
+name: Compile Raspi Main
+
+on: [push]
+
+jobs:
+  build:
+    name: Build Arduino Projects
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Change directory
+      run: cd raspi/main/
+      
+    - name: Run main.sh
+      run: ./main.sh
