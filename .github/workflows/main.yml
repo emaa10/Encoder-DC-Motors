@@ -12,13 +12,19 @@ jobs:
 
     - name: Install CMake
       run: sudo apt-get update && sudo apt-get install -y cmake
+      working-directory: ./raspi/main
 
-    - name: Build with CMake
-      run: |
-        mkdir build
-        cd build
-        cmake ..
-        make
+    - name: Set up Working Directory
+      run: mkdir build
+      working-directory: ./raspi/main
+
+    - name: Configure with CMake
+      run: cmake ..
+      working-directory: ./raspi/main/build
+
+    - name: Build with Make
+      run: make
+      working-directory: ./raspi/main/build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
