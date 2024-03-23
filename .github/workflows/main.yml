@@ -11,9 +11,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Change directory
-      run: cd raspi/main/
-      
-    - name: Run make.sh
-      run: pwd
-
+    - name: Change directory and run make.sh
+      run: |
+        cd raspi/main/
+        ./make.sh
