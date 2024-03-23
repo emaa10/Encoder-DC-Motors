@@ -25,7 +25,7 @@ int main() {
         serialPrintf(serial_port, "%s\n", message.c_str());
     }
 
-    serialClose(serial_port); // Schließe den seriellen Port
+    serialClose(serial_port); 
     return 0;
 }
 
