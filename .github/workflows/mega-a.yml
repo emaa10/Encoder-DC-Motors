@@ -1,0 +1,23 @@
+name: Compile Mega A
+
+on: [push]
+
+jobs:
+  build:
+    name: Build Arduino Projects
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install PlatformIO
+      run: pip install platformio
+
+    - name: Compile Arduino Mega A Encoder
+      run: platformio run -d "Arduino Mega A Encoder"
