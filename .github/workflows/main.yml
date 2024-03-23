@@ -14,5 +14,5 @@ jobs:
     - name: Change directory
       run: cd raspi/main/
       
-    - name: Run main.sh
-      run: ./main.sh
+    - name: Run make.sh
+      run: ./make.sh
