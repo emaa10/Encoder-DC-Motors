@@ -12,6 +12,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Change directory and run make.sh
-      run: |
-        cd raspi/main/
-        ./make.sh
+      run: cd raspi/main/ && ./make.sh
