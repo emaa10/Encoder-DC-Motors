@@ -1,0 +1,3 @@
+/Users/emanuel/Desktop/robo aktuell/raspi/main/build/CMakeFiles/main.dir
+/Users/emanuel/Desktop/robo aktuell/raspi/main/build/CMakeFiles/edit_cache.dir
+/Users/emanuel/Desktop/robo aktuell/raspi/main/build/CMakeFiles/rebuild_cache.dir
