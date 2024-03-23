@@ -5,3 +5,4 @@ This repo is about a system that uses Encoders and DC Motors to drive using a ra
 ### Until Week 23
 - Created the Encoder code
 - Started with PID tuning
+- Started with main raspi code
