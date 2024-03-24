@@ -10,7 +10,7 @@ include_directories(${CMAKE_SOURCE_DIR}/libraries/WiringPi/wiringPi)
 add_executable(main main.cpp)
 
 # Add WiringPi source files to your project
-add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/WiringPi/wiringPi)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/WiringPi/wiringPi)
 
 # Link WiringPi library to your executable
 target_link_libraries(main wiringPi)
