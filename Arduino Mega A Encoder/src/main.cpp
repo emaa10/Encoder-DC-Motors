@@ -66,10 +66,10 @@ void setup()
 {
   Serial.begin(9600);
 
-  pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP); 
-  pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP); 
-  pinMode(RIGHT_ENC_A_PHASE, INPUT_PULLUP); 
-  pinMode(RIGHT_ENC_B_PHASE, INPUT_PULLUP); 
+  pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP);
+  pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP);
+  pinMode(RIGHT_ENC_A_PHASE, INPUT_PULLUP);
+  pinMode(RIGHT_ENC_B_PHASE, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(LEFT_ENC_B_PHASE), ai0, RISING);
   attachInterrupt(digitalPinToInterrupt(LEFT_ENC_A_PHASE), ai1, RISING);
   attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi0, RISING);
