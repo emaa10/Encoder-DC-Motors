@@ -10,9 +10,25 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Install CMake
+   - name: Install CMake
       run: sudo apt-get update && sudo apt-get install -y cmake
       working-directory: ./raspi/main
+
+   - name: Install git
+      run: sudo apt-get install git
+      working-directory: ./raspi/main
+
+   - name: git clone
+      run: git clone https://github.com/WiringPi/WiringPi.git
+      working-directory: .
+
+   - name: build wiringpi
+      run: ./build debian
+      working-directory: ./WiringPi
+
+   - name: install wiringpi
+      run: sudo apt install ./*wiringpi*
+      working-directory: ./WiringPi/debian-template
 
     - name: Set up Working Directory
       run: mkdir build
