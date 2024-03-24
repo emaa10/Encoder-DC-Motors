@@ -27,10 +27,20 @@ void getEncoderData() {
         if (std::getline(serial, line)) {
             std::istringstream iss(line);
             if (iss >> encoderLeft >> comma >> encoderRight) {
-                std::cout << "Encoder Left: " << encoderLeft << ", Encoder Right: " << encoderRight << std::endl;
+                // std::cout << "Encoder Left: " << encoderLeft << ", Encoder Right: " << encoderRight << std::endl;
             }
         }
     }
+}
+
+long int getEncoderLeft() {
+    getEncoderData();
+    return encoderLeft;
+}
+
+long int getEncoderRight() {
+    getEncoderData();
+    return encoderRight;
 }
 
 void sendPWMValues(float pwmLeft, float pwmRight) {
@@ -56,8 +66,7 @@ void setup() {
 }
 
 void loop() {
-    getEncoderData();
-    std::cout << encoderLeft << std::endl;
+    std::cout << getEncoderLeft() << std::endl;
     delay(50);
 }
 
