@@ -1,6 +1,6 @@
 #include <Arduino.h>
-volatile unsigned int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
-volatile unsigned int counterRIGHT = 0;
+volatile long int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
+volatile long int counterRIGHT = 0;
 
 // Encoder pins
 const int LEFT_ENC_A_PHASE = 18;
