@@ -3,6 +3,8 @@
 #include <wiringSerial.h>
 
 const std::string serialMegaA = "/dev/ttyACM0";
+const std::string serialMegaB = "/dev/ttyACM0";
+int serial_port = serialOpen(serialMegaB.c_str(), 9600);
 
 void getEncoderData() {
     //
@@ -10,7 +12,7 @@ void getEncoderData() {
 
 void sendPWMValues(float pwmLeft, float pwmRight) {
     std::string message = std::to_string(pwmLeft) + "," + std::to_string(pwmRight);
-    std::cout << "Die Nachricht ist: " << message << std::endl;
+    serialPrintf(serial_port, "%s\n", message.c_str());
 }
 
 void setup() {
@@ -18,9 +20,8 @@ void setup() {
     if (wiringPiSetup() == -1) {
         std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
     }
-    int serial_port = serialOpen(serialMegaA.c_str(), 9600);
     if (serial_port < 0) {
-        std::cerr << "Port error on Mega A Encoder, Port " << serialMegaA << std::endl;
+        std::cerr << "Port error on Mega A Encoder, Port " << serialMegaB << std::endl;
     }
 }
 
