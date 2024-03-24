@@ -3,8 +3,8 @@
 #include <string>
 #include <unistd.h>
 #include <chrono>
-#include <wiringPi.h>
-#include <wiringSerial.h>
+#include "libraries/WiringPi/wiringPi/wiringPi.h"
+#include "libraries/WiringPi/wiringPi/wiringSerial.h"
 
 
 const std::string serialMegaA = "/dev/ttyACM0"; // needs change
