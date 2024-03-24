@@ -6,12 +6,21 @@
 #include <chrono>
 #include "wiringPi.h"
 #include "wiringSerial.h"
+#include <math.h>
 
 
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
 std::ifstream serial(serialMegaA.c_str());
 int sPortB = serialOpen(serialMegaB.c_str(), 9600);
+
+// encoder stuff
+const float pulsesPerEncRev = 1200;
+const float encWheelDiameterCM = 5;
+const float motorWheelDiameterCM = 7;
+const float encWheelScope = encWheelDiameterCM * M_PI; 
+const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled per rev
+const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
@@ -66,7 +75,8 @@ void setup() {
 }
 
 void loop() {
-    sendPWMValues(getEncoderLeft()/10, 0);
+    // sendPWMValues(getEncoderLeft()/10, 0);
+    std::cout << pulsesPerRev << std::endl;
     delay(50);
 }
 
