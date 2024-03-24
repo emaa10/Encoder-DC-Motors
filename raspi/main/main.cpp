@@ -66,6 +66,7 @@ void driveDistanceMM(int distance) { // distance in mm
     float distanceDrivenMM = 0;
     while(distanceDrivenMM <= distance) {
         // drive...
+        sendPWMValues(100, 100); // start with 100 speed on both motors
     }
 }
 
