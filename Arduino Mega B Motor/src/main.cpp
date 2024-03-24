@@ -30,16 +30,29 @@ void loop() {
     receivedValue2 = Serial.parseFloat();
     while (Serial.read() != '\n');
     
-    pwmLeft = receivedValue1;
-    pwmRight = receivedValue2;
     Serial.print("Received value 1: ");
-    Serial.println(pwmLeft);
+    Serial.println(receivedValue1);
     Serial.print("Received value 2: ");
-    Serial.println(pwmRight);
+    Serial.println(receivedValue2);
   }
-  analogWrite(RIGHT_LPWM, pwmRight);
-  analogWrite(RIGHT_RPWM, 0);
-  analogWrite(LEFT_LPWM, pwmLeft);
-  analogWrite(LEFT_RPWM, 0);
+  pwmLeft = abs(receivedValue1);
+  pwmRight = abs(receivedValue2);
+
+  if(receivedValue1 < 0) { // wenn wir links rückwärts fahren wollen
+    analogWrite(LEFT_LPWM, 0);
+    analogWrite(LEFT_RPWM, pwmLeft);
+  } else{ // wenn wir vorwärts fahren wollen
+    analogWrite(LEFT_LPWM, pwmLeft);
+    analogWrite(LEFT_RPWM, 0);
+  }
+
+  if(receivedValue2 < 0) {  // wenn wir rechts rückwärts fahren wollen
+    analogWrite(RIGHT_LPWM, 0);
+    analogWrite(RIGHT_RPWM, pwmRight);
+  } else{
+    analogWrite(RIGHT_LPWM, pwmRight);
+    analogWrite(RIGHT_RPWM, 0);
+  }
+
   delay(10);
 }
