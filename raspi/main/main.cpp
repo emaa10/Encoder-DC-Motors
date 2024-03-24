@@ -8,7 +8,7 @@
 
 
 const std::string serialMegaA = "/dev/ttyACM0"; // needs change
-const std::string serialMegaB = "/dev/ttyACM0";
+const std::string serialMegaB = "/dev/ttyACM1";
 std::ifstream serial(serialMegaA.c_str());
 int sPortB = serialOpen(serialMegaB.c_str(), 9600);
 

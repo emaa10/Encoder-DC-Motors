@@ -1,7 +1,7 @@
 CMakeFiles/serial_sender.dir/serial_sender.cpp.o: \
  /home/bot/eurobot/raspi/serial_sender/serial_sender.cpp \
- /usr/include/stdc-predef.h /usr/include/wiringPi.h \
- /usr/include/wiringSerial.h /usr/include/c++/12/iostream \
+ /usr/include/stdc-predef.h /usr/local/include/wiringPi.h \
+ /usr/local/include/wiringSerial.h /usr/include/c++/12/iostream \
  /usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h \
  /usr/include/aarch64-linux-gnu/c++/12/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \

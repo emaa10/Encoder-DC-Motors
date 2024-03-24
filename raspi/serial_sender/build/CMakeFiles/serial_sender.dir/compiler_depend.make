@@ -3,6 +3,7 @@
 
 CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial_sender/serial_sender.cpp \
   /usr/include/stdc-predef.h \
+  /usr/include/wiringPi.h \
   /usr/include/wiringSerial.h \
   /usr/include/c++/12/iostream \
   /usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h \
@@ -194,8 +195,6 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/c++/12/bits/basic_ios.h:
 
-/usr/include/c++/12/bits/streambuf.tcc:
-
 /usr/include/c++/12/bits/charconv.h:
 
 /usr/include/asm-generic/errno.h:
@@ -239,6 +238,8 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/c++/12/cstdlib:
 
 /usr/include/c++/12/ext/string_conversions.h:
+
+/usr/include/c++/12/ext/alloc_traits.h:
 
 /usr/include/c++/12/cwctype:
 
@@ -356,6 +357,10 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/lib/gcc/aarch64-linux-gnu/12/include/stdint.h:
 
+/usr/include/c++/12/bits/streambuf.tcc:
+
+/usr/include/wiringPi.h:
+
 /usr/include/aarch64-linux-gnu/bits/wchar.h:
 
 /usr/include/asm-generic/errno-base.h:
@@ -373,6 +378,14 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/aarch64-linux-gnu/gnu/stubs-lp64.h:
 
 /usr/include/wiringSerial.h:
+
+/usr/include/c++/12/bits/postypes.h:
+
+/usr/include/c++/12/bits/ios_base.h:
+
+/usr/include/c++/12/bits/stl_construct.h:
+
+/usr/include/aarch64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/c++/12/type_traits:
 
@@ -419,14 +432,6 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/c++/12/bits/memoryfwd.h:
 
 /usr/lib/gcc/aarch64-linux-gnu/12/include/stddef.h:
-
-/usr/include/c++/12/bits/postypes.h:
-
-/usr/include/c++/12/bits/ios_base.h:
-
-/usr/include/c++/12/bits/stl_construct.h:
-
-/usr/include/aarch64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/c++/12/bits/locale_facets.tcc:
 
@@ -489,8 +494,6 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/c++/12/bits/basic_string.h:
 
 /usr/include/c++/12/ext/type_traits.h:
-
-/usr/include/c++/12/ext/alloc_traits.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/__sigset_t.h:
 
