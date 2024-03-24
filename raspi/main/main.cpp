@@ -21,6 +21,8 @@ const float motorWheelDiameterCM = 7;
 const float encWheelScope = encWheelDiameterCM * M_PI; 
 const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled per rev
 const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
+const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
+const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
@@ -57,6 +59,14 @@ void sendPWMValues(float pwmLeft, float pwmRight) {
     currentPwmRight = pwmRight;
     std::string message = std::to_string(pwmLeft) + "," + std::to_string(pwmRight);
     serialPrintf(sPortB, "%s\n", message.c_str());
+}
+
+void driveDistanceMM(int distance) { // distance in mm
+    float pulses = distance * pulsesPerMM;
+    float distanceDrivenMM = 0;
+    while(distanceDrivenMM <= distance) {
+        // drive...
+    }
 }
 
 void setup() {
