@@ -8,6 +8,11 @@ void getEncoderData() {
     //
 }
 
+void sendPWMValues(float pwmLeft, float pwmRight) {
+    std::string message = std::to_string(pwmLeft) + "," + std::to_string(pwmRight);
+    std::cout << "Die Nachricht ist: " << message << std::endl;
+}
+
 void setup() {
     // initialize wiringpi
     if (wiringPiSetup() == -1) {
