@@ -130,8 +130,8 @@ void updatePosition() {
         theta += 2 * M_PI;
 
 
-    lastEncLeft = getEncoderLeft();
-    lastEncRight = getEncoderRight();
+    // lastEncLeft = getEncoderLeft();
+    // lastEncRight = getEncoderRight();
 }
 
 /**
