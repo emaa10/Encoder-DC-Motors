@@ -86,9 +86,7 @@ void setup() {
 }
 
 void loop() {
-    // sendPWMValues(getEncoderLeft()/10, 0);
-    std::cout << getEncoderLeft() << std::endl;
-    delay(50);
+    
 }
 
 
