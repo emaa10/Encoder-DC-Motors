@@ -103,9 +103,11 @@ void setup() {
 * @param distance: distance in mm
 */
 void driveDistance(int distance) {
+    // RUN BEFORE DRIVING!!
     const int startEncLeft = getEncoderLeft();
     const int startEncRight = getEncoderRight();
-    // need these 2 lines to recalculate current enc values
+
+    // need these 2 lines to recalculate current enc values. 
     long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
     long int currentEncoderRight = getEncoderRight() - startEncRight;
 
