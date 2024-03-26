@@ -24,6 +24,8 @@ const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled
 const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
+const float pwmSpeed = 100; //default pwm speed
+const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
 
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
@@ -97,6 +99,9 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 }
+
+// here tracking encoder data for odometry and sending it to the megas
+void drive();
 
 /**
 * @description: Drive a specific distance in MM while syncing with encoders
