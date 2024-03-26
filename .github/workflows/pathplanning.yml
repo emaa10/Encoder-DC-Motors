@@ -1,0 +1,49 @@
+name: Compile Raspi Pathplanning
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install CMake
+      run: sudo apt-get update && sudo apt-get install -y cmake
+      working-directory: ./raspi/pathplanning
+
+    - name: Install git
+      run: sudo apt-get install git
+      working-directory: ./raspi/pathplanning
+
+    - name: git clone
+      run: git clone https://github.com/WiringPi/WiringPi.git
+      working-directory: .
+
+    - name: build wiringpi
+      run: ./build debian
+      working-directory: ./WiringPi
+
+    - name: install wiringpi
+      run: sudo apt install ./*wiringpi*
+      working-directory: ./WiringPi/debian-template
+
+    - name: Set up Working Directory
+      run: mkdir build
+      working-directory: ./raspi/pathplanning
+
+    - name: Configure with CMake
+      run: cmake ..
+      working-directory: ./raspi/pathplanning/build
+
+    - name: Build with Make
+      run: make
+      working-directory: ./raspi/pathplanning/build
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: main-executable
+        path: ./raspi/main/pathplanning/Eurobot
