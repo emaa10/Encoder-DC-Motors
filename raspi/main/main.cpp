@@ -145,10 +145,10 @@ void driveDistance(int distance) {
     float distancePulses = distance * pulsesPerMM;
 
     // need these 2 lines to recalculate current enc values. 
-    long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
-    long int currentEncoderRight = getEncoderRight() - startEncRight;
+    long int currentEncoderLeft = 0;
+    long int currentEncoderRight = 0;
 
-    drive(100, 100); // start with 100 pwm
+    drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
     while(distancePulses < (currentEncoderLeft + currentEncoderRight)/2) {
         // solange wir noch nicht da sind
@@ -173,9 +173,9 @@ void driveDistance(int distance) {
 }
 
 void loop() {
-    updatePosition();
-    std::cout << x << ", " << y << ", " << theta << std::endl;
-    delay(1000);
+    // updatePosition();
+    // std::cout << x << ", " << y << ", " << theta << std::endl;
+    // delay(1000);
 }
 
 
