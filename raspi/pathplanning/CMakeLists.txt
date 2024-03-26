@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(Eurobot)
 
 # Set rplidar sdk directory
-set(SDK_DIR //home/ivanovniko/Downloads/rplidar_sdk)
+set(SDK_DIR /home/bot/eurobot/raspi/eurobot-lidar/rplidar_sdk)
 
 # Add our C++ source files
 set(EUROBOTFILES 
