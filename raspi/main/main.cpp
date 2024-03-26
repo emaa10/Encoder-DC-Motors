@@ -169,18 +169,18 @@ void driveDistance(int distance) {
                 float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
                 float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
                 std::cout << "currentecnoderleft: " << currentEncoderLeft << std::endl;
-                std::cout << "currentpwm: " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
+                std::cout << "currentpwm: " << currentPwmLeft << std::endl;
                 startEncLeft = getEncoderLeft();
                 startEncRight = getEncoderRight();
+                leftEncoderChange = currentEncoderLeft;
+                rightEncoderChange = currentEncoderRight;
+                updatePosition();
             }
             counter = 0;
         }
         delay(20);
     }
-    leftEncoderChange = currentEncoderLeft;
-    rightEncoderChange = currentEncoderRight;
-    updatePosition();
 }
 
 void loop() {
