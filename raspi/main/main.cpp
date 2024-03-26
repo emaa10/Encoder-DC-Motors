@@ -131,7 +131,9 @@ void updatePosition() {
     x += deltaDistance * cos(theta + deltaTheta / 2);
     std::cout << "X: " << x << std::endl;
     y += deltaDistance * sin(theta + deltaTheta / 2);
+    std::cout << "Y: " << y << std::endl;
     theta += deltaTheta;
+    std::cout << "Theta: " << theta << std::endl;
 
     theta = fmod(theta, 2 * M_PI);
     if (theta < 0)
