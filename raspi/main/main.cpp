@@ -7,6 +7,7 @@
 #include "wiringPi.h"
 #include "wiringSerial.h"
 #include <math.h>
+#include <thread>
 
 
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
@@ -46,13 +47,20 @@ void getEncoderData() {
     }
 }
 
+// thread to get enc data 24/7
+void getEncoderDataThread() {
+    while(true) {
+        getEncoderData();
+    }
+}
+
 long int getEncoderLeft() {
-    getEncoderData();
+    // getEncoderData();
     return encoderLeft;
 }
 
 long int getEncoderRight() {
-    getEncoderData();
+    // getEncoderData();
     return encoderRight;
 }
 
@@ -85,6 +93,8 @@ void setup() {
     if (sPortB < 0) {
         std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
     }
+
+    std::thread t(getEncoderDataThread);
 }
 
 /**
