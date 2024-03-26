@@ -25,7 +25,7 @@ const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; //default pwm speed
-const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
+const unsigned int pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
 const float wheelDistance = 121; //abstand der encoderräder in mm
 
 const int syncInterval = 1; // sync motors with encoders every second
@@ -107,7 +107,8 @@ void setup() {
 
 // here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight) {
-    sendPWMValues(drivePwmLeft, drivePwmRight);
+    // sendPWMValues(drivePwmLeft, drivePwmRight);
+    std::cout << drivePwmLeft << drivePwmRight << std::endl;
     // here odometry
 };
 
@@ -150,7 +151,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses < (currentEncoderLeft + currentEncoderRight)/2) {
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) {
         // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
@@ -158,11 +159,13 @@ void driveDistance(int distance) {
         counter++;
         if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
             // neue pwm werte basierend auf encoder daten berechnen
-            float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
-            float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
-            drive(newPwmLeft, newPwmRight);
-            startEncLeft = getEncoderLeft();
-            startEncRight = getEncoderRight();
+            if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
+                float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
+                float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
+                drive(newPwmLeft, newPwmRight);
+                startEncLeft = getEncoderLeft();
+                startEncRight = getEncoderRight();
+            }
             counter = 0;
         }
         delay(20);
@@ -176,6 +179,8 @@ void loop() {
     // updatePosition();
     // std::cout << x << ", " << y << ", " << theta << std::endl;
     // delay(1000);
+    driveDistance(5000);
+    delay(200);
 }
 
 
