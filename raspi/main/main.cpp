@@ -30,6 +30,8 @@ long int encoderRight;// enc count right
 float currentPwmLeft;
 float currentPwmRight;
 
+int counter = 0;
+
 void getEncoderData() {
     std::string line;
     char comma;
@@ -85,8 +87,37 @@ void setup() {
     }
 }
 
-void loop() {
+/**
+* @description: Drive a specific distance in MM while syncing with encoders
+* @param distance: distance in mm
+*/
+void driveDistance(int distance) {
+    const int startEncLeft = getEncoderLeft();
+    const int startEncRight = getEncoderRight();
+    // need these 2 lines to recalculate current enc values
+    long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
+    long int currentEncoderRight = getEncoderRight() - startEncRight;
+
     
+}
+
+void loop() {
+    // for loop through tactics
+    // for each coord: generate path, for each coord of path: calc angle and distance, turn, drive
+    std::cout << getEncoderLeft() << "," << getEncoderRight() << std::endl;
+    delay(20);
+    counter++;
+    std::cout << counter << std::endl;
+    if(counter >= 500) { // nach 10 sek
+        const int startEncLeft = getEncoderLeft();
+        const int startEncRight = getEncoderRight();
+        while(true) {
+            long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
+            long int currentEncoderRight = getEncoderRight() - startEncRight;
+            std::cout << getEncoderLeft() << "," << getEncoderRight() << std::endl; 
+            std::cout << currentEncoderLeft << ";" << currentEncoderRight << std::endl;
+        }
+    }
 }
 
 
