@@ -107,8 +107,14 @@ void setup() {
 
 // here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight) {
-    // sendPWMValues(drivePwmLeft, drivePwmRight);
-    std::cout << drivePwmLeft << drivePwmRight << std::endl;
+    if(drivePwmLeft > 150) {
+        drivePwmLeft = 150;
+    }
+    if(drivePwmRight > 150) {
+        drivePwmRight = 150;
+    }
+    sendPWMValues(drivePwmLeft, drivePwmRight);
+    std::cout << "drive pwm left: " << drivePwmLeft << " " << drivePwmRight << std::endl;
     // here odometry
 };
 
@@ -162,6 +168,8 @@ void driveDistance(int distance) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
                 float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
+                std::cout << "currentecnoderleft: " << currentEncoderLeft << std::endl;
+                std::cout << "currentpwm: " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
                 startEncLeft = getEncoderLeft();
                 startEncRight = getEncoderRight();
