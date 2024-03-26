@@ -27,6 +27,9 @@ const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; //default pwm speed
 const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
 
+const int syncInterval = 1; // sync motors with encoders every second
+const int syncCounter = syncInterval * 1000 / 20;
+
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
 
@@ -101,7 +104,10 @@ void setup() {
 }
 
 // here tracking encoder data for odometry and sending it to the megas
-void drive();
+void drive(float drivePwmLeft, float drivePwmRight) {
+    sendPWMValues(drivePwmLeft, drivePwmRight);
+    // here odometry
+};
 
 /**
 * @description: Drive a specific distance in MM while syncing with encoders
@@ -109,14 +115,31 @@ void drive();
 */
 void driveDistance(int distance) {
     // RUN BEFORE DRIVING!!
-    const int startEncLeft = getEncoderLeft();
-    const int startEncRight = getEncoderRight();
+    int startEncLeft = getEncoderLeft();
+    int startEncRight = getEncoderRight();
+    float distancePulses = distance * pulsesPerMM;
 
     // need these 2 lines to recalculate current enc values. 
     long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
     long int currentEncoderRight = getEncoderRight() - startEncRight;
 
-    
+    drive(100, 100); // start with 100 pwm
+    counter = 0;
+    while(distancePulses <= (currentEncoderLeft + currentEncoderRight)/2) {
+        // solange wir noch nicht da sind
+        long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
+        long int currentEncoderRight = getEncoderRight() - startEncRight;
+        // hier check ob gegner auf strecke
+        counter++;
+        if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
+            // neue pwm werte basierend auf encoder daten berechnen
+            float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
+            float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
+            int startEncLeft = getEncoderLeft();
+            int startEncRight = getEncoderRight();
+        }
+        delay(20);
+    }
 }
 
 void loop() {
