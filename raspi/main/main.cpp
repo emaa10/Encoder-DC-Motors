@@ -26,14 +26,15 @@ const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; //default pwm speed
 const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
+const float wheelDistance = 121; //abstand der encoderräder in mm
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
 
 //odom
-int x; // curent bot x
-int y; // current bot y
-int theta; // current bot theta
+int x=0; // curent bot x
+int y=0; // current bot y
+int theta=0; // current bot theta
 long int lastEncLeft=0;   // last enc position left
 long int lastEncRight=0;
 
@@ -114,7 +115,17 @@ void updatePosition() {
     long int rightEncoderChange = getEncoderRight() - lastEncRight;
 
     float leftDistance = (leftEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
+    float rightDistance = (rightEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
+    float deltaDistance = (leftDistance + rightDistance) / 2;
+    float deltaTheta = (rightDistance - leftDistance) / wheelDistance / 10;
 
+    x += deltaDistance * cos(theta + deltaTheta / 2);
+    y += deltaDistance * sin(theta + deltaTheta / 2);
+    theta += deltaTheta;
+
+    theta = fmod(theta, 2 * M_PI);
+    if (theta < 0)
+        theta += 2 * M_PI;
 
 
     lastEncLeft = getEncoderLeft();
@@ -157,7 +168,9 @@ void driveDistance(int distance) {
 }
 
 void loop() {
-    driveDistance(1000);
+    updatePosition();
+    std::cout << x << ", " << y << ", " << theta << std::endl;
+    delay(20);
 }
 
 
