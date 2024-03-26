@@ -30,6 +30,14 @@ const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
 
+//odom
+int x; // curent bot x
+int y; // current bot y
+int theta; // current bot theta
+long int lastEncLeft=0;   // last enc position left
+long int lastEncRight=0;
+
+
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
 
@@ -76,15 +84,6 @@ void sendPWMValues(float pwmLeft, float pwmRight) {
     serialPrintf(sPortB, "%s\n", message.c_str());
 }
 
-void driveDistanceMM(int distance) { // distance in mm
-    float pulses = distance * pulsesPerMM;
-    float distanceDrivenMM = 0;
-    while(distanceDrivenMM <= distance) {
-        // drive...
-        sendPWMValues(100, 100); // start with 100 speed on both motors
-    }
-}
-
 void setup() {
     // initialize stream
     if (!serial.is_open()) {
@@ -109,6 +108,19 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
+// updates the position, based on the last time this func was ran
+void updatePosition() {
+    long int leftEncoderChange = getEncoderLeft() - lastEncLeft;
+    long int rightEncoderChange = getEncoderRight() - lastEncRight;
+
+    float leftDistance = (leftEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
+
+
+
+    lastEncLeft = getEncoderLeft();
+    lastEncRight = getEncoderRight();
+}
+
 /**
 * @description: Drive a specific distance in MM while syncing with encoders
 * @param distance: distance in mm
@@ -125,7 +137,7 @@ void driveDistance(int distance) {
 
     drive(100, 100); // start with 100 pwm
     counter = 0;
-    while(distancePulses <= (currentEncoderLeft + currentEncoderRight)/2) {
+    while(distancePulses < (currentEncoderLeft + currentEncoderRight)/2) {
         // solange wir noch nicht da sind
         long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
         long int currentEncoderRight = getEncoderRight() - startEncRight;
@@ -135,31 +147,17 @@ void driveDistance(int distance) {
             // neue pwm werte basierend auf encoder daten berechnen
             float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
             float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
-            int startEncLeft = getEncoderLeft();
-            int startEncRight = getEncoderRight();
+            drive(newPwmLeft, newPwmRight);
+            startEncLeft = getEncoderLeft();
+            startEncRight = getEncoderRight();
+            counter = 0;
         }
         delay(20);
     }
 }
 
 void loop() {
-    // for loop through tactics
-    // for each coord: generate path, for each coord of path: calc angle and distance, turn, drive
-    std::cout << getEncoderLeft() << "," << getEncoderRight() << std::endl;
-    delay(20);
-    counter++;
-    std::cout << counter << std::endl;
-    if(counter >= 500) { // nach 10 sek
-        const int startEncLeft = getEncoderLeft();
-        const int startEncRight = getEncoderRight();
-        while(true) {
-            long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
-            long int currentEncoderRight = getEncoderRight() - startEncRight;
-            std::cout << getEncoderLeft() << "," << getEncoderRight() << std::endl; 
-            std::cout << currentEncoderLeft << ";" << currentEncoderRight << std::endl;
-            delay(20);
-        }
-    }
+    driveDistance(1000);
 }
 
 
