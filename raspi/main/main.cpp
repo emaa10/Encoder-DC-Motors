@@ -169,6 +169,7 @@ void driveDistance(int distance) {
     }
     leftEncoderChange = currentEncoderLeft;
     rightEncoderChange = currentEncoderRight;
+    updatePosition();
 }
 
 void loop() {
