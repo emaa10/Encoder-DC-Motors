@@ -95,6 +95,7 @@ void setup() {
     }
 
     std::thread t(getEncoderDataThread);
+    t.detach();
 }
 
 /**
@@ -126,6 +127,7 @@ void loop() {
             long int currentEncoderRight = getEncoderRight() - startEncRight;
             std::cout << getEncoderLeft() << "," << getEncoderRight() << std::endl; 
             std::cout << currentEncoderLeft << ";" << currentEncoderRight << std::endl;
+            delay(20);
         }
     }
 }
