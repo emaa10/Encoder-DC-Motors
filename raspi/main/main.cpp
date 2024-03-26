@@ -37,6 +37,8 @@ int y=0; // current bot y
 int theta=0; // current bot theta
 long int lastEncLeft=0;   // last enc position left
 long int lastEncRight=0;
+long int leftEncoderChange;
+long int rightEncoderChange;
 
 
 long int encoderLeft; // enc count left
@@ -111,8 +113,8 @@ void drive(float drivePwmLeft, float drivePwmRight) {
 
 // updates the position, based on the last time this func was ran
 void updatePosition() {
-    long int leftEncoderChange = getEncoderLeft() - lastEncLeft;
-    long int rightEncoderChange = getEncoderRight() - lastEncRight;
+    // long int leftEncoderChange = getEncoderLeft() - lastEncLeft;
+    // long int rightEncoderChange = getEncoderRight() - lastEncRight;
 
     float leftDistance = (leftEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
     float rightDistance = (rightEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
@@ -150,8 +152,8 @@ void driveDistance(int distance) {
     counter = 0;
     while(distancePulses < (currentEncoderLeft + currentEncoderRight)/2) {
         // solange wir noch nicht da sind
-        long int currentEncoderLeft = getEncoderLeft() - startEncLeft;
-        long int currentEncoderRight = getEncoderRight() - startEncRight;
+        currentEncoderLeft = getEncoderLeft() - startEncLeft;
+        currentEncoderRight = getEncoderRight() - startEncRight;
         // hier check ob gegner auf strecke
         counter++;
         if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
@@ -165,12 +167,14 @@ void driveDistance(int distance) {
         }
         delay(20);
     }
+    leftEncoderChange = currentEncoderLeft;
+    rightEncoderChange = currentEncoderRight;
 }
 
 void loop() {
     updatePosition();
     std::cout << x << ", " << y << ", " << theta << std::endl;
-    delay(20);
+    delay(1000);
 }
 
 
