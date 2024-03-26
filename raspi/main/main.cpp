@@ -25,7 +25,7 @@ const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; //default pwm speed
-const unsigned int pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
+const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
 const float wheelDistance = 121; //abstand der encoderräder in mm
 
 const int syncInterval = 1; // sync motors with encoders every second
@@ -114,7 +114,7 @@ void drive(float drivePwmLeft, float drivePwmRight) {
         drivePwmRight = 150;
     }
     sendPWMValues(drivePwmLeft, drivePwmRight);
-    std::cout << "drive pwm left: " << drivePwmLeft << " " << drivePwmRight << std::endl;
+    // std::cout << "in drive func: " << drivePwmLeft << " " << drivePwmRight << std::endl;
     // here odometry
 };
 
@@ -129,6 +129,7 @@ void updatePosition() {
     float deltaTheta = (rightDistance - leftDistance) / wheelDistance / 10;
 
     x += deltaDistance * cos(theta + deltaTheta / 2);
+    std::cout << "X: " << x << std::endl;
     y += deltaDistance * sin(theta + deltaTheta / 2);
     theta += deltaTheta;
 
@@ -168,9 +169,8 @@ void driveDistance(int distance) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft;
                 float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
-                std::cout << "currentecnoderleft: " << currentEncoderLeft << std::endl;
+                // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
-                std::cout << "currentpwm: " << currentPwmLeft << std::endl;
                 startEncLeft = getEncoderLeft();
                 startEncRight = getEncoderRight();
                 leftEncoderChange = currentEncoderLeft;
