@@ -32,9 +32,9 @@ const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
 
 //odom
-int x=0; // curent bot x
-int y=0; // current bot y
-int theta=0; // current bot theta
+float x=0; // curent bot x
+float y=0; // current bot y
+float theta=0; // current bot theta
 long int lastEncLeft=0;   // last enc position left
 long int lastEncRight=0;
 long int leftEncoderChange;
@@ -80,6 +80,14 @@ long int getEncoderLeft() {
 long int getEncoderRight() {
     // getEncoderData();
     return encoderRight;
+}
+
+/**
+ * @description: Return the current angle in degrees.
+ * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
+*/
+float getAngle(float input = theta) {
+    return theta*180/M_PI;
 }
 
 void sendPWMValues(float pwmLeft, float pwmRight) {
@@ -129,7 +137,7 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     x += distance * cos(theta + dTheta / 2);
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
-    std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle(); << std::endl;
 }
 
 /**
