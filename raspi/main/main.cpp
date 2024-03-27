@@ -191,12 +191,18 @@ void driveDistance(int distance) {
     }
 }
 
+
+void printPath(const vector<Vector>& path) {
+    cout << "Path Coordinates:" << endl;
+    for (const auto& point : path) {
+        cout << "(" << point.x << ", " << point.y << ")" << endl;
+    }
+}
+
 void loop() {
     std::vector<Vector> path = generatePath(0, 0, 0, 1000, 1000);
-    for (const auto& point : path) {
-        // Annahme: Hier ist eine Methode oder ein Operator zur Ausgabe eines Vektors definiert
-        std::cout << point << std::endl;
-    }
+    printPath(path);
+    std::cout << "done" << std::endl;
     while(true) {
         delay(1000);
     }
