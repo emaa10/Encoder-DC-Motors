@@ -192,16 +192,15 @@ void driveDistance(int distance) {
 }
 
 void loop() {
-    // updatePosition();
-    // std::cout << x << ", " << y << ", " << theta << std::endl;
-    // delay(1000);
-    // driveDistance(5000);
-    leftEncoderChange = getEncoderLeft() - oldEncoderLeft;
-    rightEncoderChange = getEncoderRight() - oldEncoderRight;
-    updatePosition(leftEncoderChange, rightEncoderChange);
-    oldEncoderLeft = getEncoderLeft();
-    oldEncoderRight = getEncoderRight();
-    delay(1000);
+    std::vector<Vector> path = generatePath(0, 0, 0, 1000, 1000);
+    for (const auto& point : path) {
+        // Annahme: Hier ist eine Methode oder ein Operator zur Ausgabe eines Vektors definiert
+        std::cout << point << std::endl;
+    }
+    while(true) {
+        delay(1000);
+    }
+
 }
 
 
