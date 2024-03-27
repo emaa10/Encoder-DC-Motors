@@ -33,6 +33,9 @@ const float wheelDistance = 121; //abstand der encoderräder in mm
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
 
+const bool yellow = true;
+Pathplanner p(-20, 0, 0, 200, yellow);
+
 //odom
 float x=0; // curent bot x
 float y=0; // current bot y
@@ -97,6 +100,11 @@ void sendPWMValues(float pwmLeft, float pwmRight) {
     currentPwmRight = pwmRight;
     std::string message = std::to_string(pwmLeft) + "," + std::to_string(pwmRight);
     serialPrintf(sPortB, "%s\n", message.c_str());
+}
+
+std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x, int to_y) {
+    return p.getPath({{from_x, from_y}, angle}, {to_x, to_y});
+    // example: std::vector<Vector> path = generatePath(1, 1, 1, 1, 1);
 }
 
 void setup() {
