@@ -137,7 +137,7 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     x += distance * cos(theta + dTheta / 2);
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
-    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle(); << std::endl;
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
 /**
