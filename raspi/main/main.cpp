@@ -48,6 +48,8 @@ float currentPwmLeft;
 float currentPwmRight;
 
 int counter = 0;
+long int oldEncoderLeft = 0;
+long int oldEncoderRight = 0;
 
 void getEncoderData() {
     std::string line;
@@ -119,29 +121,15 @@ void drive(float drivePwmLeft, float drivePwmRight) {
 };
 
 // updates the position, based on the last time this func was ran
-void updatePosition() {
-    // long int leftEncoderChange = getEncoderLeft() - lastEncLeft;
-    // long int rightEncoderChange = getEncoderRight() - lastEncRight;
-
-    float leftDistance = (leftEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
-    float rightDistance = (rightEncoderChange / pulsesPerEncRev) * (M_PI * encWheelDiameterCM);
-    float deltaDistance = (leftDistance + rightDistance) / 2;
-    float deltaTheta = (rightDistance - leftDistance) / wheelDistance / 10;
-
-    x += deltaDistance * cos(theta + deltaTheta / 2);
-    std::cout << "X: " << x << std::endl;
-    y += deltaDistance * sin(theta + deltaTheta / 2);
-    std::cout << "Y: " << y << std::endl;
-    theta += deltaTheta;
-    std::cout << "Theta: " << theta << std::endl;
-
-    theta = fmod(theta, 2 * M_PI);
-    if (theta < 0)
-        theta += 2 * M_PI;
-
-
-    // lastEncLeft = getEncoderLeft();
-    // lastEncRight = getEncoderRight();
+void updatePosition(float leftEncChange, float rightEncChange) {
+    float leftDistance = leftEncChange / pulsesPerMM;
+    float rightDistance = rightEncChange / pulsesPerMM;
+    float distance = (leftDistance + rightDistance) / 2;
+    float dTheta = (rightDistance - leftDistance) / wheelDistance;
+    x += distance * cos(theta + dTheta / 2);
+    y += distance * sin(theta + dTheta / 2);
+    theta += dTheta;
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
 }
 
 /**
@@ -177,7 +165,7 @@ void driveDistance(int distance) {
                 startEncRight = getEncoderRight();
                 leftEncoderChange = currentEncoderLeft;
                 rightEncoderChange = currentEncoderRight;
-                updatePosition();
+                updatePosition(leftEncoderChange, rightEncoderChange);
             }
             counter = 0;
         }
@@ -189,8 +177,13 @@ void loop() {
     // updatePosition();
     // std::cout << x << ", " << y << ", " << theta << std::endl;
     // delay(1000);
-    driveDistance(5000);
-    delay(200);
+    // driveDistance(5000);
+    leftEncoderChange = getEncoderLeft() - oldEncoderLeft;
+    rightEncoderChange = getEncoderRight() - oldEncoderRight;
+    updatePosition(leftEncoderChange, rightEncoderChange);
+    oldEncoderLeft = getEncoderLeft();
+    oldEncoderRight = getEncoderRight();
+    delay(1000);
 }
 
 
