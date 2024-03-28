@@ -237,8 +237,6 @@ void setup() {
 }
 
 void loop() {
-    println(getEncoderLeft());
-    delay(500);
 }
 
 
