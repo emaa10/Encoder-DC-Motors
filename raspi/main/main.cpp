@@ -180,10 +180,10 @@ void turn(float degrees) {
                 drive(newPwmLeft, newPwmRight);
                 startEncLeft = getEncoderLeft();
                 startEncRight = getEncoderRight();
-                // JETZT NOCH ODOM!!! aber besser, ohne updateposition oder so, dann testen
             }
         }
     }
+    // hier einfach odom rein
 }
 
 // updates the position, based on the last time this func was ran
@@ -268,7 +268,17 @@ void setup() {
     setEncoderZero(); // just to be sure
 }
 
+
+
+long int encoderStartLeft=0;
+long int encoderStartRight=0;
 void loop() {
+    leftEncoderChange = getEncoderLeft()-encoderStartLeft;
+    rightEncoderChange = getEncoderRight()-encoderStartRight;
+    updatePosition(leftEncoderChange, rightEncoderChange);
+    encoderStartLeft = getEncoderLeft();
+    encoderStartRight = getEncoderRight();
+    delay(50);
 }
 
 
