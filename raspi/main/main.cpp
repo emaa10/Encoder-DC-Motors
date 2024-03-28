@@ -36,7 +36,7 @@ const float turnValue = wheelDistanceBig * M_PI / 360; // abstand beider räder 
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
-const int syncCounterTurn = 200; // check alle 200ms
+const int syncCounterTurn = 200; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
 const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
 const bool yellow = true;
@@ -173,7 +173,12 @@ void turn(float degrees) {
         currentEncoderRight = getEncoderRight() - startEncRight;
         // check ob gegner auf stregge brauchen wir hier nicht
         counter++;
-
+        if(counter >= syncCounterTurn) {
+            if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
+                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderLeft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
+                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderRight) * currentPwmRight;
+            }
+        }
     }
 }
 
