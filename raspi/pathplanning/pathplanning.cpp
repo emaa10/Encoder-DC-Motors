@@ -1,5 +1,7 @@
 #include "pathplanning.h"
 #include <queue>
+#include <ostream>
+#include <iostream>
 
 
 int distanceSquared(Vector& from, Vector& to) {
