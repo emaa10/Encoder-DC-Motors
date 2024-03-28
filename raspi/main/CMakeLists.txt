@@ -3,23 +3,36 @@ project(Main)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SDK_DIR ../eurobot-lidar/rplidar_sdk) 
-include_directories(${SDK_DIR}/sdk/include ${SDK_DIR}/sdk/src)
-FILE(GLOB SDKSRC ${SDK_DIR}/sdk/src/*.cpp)
-FILE(GLOB SDKARCH ${SDK_DIR}/sdk/src/arch/linux/*.cpp)
-FILE(GLOB SDKHAL ${SDK_DIR}/sdk/src/hal/*.cpp)
-FILE(GLOB SDKDATAUNPACKER ${SDK_DIR}/sdk/src/dataunpacker/*.cpp)
-FILE(GLOB SDKUNPACKER ${SDK_DIR}/sdk/src/dataunpacker/unpacker/*.cpp)
-# rplidar sdk dir
-
-set(SOURCEFILES
-    main.cpp
-    pathplanning.cpp
+# Include directories
+include_directories(
+    src
+    ../eurobot-lidar/rplidar_sdk/sdk/include
+    ../eurobot-lidar/rplidar_sdk/sdk/src
+    ../eurobot-lidar/rplidar_sdk/sdk/src/arch/linux
+    ../eurobot-lidar/rplidar_sdk/sdk/src/hal
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/unpacker
 )
 
-add_executable(main ${SOURCEFILES} ${SDKARCH} ${SDKSRC} ${SDKHAL} ${SDKUNPACKER} ${SDKDATAUNPACKER})
+# Source files
+set(SOURCEFILES
+    src/main.cpp
+    src/pathplanning.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/arch/linux/serial.cc
+    ../eurobot-lidar/rplidar_sdk/sdk/src/hal/thread.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/hal/event.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/data_unpack.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/data_unpack_crc.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/data_unpack_exception.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/data_unpack_impl.cpp
+    ../eurobot-lidar/rplidar_sdk/sdk/src/dataunpacker/data_unpack_rplidar_protocol.cpp
+)
 
+# Add executable
+add_executable(main ${SOURCEFILES})
+
+# Find required libraries
 find_package(Threads REQUIRED)
 
+# Link libraries
 target_link_libraries(main wiringPi Threads::Threads)
-
