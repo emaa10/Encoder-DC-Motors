@@ -36,6 +36,7 @@ const float turnValue = wheelDistanceBig * M_PI / 360; // abstand beider räder 
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
+const int syncCounterTurn = 200; // check alle 200ms
 const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
 const bool yellow = true;
@@ -157,13 +158,23 @@ void drive(float drivePwmLeft, float drivePwmRight) {
 
 void turn(float degrees) {
     float distance = turnValue * degrees;
-    float pulsesLeft = -1.0f * (distance * pulsesPerMM);
+    float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
     float pulsesRight = distance * pulsesPerMM;
 
     int startEncLeft = getEncoderLeft();
     int startEncRight = getEncoderRight();
     long int currentEncoderLeft = 0;
     long int currentEncoderRight = 0;
+
+    drive(-pwmSpeed, pwmSpeed); // links rückwrts
+    counter = 0;
+    while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
+        currentEncoderLeft = getEncoderLeft() - startEncLeft;
+        currentEncoderRight = getEncoderRight() - startEncRight;
+        // check ob gegner auf stregge brauchen wir hier nicht
+        counter++;
+
+    }
 }
 
 // updates the position, based on the last time this func was ran
@@ -194,7 +205,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) {
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
         // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
