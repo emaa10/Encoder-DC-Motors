@@ -33,6 +33,7 @@ const float wheelDistance = 121; //abstand der encoderräder in mm, muss vllt ge
 const float wheelDistanceBig = 184; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistanceBig * M_PI / 360; // abstand beider räder um 1° zu fahren
 
+const int pullCord = 8;
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
@@ -78,7 +79,7 @@ void println(const char* input) {
 }
 
 bool pullCordConnected() {
-    return (digitalRead(8) == HIGH && digitalRead(9) == HIGH);
+    return (digitalRead(pullCord) == 0);
 }
 
 void getEncoderData() {
@@ -276,7 +277,6 @@ void setup() {
         std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
     }
     pinMode(8, INPUT);
-    pinMode(9, INPUT);
 
     std::thread t(getEncoderDataThread);
     t.detach();
@@ -287,7 +287,10 @@ void setup() {
 
 
 void loop() {
-    println(pullCordConnected());
+    println(pullCordConnected()?"Ja":"Nein");
+    println(digitalRead(8));
+    // print(" - ");
+    // println(digitalRead(9));
     delay(50);
 }
 
