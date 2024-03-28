@@ -1,3 +1,6 @@
+#ifndef PATHPLANNING_H
+#define PATHPLANNING_H
+
 #pragma once
 
 #include "lidar.h"
@@ -36,3 +39,5 @@ class Pathplanner {
         int robotRad = 150;
         bool isYellow;
 };
+
+#endif

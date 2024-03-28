@@ -11,8 +11,6 @@
 #include "wiringSerial.h"
 #include <math.h>
 #include <thread>
-#include "./pathplanning.h"
-#include "./structs.h"
 
 
 #endif

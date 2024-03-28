@@ -1,3 +1,4 @@
+#include "./main.h"
 using namespace std;
 
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
