@@ -177,6 +177,10 @@ void turn(float degrees) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderLeft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderRight) * currentPwmRight;
+                drive(newPwmLeft, newPwmRight);
+                startEncLeft = getEncoderLeft();
+                startEncRight = getEncoderRight();
+                // JETZT NOCH ODOM!!! aber besser, ohne updateposition oder so, dann testen
             }
         }
     }
