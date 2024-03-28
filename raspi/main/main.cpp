@@ -120,7 +120,8 @@ void setEncoderZero() {
 */
 float getAngle(float input = theta) {
     float result = theta*180/M_PI;
-    result = fmod((result + 360.0), 360.0);
+    // result = fmod((result + 360.0), 360.0);
+    // now in updatepos with theta
     return result;
 }
 
@@ -167,6 +168,7 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     x += distance * cos(theta + dTheta / 2);
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
+    theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
     std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
