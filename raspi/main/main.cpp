@@ -281,7 +281,7 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 
-    while(pullCordConnected) {delay(20);}
+    while(pullCordConnected()) {delay(20);}
     setEncoderZero(); // just to be sure
 }
 
