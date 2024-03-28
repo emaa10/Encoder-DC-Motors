@@ -82,5 +82,5 @@ void loop()
   Serial.print(counterLEFT);
   Serial.print(",");
   Serial.println(counterRIGHT);
-  delay(20);
+  delay(5);
 }
