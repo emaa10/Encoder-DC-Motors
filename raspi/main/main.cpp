@@ -180,10 +180,17 @@ void turn(float degrees) {
                 drive(newPwmLeft, newPwmRight);
                 startEncLeft = getEncoderLeft();
                 startEncRight = getEncoderRight();
+                // odom calc start
+                leftEncoderChange = currentEncoderLeft;
+                rightEncoderChange = currentEncoderRight;
+                updatePosition(leftEncoderChange, rightEncoderChange);
+                // odom calc end
             }
         }
     }
-    // hier einfach odom rein
+    // odom manual start -> not recommended
+    // theta += degrees;
+    // odom manual end
 }
 
 // updates the position, based on the last time this func was ran
