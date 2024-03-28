@@ -118,24 +118,6 @@ bool isPathFree(int current_x, int current_y, double current_angle, std::vector<
     return p.freePath({{current_x, current_y}, current_angle}, npath);
 }
 
-void setup() {
-    // initialize stream
-    if (!serial.is_open()) {
-        std::cerr << "Port error on Mega A Encoder, Port" << serialMegaA << std::endl;
-    }
-
-    // initialize wiringpi
-    if (wiringPiSetup() == -1) {
-        std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
-    }
-    if (sPortB < 0) {
-        std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
-    }
-
-    std::thread t(getEncoderDataThread);
-    t.detach();
-}
-
 // here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmLeft > 150) {
@@ -208,6 +190,24 @@ void printPath(const vector<Vector>& path) {
     for (const auto& point : path) {
         cout << "(" << point.x << ", " << point.y << ")" << endl;
     }
+}
+
+void setup() {
+    // initialize stream
+    if (!serial.is_open()) {
+        std::cerr << "Port error on Mega A Encoder, Port" << serialMegaA << std::endl;
+    }
+
+    // initialize wiringpi
+    if (wiringPiSetup() == -1) {
+        std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
+    }
+    if (sPortB < 0) {
+        std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
+    }
+
+    std::thread t(getEncoderDataThread);
+    t.detach();
 }
 
 void loop() {
