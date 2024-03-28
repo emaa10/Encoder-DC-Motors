@@ -156,6 +156,19 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
+// updates the position, based on the last time this func was ran
+void updatePosition(float leftEncChange, float rightEncChange) {
+    float leftDistance = leftEncChange / pulsesPerMM;
+    float rightDistance = rightEncChange / pulsesPerMM;
+    float distance = (leftDistance + rightDistance) / 2;
+    float dTheta = (rightDistance - leftDistance) / wheelDistance;
+    x += distance * cos(theta + dTheta / 2);
+    y += distance * sin(theta + dTheta / 2);
+    theta += dTheta;
+    theta = fmod(theta, 360.0);
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
+}
+
 void turn(float degrees) {
     float distance = turnValue * degrees;
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
@@ -190,19 +203,8 @@ void turn(float degrees) {
     }
     // odom manual start -> not recommended
     // theta += degrees;
+    // theta = fmod(theta, 360.0);
     // odom manual end
-}
-
-// updates the position, based on the last time this func was ran
-void updatePosition(float leftEncChange, float rightEncChange) {
-    float leftDistance = leftEncChange / pulsesPerMM;
-    float rightDistance = rightEncChange / pulsesPerMM;
-    float distance = (leftDistance + rightDistance) / 2;
-    float dTheta = (rightDistance - leftDistance) / wheelDistance;
-    x += distance * cos(theta + dTheta / 2);
-    y += distance * sin(theta + dTheta / 2);
-    theta += dTheta;
-    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
 /**
@@ -276,9 +278,15 @@ void setup() {
 }
 
 
-
+long int encoderStartLeft=0;
+long int encoderStartRight=0;
 void loop() {
-
+    leftEncoderChange = getEncoderLeft()-encoderStartLeft;
+    rightEncoderChange = getEncoderRight()-encoderStartRight;
+    updatePosition(leftEncoderChange, rightEncoderChange);
+    encoderStartLeft = getEncoderLeft();
+    encoderStartRight = getEncoderRight();
+    delay(50);
 }
 
 
