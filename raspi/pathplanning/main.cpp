@@ -15,12 +15,19 @@ static inline void delay(sl_word_size_t ms) {
 }
 
 
+void printPath(const vector<Vector>& path) {
+    cout << "Path Coordinates:" << endl;
+    for (const auto& point : path) {
+        cout << "(" << point.x << ", " << point.y << ")" << endl;
+    }
+}
+
+
 int main() {
     Pathplanner p(-20, 0,0,200,true);
     std::vector<Vector> path = p.getPath({{0, 0}, 0}, {1000,1000});
+    printPath(path);
 
     while(true) {
-        std::cout << p.freePath({{0, 1000}, 0}, path) << std::endl;
-        delay(50);
     }
 }

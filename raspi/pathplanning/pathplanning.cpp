@@ -371,10 +371,3 @@ vector<Vector> Pathplanner::bfs(Vector start, Vector end) {
     return path;
 }
 
-
-void printPath(const vector<Vector>& path) {
-    cout << "Path Coordinates:" << endl;
-    for (const auto& point : path) {
-        cout << "(" << point.x << ", " << point.y << ")" << endl;
-    }
-}
