@@ -281,16 +281,13 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 
-    delay(startDelay); // start delay - needs to be changed
+    while(pullCordConnected) {delay(20);}
     setEncoderZero(); // just to be sure
 }
 
 
 void loop() {
-    println(pullCordConnected()?"Ja":"Nein");
-    println(digitalRead(8));
-    // print(" - ");
-    // println(digitalRead(9));
+    println("servus");
     delay(50);
 }
 
