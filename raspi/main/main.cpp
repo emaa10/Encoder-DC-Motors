@@ -16,6 +16,7 @@ const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
 std::ifstream serial(serialMegaA.c_str());
 int sPortB = serialOpen(serialMegaB.c_str(), 9600);
+int sPortA = serialOpen(serialMegaA.c_str(), 9600);
 
 // encoder stuff
 const float pulsesPerEncRev = 1200;
@@ -101,6 +102,11 @@ long int getEncoderLeft() {
 long int getEncoderRight() {
     // getEncoderData();
     return encoderRight;
+}
+
+// SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
+void setEncoderZero() {
+    serialPrintf(sPortA, "%s\n", std::string("0").c_str());
 }
 
 /**
@@ -225,11 +231,17 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 
-    
+
 }
 
 void loop() {
-
+    counter += 1;
+    println(getEncoderLeft());
+    delay(50);
+    if(counter >= 50) {
+        setEncoderZero();
+        counter = 0;
+    }
 }
 
 
