@@ -119,7 +119,9 @@ void setEncoderZero() {
  * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
 */
 float getAngle(float input = theta) {
-    return theta*180/M_PI;
+    float result = theta*180/M_PI;
+    result = fmod((result + 360.0), 360.0);
+    return result;
 }
 
 void sendPWMValues(float pwmLeft, float pwmRight) {
@@ -165,7 +167,6 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     x += distance * cos(theta + dTheta / 2);
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
-    theta = fmod(theta, 360.0);
     std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
@@ -203,7 +204,7 @@ void turn(float degrees) {
     }
     // odom manual start -> not recommended
     // theta += degrees;
-    // theta = fmod(theta, 360.0);
+    // theta = fmod((theta + 360.0), 360.0);
     // odom manual end
 }
 
