@@ -270,15 +270,8 @@ void setup() {
 
 
 
-long int encoderStartLeft=0;
-long int encoderStartRight=0;
 void loop() {
-    leftEncoderChange = getEncoderLeft()-encoderStartLeft;
-    rightEncoderChange = getEncoderRight()-encoderStartRight;
-    updatePosition(leftEncoderChange, rightEncoderChange);
-    encoderStartLeft = getEncoderLeft();
-    encoderStartRight = getEncoderRight();
-    delay(50);
+
 }
 
 
