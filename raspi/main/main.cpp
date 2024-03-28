@@ -33,6 +33,7 @@ const float wheelDistance = 121; //abstand der encoderräder in mm
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 20;
+const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
 const bool yellow = true;
 Pathplanner p(-20, 0, 0, 200, yellow);
@@ -231,17 +232,12 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 
-
+    delay(startDelay); // start delay - needs to be changed
+    setEncoderZero(); // just to be sure
 }
 
 void loop() {
-    counter += 1;
-    println(getEncoderLeft());
-    delay(50);
-    if(counter >= 50) {
-        setEncoderZero();
-        counter = 0;
-    }
+
 }
 
 
