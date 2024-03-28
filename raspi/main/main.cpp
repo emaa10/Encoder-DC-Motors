@@ -77,6 +77,9 @@ void println(const char* input) {
     std::cout << input << std::endl;
 }
 
+bool pullCordConnected() {
+    return (digitalRead(8) == HIGH && digitalRead(9) == HIGH);
+}
 
 void getEncoderData() {
     std::string line;
@@ -272,6 +275,8 @@ void setup() {
     if (sPortB < 0) {
         std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
     }
+    pinMode(8, INPUT);
+    pinMode(9, INPUT);
 
     std::thread t(getEncoderDataThread);
     t.detach();
@@ -281,14 +286,8 @@ void setup() {
 }
 
 
-long int encoderStartLeft=0;
-long int encoderStartRight=0;
 void loop() {
-    leftEncoderChange = getEncoderLeft()-encoderStartLeft;
-    rightEncoderChange = getEncoderRight()-encoderStartRight;
-    updatePosition(leftEncoderChange, rightEncoderChange);
-    encoderStartLeft = getEncoderLeft();
-    encoderStartRight = getEncoderRight();
+    println(pullCordConnected());
     delay(50);
 }
 
