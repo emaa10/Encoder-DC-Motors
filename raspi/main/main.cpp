@@ -107,6 +107,17 @@ std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x,
     // example: std::vector<Vector> path = generatePath(1, 1, 1, 1, 1);
 }
 
+void getNextCoord(int current_x, int current_y, std::vector<Vector> npath) {
+    // here get next coord code
+    // return ...
+    // USE NPATH INSTEAD OF PATH
+}
+
+bool isPathFree(int current_x, int current_y, double current_angle, std::vector<Vector> npath) {
+    // return true if free
+    return p.freePath({{current_x, current_y}, current_angle}, npath);
+}
+
 void setup() {
     // initialize stream
     if (!serial.is_open()) {
