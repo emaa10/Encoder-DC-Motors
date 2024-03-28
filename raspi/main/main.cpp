@@ -10,7 +10,7 @@
 #include <thread>
 #include "./pathplanning.h"
 #include "./structs.h"
-
+using namespace std;
 
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
