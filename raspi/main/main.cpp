@@ -224,6 +224,8 @@ void setup() {
 
     std::thread t(getEncoderDataThread);
     t.detach();
+
+    
 }
 
 void loop() {

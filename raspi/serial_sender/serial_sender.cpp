@@ -8,7 +8,7 @@ int main() {
         return 1;
     }
 
-    int serial_port = serialOpen("/dev/ttyACM1", 9600);
+    int serial_port = serialOpen("/dev/ttyACM0", 9600);
     if (serial_port < 0) {
         std::cerr << "Fehler beim Öffnen des seriellen Ports." << std::endl;
         return 1;

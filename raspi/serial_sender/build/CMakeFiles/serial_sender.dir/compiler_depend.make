@@ -3,8 +3,8 @@
 
 CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial_sender/serial_sender.cpp \
   /usr/include/stdc-predef.h \
-  /usr/include/wiringPi.h \
-  /usr/include/wiringSerial.h \
+  /usr/local/include/wiringPi.h \
+  /usr/local/include/wiringSerial.h \
   /usr/include/c++/12/iostream \
   /usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h \
   /usr/include/aarch64-linux-gnu/c++/12/bits/os_defines.h \
@@ -195,6 +195,8 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/c++/12/bits/basic_ios.h:
 
+/usr/include/c++/12/bits/streambuf.tcc:
+
 /usr/include/c++/12/bits/charconv.h:
 
 /usr/include/asm-generic/errno.h:
@@ -261,6 +263,10 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/c++/12/bits/char_traits.h:
 
+/usr/include/c++/12/bits/hash_bytes.h:
+
+/usr/include/aarch64-linux-gnu/bits/libc-header-start.h:
+
 /usr/include/c++/12/bits/alloc_traits.h:
 
 /usr/include/aarch64-linux-gnu/c++/12/bits/cpu_defines.h:
@@ -277,19 +283,7 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/aarch64-linux-gnu/c++/12/bits/os_defines.h:
 
-/usr/include/aarch64-linux-gnu/bits/libc-header-start.h:
-
-/usr/include/c++/12/bits/hash_bytes.h:
-
 /usr/include/c++/12/typeinfo:
-
-/usr/include/aarch64-linux-gnu/bits/types/sigset_t.h:
-
-/usr/include/c++/12/bits/cxxabi_init_exception.h:
-
-/usr/include/c++/12/clocale:
-
-/usr/include/c++/12/backward/binders.h:
 
 /usr/include/aarch64-linux-gnu/bits/waitstatus.h:
 
@@ -357,9 +351,13 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/lib/gcc/aarch64-linux-gnu/12/include/stdint.h:
 
-/usr/include/c++/12/bits/streambuf.tcc:
+/usr/include/c++/12/bits/std_abs.h:
 
-/usr/include/wiringPi.h:
+/usr/include/c++/12/debug/assertions.h:
+
+/usr/include/aarch64-linux-gnu/gnu/stubs-lp64.h:
+
+/usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h:
 
 /usr/include/aarch64-linux-gnu/bits/wchar.h:
 
@@ -369,23 +367,17 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/pthread.h:
 
-/usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h:
+/usr/local/include/wiringSerial.h:
 
-/usr/include/c++/12/bits/std_abs.h:
+/usr/include/aarch64-linux-gnu/bits/types/sigset_t.h:
 
-/usr/include/c++/12/debug/assertions.h:
+/usr/include/c++/12/bits/cxxabi_init_exception.h:
 
-/usr/include/aarch64-linux-gnu/gnu/stubs-lp64.h:
+/usr/include/c++/12/clocale:
 
-/usr/include/wiringSerial.h:
+/usr/include/c++/12/backward/binders.h:
 
-/usr/include/c++/12/bits/postypes.h:
-
-/usr/include/c++/12/bits/ios_base.h:
-
-/usr/include/c++/12/bits/stl_construct.h:
-
-/usr/include/aarch64-linux-gnu/bits/pthreadtypes.h:
+/usr/local/include/wiringPi.h:
 
 /usr/include/c++/12/type_traits:
 
@@ -403,9 +395,9 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/c++/12/cwchar:
 
-/usr/include/aarch64-linux-gnu/bits/types.h:
-
 /usr/include/aarch64-linux-gnu/bits/setjmp.h:
+
+/usr/include/aarch64-linux-gnu/bits/types.h:
 
 /usr/include/aarch64-linux-gnu/bits/struct_mutex.h:
 
@@ -432,6 +424,14 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/c++/12/bits/memoryfwd.h:
 
 /usr/lib/gcc/aarch64-linux-gnu/12/include/stddef.h:
+
+/usr/include/c++/12/bits/postypes.h:
+
+/usr/include/c++/12/bits/ios_base.h:
+
+/usr/include/c++/12/bits/stl_construct.h:
+
+/usr/include/aarch64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/c++/12/bits/locale_facets.tcc:
 
@@ -513,6 +513,14 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 
 /usr/include/c++/12/bits/cpp_type_traits.h:
 
+/usr/include/c++/12/bits/predefined_ops.h:
+
+/usr/include/c++/12/bits/invoke.h:
+
+/usr/include/aarch64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/12/bits/functexcept.h:
+
 /usr/include/c++/12/bits/ostream_insert.h:
 
 /usr/include/c++/12/bits/cxxabi_forced.h:
@@ -536,14 +544,6 @@ CMakeFiles/serial_sender.dir/serial_sender.cpp.o: /home/bot/eurobot/raspi/serial
 /usr/include/c++/12/ext/numeric_traits.h:
 
 /usr/include/c++/12/bits/stl_pair.h:
-
-/usr/include/c++/12/bits/predefined_ops.h:
-
-/usr/include/aarch64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/12/bits/functexcept.h:
-
-/usr/include/c++/12/bits/invoke.h:
 
 /usr/include/time.h:
 

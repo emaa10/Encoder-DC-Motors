@@ -78,6 +78,14 @@ void setup()
 
 void loop()
 {
+  if (Serial.available() > 0) {
+    int incomingByte = Serial.read();
+    if (incomingByte == '0') {
+      counterRIGHT = 0;
+      counterLEFT = 0;
+    }
+  }
+
   // Serial.println(digitalPinToInterrupt(RIGHT_ENC_B_PHASE));
   Serial.print(counterLEFT);
   Serial.print(",");
