@@ -56,6 +56,22 @@ int counter = 0;
 long int oldEncoderLeft = 0;
 long int oldEncoderRight = 0;
 
+template<typename T>
+void print(const T& input) {
+    std::cout << input;
+}
+void print(const char* input) {
+    std::cout << input;
+}
+template<typename T>
+void println(const T& input) {
+    std::cout << input << std::endl;
+}
+void println(const char* input) {
+    std::cout << input << std::endl;
+}
+
+
 void getEncoderData() {
     std::string line;
     char comma;
@@ -211,12 +227,6 @@ void setup() {
 }
 
 void loop() {
-    std::vector<Vector> path = generatePath(0, 0, 0, 1000, 1000);
-    printPath(path);
-    std::cout << "done" << std::endl;
-    while(true) {
-        delay(1000);
-    }
 
 }
 
