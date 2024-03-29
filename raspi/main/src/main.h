@@ -49,4 +49,49 @@ extern int counter;
 extern long int oldEncoderLeft;
 extern long int oldEncoderRight;
 
+
+void print(const T& input);
+
+void print(const char* input);
+
+void println(const T& input);
+
+void println(const char* input);
+
+extern bool pullCordConnected();
+
+void getEncoderData();
+
+void getEncoderDataThread();
+
+extern long int getEncoderLeft();
+
+extern long int getEncoderRight();
+
+void setEncoderZero();
+
+extern float getAngle(float input = theta);
+
+void sendPWMValues(float pwmLeft, float pwmRight);
+
+extern std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x, int to_y);
+
+void getNextCoord(int current_x, int current_y, std::vector<Vector> npath);
+
+extern bool isPathFree(int current_x, int current_y, double current_angle, std::vector<Vector> npath);
+
+void drive(float drivePwmLeft, float drivePwmRight);
+
+void updatePosition(float leftEncChange, float rightEncChange);
+void turn(float degrees);
+
+void driveDistance(int distance);
+
+void printPath(const vector<Vector>& path);
+
+void setup();
+
+void loop();
+
+
 #endif
