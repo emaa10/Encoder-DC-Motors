@@ -184,11 +184,15 @@ void driveDistance(int distance) {
     // RUN BEFORE DRIVING!!
     int startEncLeft = getEncoderLeft();
     int startEncRight = getEncoderRight();
+    int lastEncLeft = getEncoderLeft();
+    int lastEncRight = getEncoderRight();
     float distancePulses = distance * pulsesPerMM;
 
     // need these 2 lines to recalculate current enc values. 
-    long int currentEncoderLeft = 0;
+    long int currentEncoderLeft = 0; // for driving
     long int currentEncoderRight = 0;
+    long int currentPIDleft = 0;
+    long int currentPIDright = 0;
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
