@@ -64,7 +64,7 @@ void bi1()
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP);
   pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP);

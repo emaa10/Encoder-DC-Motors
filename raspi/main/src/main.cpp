@@ -5,7 +5,7 @@ const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
 std::ifstream serial(serialMegaA.c_str());
 int sPortB = serialOpen(serialMegaB.c_str(), 9600);
-int sPortA = serialOpen(serialMegaA.c_str(), 9600);
+int sPortA = serialOpen(serialMegaA.c_str(), 115200);
 
 
 Pathplanner p(-20, 0, 0, 200, yellow);
@@ -275,7 +275,7 @@ void setup() {
 
     println("START");
     
-    driveDistance(500);
+    // driveDistance(500);
     println("SIND DA");
 }
 
