@@ -79,6 +79,8 @@ long int getEncoderRight() {
     return encoderRight;
 }
 
+void stopMotor() {setPwmZero();}
+
 void setPwmZero() {
     sendPWMValues(0, 0);
 }
@@ -171,6 +173,7 @@ void turn(float degrees) {
             }
         }
     }
+    drive(0, 0);
     // odom manual start -> not recommended
     // theta += degrees;
     // theta = fmod((theta + 360.0), 360.0);
@@ -190,6 +193,7 @@ void driveDistance(int distance) {
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
     while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
+        println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
@@ -212,6 +216,7 @@ void driveDistance(int distance) {
         }
         delay(20);
     }
+    drive(0, 0); // stop motor
 }
 
 
@@ -244,7 +249,7 @@ void setup() {
     setEncoderZero(); // just to be sure
     setPwmZero();
     delay(500);
-    driveDistance(100);
+    driveDistance(10);
 }
 
 
