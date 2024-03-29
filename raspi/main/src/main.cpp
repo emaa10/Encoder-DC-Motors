@@ -225,15 +225,14 @@ void driveDistance(int distance) {
                 println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
-                leftEncoderChange = currentPIDleft;
-                rightEncoderChange = currentPIDright;
-                updatePosition(leftEncoderChange, rightEncoderChange);
+                updatePosition(currentPIDleft, currentPIDright);
             }
             counter = 0;
         }
         delay(20);
     }
     drive(0, 0); // stop motor
+    updatePosition(currentPIDleft, currentPIDright);
 }
 
 
