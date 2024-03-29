@@ -16,8 +16,6 @@ float y=0; // current bot y
 float theta=0; // current bot theta
 long int lastEncLeft=0;   // last enc position left
 long int lastEncRight=0;
-long int leftEncoderChange;
-long int rightEncoderChange;
 
 
 long int encoderLeft; // enc count left
@@ -72,6 +70,7 @@ void getEncoderData() {
 void getEncoderDataThread() {
     while(true) {
         getEncoderData();
+        delay(5);
     }
 }
 
@@ -130,6 +129,7 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmRight > 150) {drivePwmRight = 150;}
     if(drivePwmLeft < -150) {drivePwmLeft = -150;}
     if(drivePwmRight < -150) {drivePwmRight = -150;}
+    println("SENT VALUES");
     sendPWMValues(drivePwmLeft, drivePwmRight);
     // std::cout << "in drive func: " << drivePwmLeft << " " << drivePwmRight << std::endl;
     // here odometry
@@ -154,32 +154,37 @@ void turn(float degrees) {
 
     int startEncLeft = getEncoderLeft();
     int startEncRight = getEncoderRight();
+    int lastEncLeft = getEncoderLeft();
+    int lastEncRight = getEncoderRight();
     long int currentEncoderLeft = 0;
     long int currentEncoderRight = 0;
+    long int currentPIDleft = 0;
+    long int currentPIDright = 0;
 
     drive(-pwmSpeed, pwmSpeed); // links rückwrts
     counter = 0;
     while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
+        currentPIDleft = getEncoderLeft() - lastEncLeft;
+        currentPIDright = getEncoderRight() - lastEncRight;
         // check ob gegner auf stregge brauchen wir hier nicht
         counter++;
         if(counter >= syncCounterTurn) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
-                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderLeft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
-                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentEncoderRight) * currentPwmRight;
+                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
+                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
                 drive(newPwmLeft, newPwmRight);
-                startEncLeft = getEncoderLeft();
-                startEncRight = getEncoderRight();
+                lastEncLeft = getEncoderLeft();
+                lastEncRight = getEncoderRight();
                 // odom calc start
-                leftEncoderChange = currentEncoderLeft;
-                rightEncoderChange = currentEncoderRight;
-                updatePosition(leftEncoderChange, rightEncoderChange);
+                updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
             }
         }
     }
     drive(0, 0);
+    updatePosition(currentPIDleft, currentPIDright);
     // odom manual start -> not recommended
     // theta += degrees;
     // theta = fmod((theta + 360.0), 360.0);
