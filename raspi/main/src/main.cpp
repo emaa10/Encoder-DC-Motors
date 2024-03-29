@@ -256,8 +256,11 @@ void setup() {
 
     setPwmZero();
     while(pullCordConnected()) {delay(20);}
-    setEncoderZero(); // just to be sure
     delay(500);
+    setEncoderZero(); // just to be sure
+    
+    driveDistance(500);
+    println("SIND DA");
 }
 
 
