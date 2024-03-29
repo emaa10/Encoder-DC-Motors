@@ -72,6 +72,8 @@ extern long int getEncoderLeft();
 
 extern long int getEncoderRight();
 
+void setPwmZero();
+
 // SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
 void setEncoderZero();
 

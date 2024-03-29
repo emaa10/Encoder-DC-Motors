@@ -79,6 +79,10 @@ long int getEncoderRight() {
     return encoderRight;
 }
 
+void setPwmZero() {
+    sendPWMValues(0, 0);
+}
+
 void setEncoderZero() {
     serialPrintf(sPortA, "%s\n", std::string("0").c_str());
 }
@@ -238,11 +242,13 @@ void setup() {
 
     while(pullCordConnected()) {delay(20);}
     setEncoderZero(); // just to be sure
+    setPwmZero();
+    delay(500);
+    driveDistance(100);
 }
 
 
 void loop() {
-    println("servus");
     delay(50);
 }
 
