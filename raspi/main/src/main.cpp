@@ -206,12 +206,15 @@ void driveDistance(int distance) {
         // hier check ob gegner auf strecke
         counter++;
         if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
-            // neue pwm werte basierend auf encoder daten berechnen
+            // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
                 float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
+                print(newPwmLeft);
+                print(" ");
+                println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 leftEncoderChange = currentPIDleft;
@@ -255,11 +258,13 @@ void setup() {
     while(pullCordConnected()) {delay(20);}
     setEncoderZero(); // just to be sure
     delay(500);
-    driveDistance(500);
 }
 
 
 void loop() {
+    print(getEncoderLeft());
+    print(" ");
+    println(getEncoderRight());
     delay(50);
 }
 
