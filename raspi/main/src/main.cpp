@@ -251,9 +251,9 @@ void setup() {
     std::thread t(getEncoderDataThread);
     t.detach();
 
+    setPwmZero();
     while(pullCordConnected()) {delay(20);}
     setEncoderZero(); // just to be sure
-    setPwmZero();
     delay(500);
     driveDistance(500);
 }
