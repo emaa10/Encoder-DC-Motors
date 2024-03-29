@@ -206,7 +206,7 @@ void driveDistance(int distance) {
                 float newPwmRight = pulsesPerSec / abs(currentEncoderRight) * currentPwmRight;
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
-                startEncLeft = getEncoderLeft();
+                startEncLeft = getEncoderLeft(); // BULLSHIT
                 startEncRight = getEncoderRight();
                 leftEncoderChange = currentEncoderLeft;
                 rightEncoderChange = currentEncoderRight;
@@ -249,7 +249,7 @@ void setup() {
     setEncoderZero(); // just to be sure
     setPwmZero();
     delay(500);
-    driveDistance(10);
+    driveDistance(500);
 }
 
 
