@@ -1,3 +1,6 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
+
 #pragma once
 
 #include <atomic>
@@ -26,3 +29,4 @@ struct VectorFunction {
     Vector start, direction;
 };
 
+#endif

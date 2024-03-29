@@ -1,15 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <unistd.h>
-#include <chrono>
-#include "wiringPi.h"
-#include "wiringSerial.h"
-#include <math.h>
-#include <thread>
-#include "./pathplanning.h"
-#include "./structs.h"
+#include "./main.h"
 using namespace std;
 
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
@@ -18,29 +7,7 @@ std::ifstream serial(serialMegaA.c_str());
 int sPortB = serialOpen(serialMegaB.c_str(), 9600);
 int sPortA = serialOpen(serialMegaA.c_str(), 9600);
 
-// encoder stuff
-const float pulsesPerEncRev = 1200;
-const float encWheelDiameterCM = 5;
-const float motorWheelDiameterCM = 7;
-const float encWheelScope = encWheelDiameterCM * M_PI; 
-const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled per rev
-const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
-const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
-const float pulsesPerCM = pulsesPerRev / motorWheelScope;
-const float pwmSpeed = 100; //default pwm speed
-const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
-const float wheelDistance = 121; //abstand der encoderräder in mm, muss vllt geändert werden
-const float wheelDistanceBig = 184; // in mm, muss vllt geändert werden
-const float turnValue = wheelDistanceBig * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const int pullCord = 8;
-
-const int syncInterval = 1; // sync motors with encoders every second
-const int syncCounter = syncInterval * 1000 / 20;
-const int syncCounterTurn = 200; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
-const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
-
-const bool yellow = true;
 Pathplanner p(-20, 0, 0, 200, yellow);
 
 //odom
@@ -96,7 +63,6 @@ void getEncoderData() {
     }
 }
 
-// thread to get enc data 24/7
 void getEncoderDataThread() {
     while(true) {
         getEncoderData();
@@ -113,15 +79,10 @@ long int getEncoderRight() {
     return encoderRight;
 }
 
-// SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
 void setEncoderZero() {
     serialPrintf(sPortA, "%s\n", std::string("0").c_str());
 }
 
-/**
- * @description: Return the current angle in degrees.
- * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
-*/
 float getAngle(float input = theta) {
     float result = theta*180/M_PI;
     // result = fmod((result + 360.0), 360.0);
@@ -152,7 +113,6 @@ bool isPathFree(int current_x, int current_y, double current_angle, std::vector<
     return p.freePath({{current_x, current_y}, current_angle}, npath);
 }
 
-// here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmLeft > 150) {drivePwmLeft = 150;}
     if(drivePwmRight > 150) {drivePwmRight = 150;}
@@ -163,7 +123,6 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
-// updates the position, based on the last time this func was ran
 void updatePosition(float leftEncChange, float rightEncChange) {
     float leftDistance = leftEncChange / pulsesPerMM;
     float rightDistance = rightEncChange / pulsesPerMM;
@@ -214,10 +173,6 @@ void turn(float degrees) {
     // odom manual end
 }
 
-/**
-* @description: Drive a specific distance in MM while syncing with encoders
-* @param distance: distance in mm
-*/
 void driveDistance(int distance) {
     // RUN BEFORE DRIVING!!
     int startEncLeft = getEncoderLeft();
