@@ -63,7 +63,6 @@ void getEncoderData() {
     }
 }
 
-// thread to get enc data 24/7
 void getEncoderDataThread() {
     while(true) {
         getEncoderData();
@@ -80,15 +79,10 @@ long int getEncoderRight() {
     return encoderRight;
 }
 
-// SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
 void setEncoderZero() {
     serialPrintf(sPortA, "%s\n", std::string("0").c_str());
 }
 
-/**
- * @description: Return the current angle in degrees.
- * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
-*/
 float getAngle(float input = theta) {
     float result = theta*180/M_PI;
     // result = fmod((result + 360.0), 360.0);
@@ -119,7 +113,6 @@ bool isPathFree(int current_x, int current_y, double current_angle, std::vector<
     return p.freePath({{current_x, current_y}, current_angle}, npath);
 }
 
-// here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmLeft > 150) {drivePwmLeft = 150;}
     if(drivePwmRight > 150) {drivePwmRight = 150;}
@@ -130,7 +123,6 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
-// updates the position, based on the last time this func was ran
 void updatePosition(float leftEncChange, float rightEncChange) {
     float leftDistance = leftEncChange / pulsesPerMM;
     float rightDistance = rightEncChange / pulsesPerMM;
@@ -181,10 +173,6 @@ void turn(float degrees) {
     // odom manual end
 }
 
-/**
-* @description: Drive a specific distance in MM while syncing with encoders
-* @param distance: distance in mm
-*/
 void driveDistance(int distance) {
     // RUN BEFORE DRIVING!!
     int startEncLeft = getEncoderLeft();
