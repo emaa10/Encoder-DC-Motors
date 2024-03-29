@@ -62,14 +62,20 @@ extern bool pullCordConnected();
 
 void getEncoderData();
 
+// thread to get enc data 24/7
 void getEncoderDataThread();
 
 extern long int getEncoderLeft();
 
 extern long int getEncoderRight();
 
+// SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
 void setEncoderZero();
 
+/**
+ * @description: Return the current angle in degrees.
+ * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
+*/
 extern float getAngle(float input = theta);
 
 void sendPWMValues(float pwmLeft, float pwmRight);
@@ -80,11 +86,18 @@ void getNextCoord(int current_x, int current_y, std::vector<Vector> npath);
 
 extern bool isPathFree(int current_x, int current_y, double current_angle, std::vector<Vector> npath);
 
+// here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight);
 
+// updates the position, based on the last time this func was ran
 void updatePosition(float leftEncChange, float rightEncChange);
+
 void turn(float degrees);
 
+/**
+* @description: Drive a specific distance in MM while syncing with encoders
+* @param distance: distance in mm
+*/
 void driveDistance(int distance);
 
 void printPath(const vector<Vector>& path);
