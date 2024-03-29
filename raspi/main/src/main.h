@@ -31,7 +31,6 @@ const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
 const bool yellow = true;
 
-extern Pathplanner p(-20, 0, 0, 200, yellow);
 
 extern float x;
 extern float y;
@@ -52,10 +51,12 @@ extern long int oldEncoderLeft;
 extern long int oldEncoderRight;
 
 
+template<typename T>
 void print(const T& input);
 
 void print(const char* input);
 
+template<typename T>
 void println(const T& input);
 
 void println(const char* input);
@@ -78,7 +79,7 @@ void setEncoderZero();
  * @description: Return the current angle in degrees.
  * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
 */
-extern float getAngle(float input = theta);
+extern float getAngle(float input);
 
 void sendPWMValues(float pwmLeft, float pwmRight);
 
