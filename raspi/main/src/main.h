@@ -31,6 +31,8 @@ const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
 const bool yellow = true;
 
+extern Pathplanner p(-20, 0, 0, 200, yellow);
+
 extern float x;
 extern float y;
 extern float theta;
