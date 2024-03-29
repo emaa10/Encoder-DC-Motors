@@ -161,6 +161,9 @@ void turn(float degrees) {
     long int currentPIDleft = 0;
     long int currentPIDright = 0;
 
+    print(-pwmSpeed);
+    print(" ");
+    println(pwmSpeed);
     drive(-pwmSpeed, pwmSpeed); // links rückwrts
     counter = 0;
     while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
@@ -276,6 +279,7 @@ void setup() {
     println("START");
     
     // driveDistance(500);
+    // turn(90);
     println("SIND DA");
 }
 
