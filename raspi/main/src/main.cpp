@@ -45,6 +45,12 @@ void println(const char* input) {
     std::cout << input << std::endl;
 }
 
+void signalHandler(int signal) {
+    // run code on ctrl c
+    stopMotor();
+    exit(signal);
+}
+
 bool pullCordConnected() {
     return (digitalRead(pullCord) == 0);
 }
@@ -251,6 +257,7 @@ void setup() {
     if (sPortB < 0) {
         std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
     }
+    std::signal(SIGINT, signalHandler); // control c stops motors
     pinMode(8, INPUT);
 
     std::thread t(getEncoderDataThread);

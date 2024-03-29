@@ -11,6 +11,7 @@
 #include "wiringSerial.h"
 #include <math.h>
 #include <thread>
+#include <csignal>
 
 
 #endif
