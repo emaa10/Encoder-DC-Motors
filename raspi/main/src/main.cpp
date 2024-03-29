@@ -195,6 +195,7 @@ void driveDistance(int distance) {
     long int currentPIDright = 0;
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
+    println("after drive");
     counter = 0;
     while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
         println((currentEncoderLeft + currentEncoderRight)/2);
@@ -258,6 +259,9 @@ void setup() {
     while(pullCordConnected()) {delay(20);}
     delay(500);
     setEncoderZero(); // just to be sure
+    delay(1000);
+
+    println("START");
     
     driveDistance(500);
     println("SIND DA");
