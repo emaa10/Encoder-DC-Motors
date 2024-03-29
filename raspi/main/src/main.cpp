@@ -197,7 +197,7 @@ void driveDistance(int distance) {
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
     while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
-        print("durchschnitt enc: ")
+        print("durchschnitt enc: ");
         println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
@@ -213,7 +213,7 @@ void driveDistance(int distance) {
                 float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
-                print("Newpwmleft: ")
+                print("Newpwmleft: ");
                 print(newPwmLeft);
                 print(", Newpwmright: ");
                 println(newPwmRight);
@@ -270,7 +270,7 @@ void setup() {
 
 
 void loop() {
-    print("Encoder left: ")
+    print("Encoder left: ");
     print(getEncoderLeft());
     print(", Encoder right: ");
     println(getEncoderRight());
