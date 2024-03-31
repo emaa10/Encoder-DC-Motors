@@ -147,12 +147,12 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
-void updatePositionThread(float leftEncChange, float rightEncChange) {
-    leftEnc1 = getEncoderLeft();
-    rightEnc1 = getEncoderRight();
+void updatePositionThread() {
+    float leftEnc1 = getEncoderLeft();
+    float rightEnc1 = getEncoderRight();
     delay(1000);
-    leftEnc2 = getEncoderLeft();
-    rightEnc2 = getEncoderRight();
+    float leftEnc2 = getEncoderLeft();
+    float rightEnc2 = getEncoderRight();
     updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
 }
 
