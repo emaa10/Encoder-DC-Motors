@@ -189,10 +189,10 @@ void turn(float degrees) {
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
                 drive(newPwmLeft, newPwmRight);
-                lastEncLeft = getEncoderLeft();
-                lastEncRight = getEncoderRight();
+                // lastEncLeft = getEncoderLeft();
+                // lastEncRight = getEncoderRight();
                 // odom calc start
-                updatePosition(currentPIDleft, currentPIDright);
+                // updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
             }
         }
@@ -242,8 +242,8 @@ void driveDistance(int distance) {
                 print(newPwmLeft);
                 print(", Newpwmright: ");
                 println(newPwmRight);
-                lastEncLeft = getEncoderLeft();
-                lastEncRight = getEncoderRight();
+                // lastEncLeft = getEncoderLeft();
+                // lastEncRight = getEncoderRight();
                 // updatePosition(currentPIDleft, currentPIDright);
             }
             counter = 0;
