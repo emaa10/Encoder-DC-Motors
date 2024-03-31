@@ -210,7 +210,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction, is shit
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2 + pulsesPerSec/12) { // might need correction, is shit
         print("durchschnitt enc: ");
         println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
