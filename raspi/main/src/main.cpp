@@ -210,7 +210,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2+ pulsesPerSec/5) { // might need correction, is shit
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction, is shit
         print("durchschnitt enc: ");
         println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
@@ -237,7 +237,7 @@ void driveDistance(int distance) {
             }
             counter = 0;
         }
-        delay(20);
+        delay(5);
     }
     drive(0, 0); // stop motor
     updatePosition(currentPIDleft, currentPIDright);
@@ -289,7 +289,7 @@ void loop() {
     print(getEncoderLeft());
     print(", Encoder right: ");
     println(getEncoderRight());
-    delay(50);
+    delay(5);
 }
 
 
