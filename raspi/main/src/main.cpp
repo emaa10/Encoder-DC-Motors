@@ -147,6 +147,15 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
+void updatePositionThread(float leftEncChange, float rightEncChange) {
+    leftEnc1 = getEncoderLeft();
+    rightEnc1 = getEncoderRight();
+    delay(1000);
+    leftEnc2 = getEncoderLeft();
+    rightEnc2 = getEncoderRight();
+    updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
+}
+
 void turn(float degrees) {
     float distance = turnValue * degrees;
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
@@ -210,7 +219,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2 + pulsesPerSec/12) { // might need correction
         print("durchschnitt enc: ");
         println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
@@ -233,14 +242,14 @@ void driveDistance(int distance) {
                 println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
-                updatePosition(currentPIDleft, currentPIDright);
+                // updatePosition(currentPIDleft, currentPIDright);
             }
             counter = 0;
         }
         delay(5);
     }
     drive(0, 0); // stop motor
-    updatePosition(currentPIDleft, currentPIDright);
+    // updatePosition(currentPIDleft, currentPIDright);
 }
 
 
@@ -269,6 +278,8 @@ void setup() {
 
     std::thread t(getEncoderDataThread);
     t.detach();
+    std::thread t2(updatePositionThread);
+    t2.detach();
 
     setPwmZero();
     while(pullCordConnected()) {delay(20);}
