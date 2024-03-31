@@ -278,7 +278,7 @@ void setup() {
 
     println("START");
     
-    // driveDistance(500);
+    driveDistance(500);
     // turn(90);
     println("SIND DA");
 }
