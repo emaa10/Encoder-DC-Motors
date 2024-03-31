@@ -4,8 +4,9 @@ using namespace std;
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
 std::ifstream serial(serialMegaA.c_str());
-int sPortB = serialOpen(serialMegaB.c_str(), 9600);
+std::ifstream serialB(serialMegaB.c_str());
 int sPortA = serialOpen(serialMegaA.c_str(), 115200);
+int sPortB = serialOpen(serialMegaB.c_str(), 115200);
 
 
 Pathplanner p(-20, 0, 0, 200, yellow);
@@ -252,11 +253,16 @@ void printPath(const vector<Vector>& path) {
 }
 
 void setup() {
+    serialClose(sPortA);
+    serialClose(sPortB);
+
     // initialize stream
     if (!serial.is_open()) {
         std::cerr << "Port error on Mega A Encoder, Port" << serialMegaA << std::endl;
     }
-
+    if (!serialB.is_open()) {
+        std::cerr << "Port error on Mega B Encoder, Port" << serialMegaB << std::endl;
+    }
     // initialize wiringpi
     if (wiringPiSetup() == -1) {
         std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;

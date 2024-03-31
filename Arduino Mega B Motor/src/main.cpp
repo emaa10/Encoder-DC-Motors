@@ -16,7 +16,7 @@ float receivedValue1; // pwm value left
 float receivedValue2; // pwm value right
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(LEFT_LPWM, OUTPUT);
   pinMode(LEFT_RPWM, OUTPUT);
   pinMode(RIGHT_LPWM, OUTPUT);

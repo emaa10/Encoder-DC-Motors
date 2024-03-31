@@ -7,8 +7,8 @@
 #include <sstream>
 #include <unistd.h>
 #include <chrono>
-#include "wiringPi.h"
-#include "wiringSerial.h"
+#include <wiringPi.h>
+#include <wiringSerial.h>
 #include <math.h>
 #include <thread>
 #include <csignal>
