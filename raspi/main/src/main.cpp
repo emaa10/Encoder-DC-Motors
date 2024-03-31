@@ -237,7 +237,7 @@ void driveDistance(int distance) {
             }
             counter = 0;
         }
-        delay(20);
+        delay(5);
     }
     drive(0, 0); // stop motor
     updatePosition(currentPIDleft, currentPIDright);
@@ -289,7 +289,7 @@ void loop() {
     print(getEncoderLeft());
     print(", Encoder right: ");
     println(getEncoderRight());
-    delay(50);
+    delay(5);
 }
 
 
