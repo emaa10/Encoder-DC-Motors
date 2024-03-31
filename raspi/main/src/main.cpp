@@ -4,9 +4,8 @@ using namespace std;
 const std::string serialMegaA = "/dev/ttyACM0"; // enc
 const std::string serialMegaB = "/dev/ttyACM1"; // dc
 std::ifstream serial(serialMegaA.c_str());
-std::ifstream serialB(serialMegaB.c_str());
+int sPortB = serialOpen(serialMegaB.c_str(), 9600);
 int sPortA = serialOpen(serialMegaA.c_str(), 115200);
-int sPortB = serialOpen(serialMegaB.c_str(), 115200);
 
 
 Pathplanner p(-20, 0, 0, 200, yellow);
@@ -211,7 +210,7 @@ void driveDistance(int distance) {
 
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2 + pulsesPerSec/12) { // might need correction, is shit
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
         print("durchschnitt enc: ");
         println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
@@ -238,7 +237,7 @@ void driveDistance(int distance) {
             }
             counter = 0;
         }
-        delay(5);
+        delay(20);
     }
     drive(0, 0); // stop motor
     updatePosition(currentPIDleft, currentPIDright);
@@ -253,16 +252,11 @@ void printPath(const vector<Vector>& path) {
 }
 
 void setup() {
-    serialClose(sPortA);
-    serialClose(sPortB);
-
     // initialize stream
     if (!serial.is_open()) {
         std::cerr << "Port error on Mega A Encoder, Port" << serialMegaA << std::endl;
     }
-    if (!serialB.is_open()) {
-        std::cerr << "Port error on Mega B Encoder, Port" << serialMegaB << std::endl;
-    }
+
     // initialize wiringpi
     if (wiringPiSetup() == -1) {
         std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
@@ -285,7 +279,6 @@ void setup() {
     println("START");
     
     // driveDistance(500);
-    drive(100, 100);
     // turn(90);
     println("SIND DA");
 }
@@ -296,7 +289,7 @@ void loop() {
     print(getEncoderLeft());
     print(", Encoder right: ");
     println(getEncoderRight());
-    delay(5);
+    delay(50);
 }
 
 

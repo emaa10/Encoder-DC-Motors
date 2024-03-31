@@ -25,7 +25,7 @@ const float turnValue = wheelDistanceBig * M_PI / 360; // abstand beider räder 
 const int pullCord = 8;
 
 const int syncInterval = 1; // sync motors with encoders every second
-const int syncCounter = syncInterval * 1000 / 5;
+const int syncCounter = syncInterval * 1000 / 20;
 const int syncCounterTurn = 200; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
 const int startDelay = 5000; // 5 secods after raspi start -> need pullcord
 
