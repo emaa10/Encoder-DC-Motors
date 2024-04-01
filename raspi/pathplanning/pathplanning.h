@@ -19,6 +19,7 @@ class Pathplanner {
         vector<Vector> getTangentenEndpoints(Vector &startpoint);
         int calculatePathDistance(vector<Vector> &path);
         vector<Vector> bfs(Vector start, Vector end);
+        void shortenPath(vector<Vector>& path, int node);
 
     public:
         Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDistance, int enemyRobotSafetyDistance, int enemyRobotRad, bool playingYellow);
