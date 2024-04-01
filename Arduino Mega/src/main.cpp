@@ -6,8 +6,6 @@
 #include <Arduino.h>
 #include "./pins.h"
 
-volatile long int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
-volatile long int counterRIGHT = 0;
 float currentPwmLeft;
 float currentPwmRight;
 
@@ -37,23 +35,31 @@ void println(const char* input) {
 
 // encoder functions: LEFT 1, left 2, right 1, right 2
 void ai0() {
-  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { counterLEFT++; }
-  else { counterLEFT--; }
+  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { encoderLeft++; }
+  else { encoderLeft--; }
 }
 
 void ai1() {
-  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) { counterLEFT--; }
-  else { counterLEFT++; }
+  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) { encoderLeft--; }
+  else { encoderLeft++; }
 }
 
 void bi0() {
-  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) { counterRIGHT++; }
-  else { counterRIGHT--; }
+  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) { encoderRight++; }
+  else { encoderRight--; }
 }
 
 void bi1() {
-  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) { counterRIGHT--; }
-  else { counterRIGHT++; }
+  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) { encoderRight--; }
+  else { encoderRight++; }
+}
+
+long int getEncoderLeft() {
+  return encoderLeft;
+}
+
+long int getEncoderRight() {
+  return encoderRight;
 }
 
 void setup()

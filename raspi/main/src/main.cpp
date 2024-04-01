@@ -40,7 +40,7 @@ void println(const char* input) {
 
 void signalHandler(int signal) {
     // run code on ctrl c
-    stopMotor();
+    stopMotor(); // send signal
     exit(signal);
 }
 
