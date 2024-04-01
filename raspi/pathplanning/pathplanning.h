@@ -17,6 +17,14 @@ enum PlantGroups {
     group6 = 5
 };
 
+enum DropOffAreas {
+    reservedCorner,
+    middleArea,
+    upperCorner,
+    reservedPlanter,
+    planter1,
+    planter2
+};
 
 class Pathplanner {
     private:
@@ -35,6 +43,7 @@ class Pathplanner {
         Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDistance, int enemyRobotSafetyDistance, int enemyRobotRad, bool playingYellow);
         vector<Vector> getPath(RobotPose from, Vector to);
         vector<Vector> getPath(RobotPose from, PlantGroups to);
+        vector<Vector> getPath(RobotPose from, DropOffAreas to);
         bool freePath(RobotPose robot, vector<Vector> &path);
 
         int plantsRad = 125;
