@@ -149,7 +149,12 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
     theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
-    Serial.println("X: " + int(x) + " Y: " + int(y) + " Theta: " + int(theta));
+    Serial.print("X: ");
+    Serial.print(x);
+    Serial.print(" Y: ");
+    Serial.print(y);
+    Serial.print(" Theta: ");
+    Serial.println(theta);
 }
 
 void updatePositionThread() { // NEED MILLIS
@@ -292,7 +297,7 @@ void setup()
 
   println("START");
 
-  driveDistance(500);
+  driveDistance(1000);
 
 
   println("SIND DA");
