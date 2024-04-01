@@ -100,6 +100,14 @@ void setPwmValues(float pwmLeft, float pwmRight) {
   currentPwmLeft=pwmLeft;
   currentPwmRight=pwmRight;
 
+  print("pL: ");
+  print(pL);
+  print(" pR: ");
+  print(pR);
+  print(" pwmLeft: ");
+  print(pwmLeft);
+  print(" pwmRight: ");
+  println(pwmRight);
   if(pwmLeft < 0) { // wenn wir links rückwärts fahren wollen
     analogWrite(LEFT_LPWM, 0);
     analogWrite(LEFT_RPWM, pL);
@@ -262,24 +270,26 @@ void setup()
   pinMode(RIGHT_LPWM, OUTPUT);
   pinMode(RIGHT_RPWM, OUTPUT);
 
-  setPwmValues(0, 0);
-  while(pullCordConnected()) {delay(5); } // solange pullcord connected is
-  delay(500);
-  setEncoderZero();
-  delay(1000);
+  // while(pullCordConnected()) {delay(5); } // solange pullcord connected is
+  // delay(500);
+  // setEncoderZero();
+  // delay(1000);
 
-  println("START");
+  // println("START");
 
-  driveDistance(500);
+  // driveDistance(500);
 
-  println("SIND DA");
+  // println("SIND DA");
 }
 
 void loop()
 {
-  print("Encoder left: ");
-  print(getEncoderLeft());
-  print(", Encoder right: ");
-  println(getEncoderRight());
+  // setPwmValues(50,50);
+  analogWrite(LEFT_LPWM, 100);
+  analogWrite(RIGHT_RPWM, 100);
+  // print("Encoder left: ");
+  // print(getEncoderLeft());
+  // print(", Encoder right: ");
+  // println(getEncoderRight());
   delay(5);
 }
