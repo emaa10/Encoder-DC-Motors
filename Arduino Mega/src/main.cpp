@@ -19,6 +19,14 @@ long int lastEncRight=0;
 volatile long int encoderLeft=0;
 volatile long int encoderRight=0;
 
+long int leftEncoderChange;
+long int rightEncoderChange;
+
+int counter=0;
+
+long int oldEncoderLeft;
+long int oldEncoderRight;
+
 template<typename T>
 void print(const T& input) {
   Serial.print(input);
@@ -55,6 +63,18 @@ void bi1() {
   else { encoderRight++; }
 }
 
+bool pullCordConnected() {
+  if (Serial.available() > 0) {
+    String message = Serial.readStringUntil('\n');
+    if (message == "p,0") {
+      return false;
+    } else if (message == "p,1") {
+      return true;
+    }
+  }
+  return true; // Standardmäßig false zurückgeben, wenn keine passende Nachricht empfangen wurde
+}
+
 long int getEncoderLeft() {
   return encoderLeft;
 }
@@ -63,9 +83,22 @@ long int getEncoderRight() {
   return encoderRight;
 }
 
-void sendPwmValues(float pwmLeft, float pwmRight) {
+void stopMotor() {sendPwmValues(0, 0); }
+
+void setEncoderZero() {encoderLeft=0; encoderRight=0;}
+
+float getAngle(float input = theta) {
+    float result = theta*180/M_PI;
+    // result = fmod((result + 360.0), 360.0);
+    // now in updatepos with theta
+    return result;
+}
+
+void setPwmValues(float pwmLeft, float pwmRight) {
   pL = abs(pwmLeft);
   pR = abs(pwmRight);
+  currentPwmLeft=pwmLeft;
+  currentPwmRight=pwmRight;
 
   if(pwmLeft < 0) { // wenn wir links rückwärts fahren wollen
     analogWrite(LEFT_LPWM, 0);
@@ -89,8 +122,7 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmRight > 150) {drivePwmRight = 150;}
     if(drivePwmLeft < -150) {drivePwmLeft = -150;}
     if(drivePwmRight < -150) {drivePwmRight = -150;}
-    println("SENT VALUES");
-    sendPwmValues(drivePwmLeft, drivePwmRight);
+    setPwmValues(drivePwmLeft, drivePwmRight);
 };
 
 void updatePosition(float leftEncChange, float rightEncChange) {
@@ -116,16 +148,7 @@ void updatePositionThread() { // NEED MILLIS
     }
 }
 
-void setPwmZero() { sendPwmValues(0, 0); }
-void stopMotor() {sendPwmValues(0, 0); }
-void setEncoderZero() {encoderLeft=0; encoderRight=0;}
 
-float getAngle(float input = theta) {
-    float result = theta*180/M_PI;
-    // result = fmod((result + 360.0), 360.0);
-    // now in updatepos with theta
-    return result;
-}
 
 void setup()
 {

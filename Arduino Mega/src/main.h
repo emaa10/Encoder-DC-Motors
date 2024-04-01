@@ -24,23 +24,41 @@ const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 5;
 const int syncCounterTurn = 200; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
 
+extern float currentPwmLeft;
+extern float currentPwmRight;
+
 extern float x;
 extern float y;
 extern float theta;
-
 extern long int lastEncLeft;
 extern long int lastEncRight;
+
+extern volatile long int encoderLeft;
+extern volatile long int encoderRight;
+
 extern long int leftEncoderChange;
 extern long int rightEncoderChange;
 
-extern long int encoderLeft;
-extern long int encoderRight;
-
-// pwm left here
-
 extern int counter;
+
 extern long int oldEncoderLeft;
 extern long int oldEncoderRight;
+
+template<typename T>
+void print(const T& input);
+
+void print(const char* input);
+
+template<typename T>
+void println(const T& input);
+
+void println(const char* input);
+
+void ai0();
+void ai1();
+void bi0();
+void bi1();
+
 
 extern bool pullCordConnected();
 
