@@ -21,8 +21,15 @@ volatile long int encoderRight=0;
 
 long int leftEncoderChange;
 long int rightEncoderChange;
+// odometry
+float leftEnc1 = 0;
+float rightEnc1 = 0;
+float leftEnc2 = 0;
+float rightEnc2 = 0;
 
 int counter=0;
+unsigned long previousMillis = 0;
+const long updatePosInterval = 1000;
 
 long int oldEncoderLeft;
 long int oldEncoderRight;
@@ -142,17 +149,19 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
     theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+    Serial.println("X: " + int(x) + " Y: " + int(y) + " Theta: " + int(theta));
 }
 
 void updatePositionThread() { // NEED MILLIS
-    while(1) {
-        float leftEnc1 = getEncoderLeft();
-        float rightEnc1 = getEncoderRight();
-        delay(1000);
-        float leftEnc2 = getEncoderLeft();
-        float rightEnc2 = getEncoderRight();
-        updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
+    unsigned long currentMillis = millis();
+    if(currentMillis - previousMillis >= updatePosInterval) {
+      previousMillis = currentMillis;
     }
+    leftEnc2 = getEncoderLeft();
+    rightEnc2 = getEncoderRight();
+    updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
+    leftEnc1 = getEncoderLeft();
+    rightEnc1 = getEncoderRight();
 }
 
 void turn(float degrees) {
@@ -291,6 +300,7 @@ void setup()
 
 void loop()
 {
+  updatePositionThread(); // NEEDS TO RUN AS OFTEN AS POSSIBLE
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
