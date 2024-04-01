@@ -1,10 +1,9 @@
-name: Compile Mega A
-
+name: Compile Arduino Mega
 on: [push]
 
 jobs:
   build:
-    name: Build Arduino Projects
+    name: Build Arduino Project
     runs-on: ubuntu-latest
 
     steps:
@@ -19,5 +18,5 @@ jobs:
     - name: Install PlatformIO
       run: pip install platformio
 
-    - name: Compile Arduino Mega A Encoder
-      run: platformio run -d "Arduino Mega A Encoder"
+    - name: Compile Arduino Mega
+      run: platformio run -d "Arduino Mega"
