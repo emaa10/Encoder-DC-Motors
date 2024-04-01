@@ -87,8 +87,8 @@ void updatePosition(float leftEncChange, float rightEncChange);
 
 void updatePositionThread();
 
-void driveDistance(int distance);
-
 void turn(float degrees);
+
+void driveDistance(int distance);
 
 #endif

@@ -83,7 +83,7 @@ long int getEncoderRight() {
   return encoderRight;
 }
 
-void stopMotor() {sendPwmValues(0, 0); }
+void stopMotor() {setPwmValues(0, 0); }
 
 void setEncoderZero() {encoderLeft=0; encoderRight=0;}
 
@@ -95,8 +95,8 @@ float getAngle(float input = theta) {
 }
 
 void setPwmValues(float pwmLeft, float pwmRight) {
-  pL = abs(pwmLeft);
-  pR = abs(pwmRight);
+  float pL = abs(pwmLeft);
+  float pR = abs(pwmRight);
   currentPwmLeft=pwmLeft;
   currentPwmRight=pwmRight;
 
@@ -147,7 +147,101 @@ void updatePositionThread() { // NEED MILLIS
     }
 }
 
+void turn(float degrees) {
+    float distance = turnValue * degrees;
+    float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
+    float pulsesRight = distance * pulsesPerMM;
 
+    int startEncLeft = getEncoderLeft();
+    int startEncRight = getEncoderRight();
+    int lastEncLeft = getEncoderLeft();
+    int lastEncRight = getEncoderRight();
+    long int currentEncoderLeft = 0;
+    long int currentEncoderRight = 0;
+    long int currentPIDleft = 0;
+    long int currentPIDright = 0;
+
+    print(-pwmSpeed);
+    print(" ");
+    println(pwmSpeed);
+    drive(-pwmSpeed, pwmSpeed); // links rückwrts
+    counter = 0;
+    while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
+        currentEncoderLeft = getEncoderLeft() - startEncLeft;
+        currentEncoderRight = getEncoderRight() - startEncRight;
+        currentPIDleft = getEncoderLeft() - lastEncLeft;
+        currentPIDright = getEncoderRight() - lastEncRight;
+        // check ob gegner auf stregge brauchen wir hier nicht
+        counter++;
+        if(counter >= syncCounterTurn) {
+            if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
+                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
+                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
+                drive(newPwmLeft, newPwmRight);
+                // lastEncLeft = getEncoderLeft();
+                // lastEncRight = getEncoderRight();
+                // odom calc start
+                // updatePosition(currentPIDleft, currentPIDright);
+                // odom calc end
+            }
+        }
+    }
+    drive(0, 0);
+    updatePosition(currentPIDleft, currentPIDright);
+    // odom manual start -> not recommended
+    // theta += degrees;
+    // theta = fmod((theta + 360.0), 360.0);
+    // odom manual end
+}
+
+void driveDistance(int distance) {
+    // RUN BEFORE DRIVING!!
+    int startEncLeft = getEncoderLeft();
+    int startEncRight = getEncoderRight();
+    int lastEncLeft = getEncoderLeft();
+    int lastEncRight = getEncoderRight();
+    float distancePulses = distance * pulsesPerMM;
+
+    // need these 2 lines to recalculate current enc values. 
+    long int currentEncoderLeft = 0; // for driving
+    long int currentEncoderRight = 0;
+    long int currentPIDleft = 0;
+    long int currentPIDright = 0;
+
+    drive(pwmSpeed, pwmSpeed); // start with 100 pwm
+    counter = 0;
+    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
+        print("durchschnitt enc: ");
+        println((currentEncoderLeft + currentEncoderRight)/2);
+        // solange wir noch nicht da sind
+        currentEncoderLeft = getEncoderLeft() - startEncLeft;
+        currentEncoderRight = getEncoderRight() - startEncRight;
+        currentPIDleft = getEncoderLeft() - lastEncLeft;
+        currentPIDright = getEncoderRight() - lastEncRight;
+        // hier check ob gegner auf strecke
+        counter++;
+        if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
+            // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
+            if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
+                float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
+                float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
+                // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
+                drive(newPwmLeft, newPwmRight);
+                print("Newpwmleft: ");
+                print(newPwmLeft);
+                print(", Newpwmright: ");
+                println(newPwmRight);
+                // lastEncLeft = getEncoderLeft();
+                // lastEncRight = getEncoderRight();
+                // updatePosition(currentPIDleft, currentPIDright);
+            }
+            counter = 0;
+        }
+        delay(5);
+    }
+    drive(0, 0); // stop motor
+    // updatePosition(currentPIDleft, currentPIDright);
+}
 
 void setup()
 {
