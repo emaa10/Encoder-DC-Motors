@@ -8,6 +8,16 @@ using namespace std;
 
 #define PI 3.14159265
 
+enum PlantGroups {
+    group1 = 1,
+    group2 = 0,
+    group3 = 4,
+    group4 = 2,
+    group5 = 3,
+    group6 = 5
+};
+
+
 class Pathplanner {
     private:
         LIDAR ldr;
@@ -24,6 +34,7 @@ class Pathplanner {
     public:
         Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDistance, int enemyRobotSafetyDistance, int enemyRobotRad, bool playingYellow);
         vector<Vector> getPath(RobotPose from, Vector to);
+        vector<Vector> getPath(RobotPose from, PlantGroups to);
         bool freePath(RobotPose robot, vector<Vector> &path);
 
         int plantsRad = 125;

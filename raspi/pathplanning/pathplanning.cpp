@@ -45,13 +45,6 @@ Pathplanner::Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDista
     /* Init plants */
 
     int plantCords[12][2] = {
-        //Pot Stations
-        {35, 612},
-        {35, 1387},        
-        {2965, 1387},
-        {2965, 612},
-        {1000, 1965},
-        {2000, 1965},
         //Plant Stations        
         {1000, 700},
         {1000, 1300},
@@ -59,6 +52,13 @@ Pathplanner::Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDista
         {2000, 1300},
         {1500, 500},
         {1500, 1500},
+        //Pot Stations
+        {35, 612},
+        {35, 1387},        
+        {2965, 1387},
+        {2965, 612},
+        {1000, 1965},
+        {2000, 1965},
     };
 
     for (int i = 0; i < 12; i++) {
@@ -91,6 +91,30 @@ vector<Vector> Pathplanner::getPath(RobotPose from, Vector to) {
     }
 
     path.erase(path.begin());
+
+    return path;
+}
+
+vector<Vector> Pathplanner::getPath(RobotPose from, PlantGroups to) {
+    //Remove plant
+    Vector plant = plantGroups[to];
+    plantGroups[to] = {4000, 3000};
+
+    //Get Path
+    vector<Vector> path = getPath(from, plant);
+
+    //Get intersection with plant radius
+    int pathSize = path.size()-1;
+    if (pathSize > 0) {
+            VectorFunction function = {path[pathSize-1], {path[pathSize].x - path[pathSize-1].x, path[pathSize].y - path[pathSize-1].y}};
+            findIntersectionWithCircle(function, plant, plantsRad, path[pathSize]);
+    } else if (pathSize == 0) {
+        VectorFunction function = {from.position, {path[pathSize].x - from.position.x, path[pathSize].y - from.position.y}};
+        findIntersectionWithCircle(function, plant, plantsRad, path[pathSize]);
+    }
+
+    //Add plant
+    plantGroups[to] = plant;
 
     return path;
 }
