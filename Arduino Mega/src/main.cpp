@@ -161,18 +161,27 @@ void updatePositionThread() { // NEED MILLIS
     unsigned long currentMillis = millis();
     if(currentMillis - previousMillis >= updatePosInterval) {
       previousMillis = currentMillis;
+      // print("current");
+      // print(currentMillis);
+      // print(" previous ");
+      // print(previousMillis);
+
+      leftEnc2 = getEncoderLeft();
+      rightEnc2 = getEncoderRight();
+      updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
+      leftEnc1 = getEncoderLeft();
+      rightEnc1 = getEncoderRight();
     }
-    leftEnc2 = getEncoderLeft();
-    rightEnc2 = getEncoderRight();
-    updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
-    leftEnc1 = getEncoderLeft();
-    rightEnc1 = getEncoderRight();
 }
 
 void turn(float degrees) {
     float distance = turnValue * degrees;
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
     float pulsesRight = distance * pulsesPerMM;
+    print("left pulses: ");
+    print(pulsesLeft);
+    print(" right pulses: ");
+    println(pulsesRight);
 
     int startEncLeft = getEncoderLeft();
     int startEncRight = getEncoderRight();
@@ -189,6 +198,10 @@ void turn(float degrees) {
     drive(-pwmSpeed, pwmSpeed); // links rückwrts
     counter = 0;
     while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
+        print("enc left: ");
+        print(currentEncoderLeft);
+        print(" enc right: ");
+        println(currentEncoderRight);
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
         currentPIDleft = getEncoderLeft() - lastEncLeft;
@@ -199,7 +212,7 @@ void turn(float degrees) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
-                drive(newPwmLeft, newPwmRight);
+                // drive(newPwmLeft, newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // odom calc start
@@ -207,9 +220,11 @@ void turn(float degrees) {
                 // odom calc end
             }
         }
+        delay(5);
+        updatePositionThread();
     }
     drive(0, 0);
-    updatePosition(currentPIDleft, currentPIDright);
+    // updatePosition(currentPIDleft, currentPIDright);
     // odom manual start -> not recommended
     // theta += degrees;
     // theta = fmod((theta + 360.0), 360.0);
@@ -266,6 +281,7 @@ void driveDistance(int distance) {
             counter = 0;
         }
         delay(5);
+        updatePositionThread();
     }
     drive(0, 0); // stop motor
     // updatePosition(currentPIDleft, currentPIDright);
@@ -297,7 +313,11 @@ void setup()
 
   println("START");
 
-  driveDistance(1000);
+  // driveDistance(1000);
+  turn(90);
+  // drive(50, 0);
+  // delay(10000);
+  // drive(0,0);
 
 
   println("SIND DA");
