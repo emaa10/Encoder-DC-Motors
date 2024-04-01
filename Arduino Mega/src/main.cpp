@@ -83,6 +83,38 @@ void sendPwmValues(float pwmLeft, float pwmRight) {
   }
 }
 
+void drive(float drivePwmLeft, float drivePwmRight) {
+    if(drivePwmLeft > 150) {drivePwmLeft = 150;}
+    if(drivePwmRight > 150) {drivePwmRight = 150;}
+    if(drivePwmLeft < -150) {drivePwmLeft = -150;}
+    if(drivePwmRight < -150) {drivePwmRight = -150;}
+    println("SENT VALUES");
+    sendPwmValues(drivePwmLeft, drivePwmRight);
+};
+
+void updatePosition(float leftEncChange, float rightEncChange) {
+    float leftDistance = leftEncChange / pulsesPerMM;
+    float rightDistance = rightEncChange / pulsesPerMM;
+    float distance = (leftDistance + rightDistance) / 2;
+    float dTheta = (rightDistance - leftDistance) / wheelDistance;
+    x += distance * cos(theta + dTheta / 2);
+    y += distance * sin(theta + dTheta / 2);
+    theta += dTheta;
+    theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
+}
+
+void updatePositionThread() { // NEED MILLIS
+    while(1) {
+        float leftEnc1 = getEncoderLeft();
+        float rightEnc1 = getEncoderRight();
+        delay(1000);
+        float leftEnc2 = getEncoderLeft();
+        float rightEnc2 = getEncoderRight();
+        updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
+    }
+}
+
 void setPwmZero() { sendPwmValues(0, 0); }
 void stopMotor() {sendPwmValues(0, 0); }
 void setEncoderZero() {encoderLeft=0; encoderRight=0;}

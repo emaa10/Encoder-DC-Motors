@@ -98,18 +98,6 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
-void updatePosition(float leftEncChange, float rightEncChange) {
-    float leftDistance = leftEncChange / pulsesPerMM;
-    float rightDistance = rightEncChange / pulsesPerMM;
-    float distance = (leftDistance + rightDistance) / 2;
-    float dTheta = (rightDistance - leftDistance) / wheelDistance;
-    x += distance * cos(theta + dTheta / 2);
-    y += distance * sin(theta + dTheta / 2);
-    theta += dTheta;
-    theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
-    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
-}
-
 void updatePositionThread() {
     while(1) {
         float leftEnc1 = getEncoderLeft();
