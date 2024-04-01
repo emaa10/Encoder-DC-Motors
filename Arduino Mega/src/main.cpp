@@ -1,10 +1,14 @@
+/**
+* Slave: PID Tuning, Odometry, driving -> return enc data for position calculation on raspberry pi
+*/
+
 #include <Arduino.h>
 #include "./pins.h"
 
 volatile long int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
 volatile long int counterRIGHT = 0;
-float receivedValue1; // pwm value left
-float receivedValue2; // pwm value right
+float currentPwmLeft;
+float currentPwmRight;
 
 // LEFT_1
 void ai0()

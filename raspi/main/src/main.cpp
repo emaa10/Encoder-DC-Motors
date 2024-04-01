@@ -21,9 +21,6 @@ long int lastEncRight=0;
 long int encoderLeft; // enc count left
 long int encoderRight;// enc count right
 
-float currentPwmLeft;
-float currentPwmRight;
-
 int counter = 0;
 long int oldEncoderLeft = 0;
 long int oldEncoderRight = 0;
