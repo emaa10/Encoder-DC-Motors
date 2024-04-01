@@ -48,27 +48,6 @@ bool pullCordConnected() {
     return (digitalRead(pullCord) == 0);
 }
 
-void getEncoderData() {
-    std::string line;
-    char comma;
-    auto start_time = std::chrono::steady_clock::now();
-    while (std::chrono::steady_clock::now() - start_time < std::chrono::milliseconds(100)) {
-        if (std::getline(serial, line)) {
-            std::istringstream iss(line);
-            if (iss >> encoderLeft >> comma >> encoderRight) {
-                // std::cout << "Encoder Left: " << encoderLeft << ", Encoder Right: " << encoderRight << std::endl;
-            }
-        }
-    }
-}
-
-void getEncoderDataThread() {
-    while(true) {
-        getEncoderData();
-        delay(5);
-    }
-}
-
 long int getEncoderLeft() {
     // getEncoderData();
     return encoderLeft;
@@ -85,22 +64,11 @@ void setPwmZero() {
     sendPWMValues(0, 0);
 }
 
-void setEncoderZero() {
-    serialPrintf(sPortA, "%s\n", std::string("0").c_str());
-}
-
 float getAngle(float input = theta) {
     float result = theta*180/M_PI;
     // result = fmod((result + 360.0), 360.0);
     // now in updatepos with theta
     return result;
-}
-
-void sendPWMValues(float pwmLeft, float pwmRight) {
-    currentPwmLeft = pwmLeft;
-    currentPwmRight = pwmRight;
-    std::string message = std::to_string(pwmLeft) + "," + std::to_string(pwmRight);
-    serialPrintf(sPortB, "%s\n", message.c_str());
 }
 
 std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x, int to_y) {

@@ -62,6 +62,38 @@ long int getEncoderRight() {
   return encoderRight;
 }
 
+void sendPwmValues(float pwmLeft, float pwmRight) {
+  pL = abs(pwmLeft);
+  pR = abs(pwmRight);
+
+  if(pwmLeft < 0) { // wenn wir links rückwärts fahren wollen
+    analogWrite(LEFT_LPWM, 0);
+    analogWrite(LEFT_RPWM, pL);
+  } else{ // wenn wir vorwärts fahren wollen
+    analogWrite(LEFT_LPWM, pL);
+    analogWrite(LEFT_RPWM, 0);
+  }
+
+  if(pwmRight < 0) {  // wenn wir rechts rückwärts fahren wollen
+    analogWrite(RIGHT_LPWM, 0);
+    analogWrite(RIGHT_RPWM, pR);
+  } else{
+    analogWrite(RIGHT_LPWM, pR);
+    analogWrite(RIGHT_RPWM, 0);
+  }
+}
+
+void setPwmZero() { sendPwmValues(0, 0); }
+void stopMotor() {sendPwmValues(0, 0); }
+void setEncoderZero() {encoderLeft=0; encoderRight=0;}
+
+float getAngle(float input = theta) {
+    float result = theta*180/M_PI;
+    // result = fmod((result + 360.0), 360.0);
+    // now in updatepos with theta
+    return result;
+}
+
 void setup()
 {
   Serial.begin(115200);
