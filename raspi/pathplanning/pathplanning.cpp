@@ -119,6 +119,26 @@ vector<Vector> Pathplanner::getPath(RobotPose from, PlantGroups to) {
     return path;
 }
 
+vector<Vector> Pathplanner::getPath(RobotPose from, DropOffAreas to) {
+    int coordinates[6][2] = {
+        {225, 225},
+        {2775, 1000},
+        {225, 1775},
+        {762, 200}, // 20cm in front of planter
+        {200, 612},
+        {2800, 1388}
+    };
+    Vector endpoint;
+    endpoint.x = coordinates[to][0];
+    endpoint.y = coordinates[to][1];
+
+    if (!isYellow) {
+        endpoint.x = 3000-endpoint.x;
+    }
+
+    return getPath(from, endpoint);
+}
+
 void Pathplanner::shortenPath(vector<Vector> &path, int node) {
     vector<Vector> tangents = getTangentenEndpoints(path[node]);
     for (int i = path.size()-1; i > node+1; i--) {
