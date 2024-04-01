@@ -1,5 +1,6 @@
 /**
 * Slave: PID Tuning, Odometry, driving -> return enc data for position calculation on raspberry pi
+* Baudrate: 115200
 */
 
 #include <Arduino.h>
@@ -9,6 +10,30 @@ volatile long int counterLEFT = 0; // This variable will increase or decrease de
 volatile long int counterRIGHT = 0;
 float currentPwmLeft;
 float currentPwmRight;
+
+float x=0; //muss mittelpunkt sein
+float y=0;
+float theta=0;
+long int lastEncLeft=0; // maybe not needed
+long int lastEncRight=0;
+
+volatile long int encoderLeft=0;
+volatile long int encoderRight=0;
+
+template<typename T>
+void print(const T& input) {
+  Serial.print(input);
+}
+void print(const char* input) {
+  Serial.print(input);
+}
+template<typename T>
+void println(const T& input) {
+  Serial.println(input);
+}
+void println(const char* input) {
+  Serial.println(input);
+}
 
 // encoder functions: LEFT 1, left 2, right 1, right 2
 void ai0() {
@@ -34,7 +59,7 @@ void bi1() {
 void setup()
 {
   Serial.begin(115200);
-
+  // encoder
   pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP);
   pinMode(LEFT_ENC_B_PHASE, INPUT_PULLUP);
   pinMode(RIGHT_ENC_A_PHASE, INPUT_PULLUP);
@@ -43,21 +68,16 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(LEFT_ENC_A_PHASE), ai1, RISING);
   attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi0, RISING);
   attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), bi1, RISING);
+
+  // dc
+  pinMode(LEFT_LPWM, OUTPUT);
+  pinMode(LEFT_RPWM, OUTPUT);
+  pinMode(RIGHT_LPWM, OUTPUT);
+  pinMode(RIGHT_RPWM, OUTPUT);
 }
 
 void loop()
 {
-  if (Serial.available() > 0) {
-    int incomingByte = Serial.read();
-    if (incomingByte == '0') {
-      counterRIGHT = 0;
-      counterLEFT = 0;
-    }
-  }
-
-  // Serial.println(digitalPinToInterrupt(RIGHT_ENC_B_PHASE));
-  Serial.print(counterLEFT);
-  Serial.print(",");
-  Serial.println(counterRIGHT);
+  // return x and y here
   delay(5);
 }

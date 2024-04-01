@@ -1,11 +1,9 @@
 #include "./main.h"
 using namespace std;
 
-const std::string serialMegaA = "/dev/ttyACM0"; // enc
-const std::string serialMegaB = "/dev/ttyACM1"; // dc
-std::ifstream serial(serialMegaA.c_str());
-int sPortB = serialOpen(serialMegaB.c_str(), 9600);
-int sPortA = serialOpen(serialMegaA.c_str(), 115200);
+const std::string serialMega = "/dev/ttyACM0"; // both now
+std::ifstream serial(serialMega.c_str());
+int sPort = serialOpen(serialMega.c_str(), 115200);
 
 
 Pathplanner p(-20, 0, 0, 200, yellow);
