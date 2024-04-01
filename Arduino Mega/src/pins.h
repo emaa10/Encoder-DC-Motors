@@ -2,10 +2,10 @@
 #define PINS_H
 
 // Encoder pins
-#define LEFT_ENC_A_PHASE = 18;
-#define LEFT_ENC_B_PHASE = 19;
-#define RIGHT_ENC_A_PHASE = 2;
-#define RIGHT_ENC_B_PHASE = 3;
+#define LEFT_ENC_A_PHASE 18;
+#define LEFT_ENC_B_PHASE 19;
+#define RIGHT_ENC_A_PHASE 2;
+#define RIGHT_ENC_B_PHASE 3;
 
 // dc pins
 // left dc motor pins

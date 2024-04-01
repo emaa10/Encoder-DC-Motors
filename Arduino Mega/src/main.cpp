@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include "./pins.h"
 
-
-
 volatile long int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
 volatile long int counterRIGHT = 0;
 float receivedValue1; // pwm value left
