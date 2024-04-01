@@ -1,22 +1,12 @@
 #include <Arduino.h>
+#include "./pins.h"
 
-// Encoder pins
-const int LEFT_ENC_A_PHASE = 18;
-const int LEFT_ENC_B_PHASE = 19;
-const int RIGHT_ENC_A_PHASE = 2;
-const int RIGHT_ENC_B_PHASE = 3;
 
-// dc pins
-// left dc motor pins
-#define LEFT_LPWM 38
-#define LEFT_RPWM 39
-
-// right dc motor pins
-#define RIGHT_LPWM 41
-#define RIGHT_RPWM 40
 
 volatile long int counterLEFT = 0; // This variable will increase or decrease depending on the rotation of encoder
 volatile long int counterRIGHT = 0;
+float receivedValue1; // pwm value left
+float receivedValue2; // pwm value right
 
 // LEFT_1
 void ai0()
