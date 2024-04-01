@@ -77,13 +77,15 @@ void setEncoderZero();
 */
 extern float getAngle(float input);
 
-void setPWMValues(float pwmLeft, float pwmRight);
+void setPwmValues(float pwmLeft, float pwmRight);
 
 // here tracking encoder data for odometry and sending it to the megas
 void drive(float drivePwmLeft, float drivePwmRight);
 
 // updates the position, based on the last time this func was ran
 void updatePosition(float leftEncChange, float rightEncChange);
+
+void updatePositionThread();
 
 void driveDistance(int distance);
 
