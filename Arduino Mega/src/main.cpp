@@ -186,8 +186,8 @@ void turn(float degrees) {
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
                 drive(newPwmLeft, newPwmRight);
-                // lastEncLeft = getEncoderLeft();
-                // lastEncRight = getEncoderRight();
+                lastEncLeft = getEncoderLeft();
+                lastEncRight = getEncoderRight();
                 // odom calc start
                 // updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
@@ -208,6 +208,8 @@ void driveDistance(int distance) {
     int startEncRight = getEncoderRight();
     int lastEncLeft = getEncoderLeft();
     int lastEncRight = getEncoderRight();
+    print("alles davor: ");
+    println(getEncoderLeft());
     float distancePulses = distance * pulsesPerMM;
 
     // need these 2 lines to recalculate current enc values. 
@@ -232,6 +234,10 @@ void driveDistance(int distance) {
             // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
+                print("currentPIDleft: ");
+                print(currentPIDleft);
+                print(" currentpwmleft: ");
+                println(currentPwmLeft);
                 float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
@@ -239,8 +245,8 @@ void driveDistance(int distance) {
                 print(newPwmLeft);
                 print(", Newpwmright: ");
                 println(newPwmRight);
-                // lastEncLeft = getEncoderLeft();
-                // lastEncRight = getEncoderRight();
+                lastEncLeft = getEncoderLeft();
+                lastEncRight = getEncoderRight();
                 // updatePosition(currentPIDleft, currentPIDright);
             }
             counter = 0;
@@ -279,6 +285,7 @@ void setup()
 
   driveDistance(500);
 
+
   println("SIND DA");
 }
 
@@ -287,9 +294,9 @@ void loop()
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
-  // print("Encoder left: ");
-  // print(getEncoderLeft());
-  // print(", Encoder right: ");
-  // println(getEncoderRight());
+  print("Encoder left: ");
+  print(getEncoderLeft());
+  print(", Encoder right: ");
+  println(getEncoderRight());
   delay(5);
 }
