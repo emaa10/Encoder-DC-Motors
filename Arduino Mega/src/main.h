@@ -3,6 +3,7 @@
 
 // globals h
 #include <Arduino.h>
+#include "./pins.h"
 
 // constants
 const float pulsesPerEncRev = 1200;

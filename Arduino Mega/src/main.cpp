@@ -4,7 +4,8 @@
 */
 
 #include <Arduino.h>
-#include "./pins.h"
+#include "./main.h"
+
 
 float currentPwmLeft;
 float currentPwmRight;
