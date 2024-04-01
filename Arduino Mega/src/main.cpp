@@ -275,18 +275,18 @@ void setup()
   // setEncoderZero();
   // delay(1000);
 
-  // println("START");
+  println("START");
 
-  // driveDistance(500);
+  driveDistance(500);
 
-  // println("SIND DA");
+  println("SIND DA");
 }
 
 void loop()
 {
   // setPwmValues(50,50);
-  analogWrite(LEFT_LPWM, 100);
-  analogWrite(RIGHT_RPWM, 100);
+  // analogWrite(LEFT_LPWM, 100);
+  // analogWrite(RIGHT_RPWM, 100);
   // print("Encoder left: ");
   // print(getEncoderLeft());
   // print(", Encoder right: ");
