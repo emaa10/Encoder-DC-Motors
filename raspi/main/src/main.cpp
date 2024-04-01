@@ -18,12 +18,12 @@ void ai0()
   if (digitalRead(encoderPin1A) == LOW)
   {
     encoderPos1++;
-    // std::cout << "hoch 1" << std::endl;
+    std::cout << "hoch 1" << std::endl;
   }
   else
   {
     encoderPos1--;
-    // std::cout << "runter 1" << std::endl;
+    std::cout << "runter 1" << std::endl;
   }
 }
 
@@ -32,13 +32,13 @@ void ai1()
 {
   if (digitalRead(encoderPin1B) == LOW)
   {
-    encoderPos1++;
-    // std::cout << "hoch 2" << std::endl;
+    encoderPos1--;
+    std::cout << "hoch 2" << std::endl;
   }
   else
   {
-    encoderPos1--;
-    // std::cout << "runter 2" << std::endl;
+    encoderPos1++;
+    std::cout << "runter 2" << std::endl;
   }
 }
 
@@ -48,12 +48,12 @@ void bi0()
   if (digitalRead(encoderPin2A) == LOW)
   {
     encoderPos2--;
-    // std::cout << "runter 3" << std::endl;
+    std::cout << "runter 3" << std::endl;
   }
   else
   {
     encoderPos2++;
-    // std::cout << "hoch 3" << std::endl;
+    std::cout << "hoch 3" << std::endl;
   }
 }
 
@@ -63,12 +63,12 @@ void bi1()
   if (digitalRead(encoderPin2B) == LOW)
   {
     encoderPos2++;
-    // std::cout << "hoch 4" << std::endl;
+    std::cout << "hoch 4" << std::endl;
   }
   else
   {
     encoderPos2--;
-    // std::cout << "runter 4" << std::endl;
+    std::cout << "runter 4" << std::endl;
   }
 }
 
@@ -94,12 +94,12 @@ int main() {
     // Hauptprogrammschleife
     while (true) {
         // Drucken Sie die aktuellen Positionen der Encoder
-        std::cout << digitalRead(encoderPin1A) << std::endl;
-        std::cout << digitalRead(encoderPin1B) << std::endl;
+        // std::cout << digitalRead(encoderPin1A) << std::endl;
+        // std::cout << digitalRead(encoderPin1B) << std::endl;
         // std::cout << digitalRead(encoderPin2A) << std::endl;
         // std::cout << digitalRead(encoderPin2B) << std::endl;
-        // std::cout << "Encoder 1 Position: " << encoderPos1 << std::endl;
-        // std::cout << "Encoder 2 Position: " << encoderPos2 << std::endl;
+        std::cout << "Encoder 1 Position: " << encoderPos1 << std::endl;
+        std::cout << "Encoder 2 Position: " << encoderPos2 << std::endl;
 
         delay(5);
     }
