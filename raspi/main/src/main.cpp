@@ -98,16 +98,7 @@ void drive(float drivePwmLeft, float drivePwmRight) {
     // here odometry
 };
 
-void updatePositionThread() {
-    while(1) {
-        float leftEnc1 = getEncoderLeft();
-        float rightEnc1 = getEncoderRight();
-        delay(1000);
-        float leftEnc2 = getEncoderLeft();
-        float rightEnc2 = getEncoderRight();
-        updatePosition(leftEnc2 - leftEnc1, rightEnc2 - rightEnc1);
-    }
-}
+
 
 void turn(float degrees) {
     float distance = turnValue * degrees;

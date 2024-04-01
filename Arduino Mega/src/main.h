@@ -37,5 +37,37 @@ extern long int encoderRight;
 
 // pwm left here
 
+extern int counter;
+extern long int oldEncoderLeft;
+extern long int oldEncoderRight;
+
+extern bool pullCordConnected();
+
+extern long int getEncoderLeft();
+
+extern long int getEncoderRight();
+
+void stopMotor();
+
+// SETS ENCODER DATA TO 0 PERMANENTLY, will be set on the arduino!!!
+void setEncoderZero();
+
+/**
+ * @description: Return the current angle in degrees.
+ * @param input: Input to calculate degrees from radians. Default: theta (current value of bot)
+*/
+extern float getAngle(float input);
+
+void setPWMValues(float pwmLeft, float pwmRight);
+
+// here tracking encoder data for odometry and sending it to the megas
+void drive(float drivePwmLeft, float drivePwmRight);
+
+// updates the position, based on the last time this func was ran
+void updatePosition(float leftEncChange, float rightEncChange);
+
+void driveDistance(int distance);
+
+void turn(float degrees);
 
 #endif
