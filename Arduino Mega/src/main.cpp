@@ -101,7 +101,7 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
     theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
-    std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
+    // std::cout << "X: " << x << " Y: " << y << " Theta: " << getAngle() << std::endl;
 }
 
 void updatePositionThread() { // NEED MILLIS
