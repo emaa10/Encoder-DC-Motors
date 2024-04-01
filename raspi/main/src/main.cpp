@@ -61,7 +61,7 @@ long int getEncoderRight() {
 void stopMotor() {setPwmZero();}
 
 void setPwmZero() {
-    sendPWMValues(0, 0);
+    // sendPWMValues(0, 0);
 }
 
 float getAngle(float input = theta) {

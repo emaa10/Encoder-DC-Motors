@@ -168,11 +168,24 @@ void setup()
   pinMode(RIGHT_LPWM, OUTPUT);
   pinMode(RIGHT_RPWM, OUTPUT);
 
-  set
+  setPwmValues(0, 0);
+  while(pullCordConnected()) {delay(5); } // solange pullcord connected is
+  delay(500);
+  setEncoderZero();
+  delay(1000);
+
+  println("START");
+
+  driveDistance(500);
+
+  println("SIND DA");
 }
 
 void loop()
 {
-  // return x and y here
+  print("Encoder left: ");
+  print(getEncoderLeft());
+  print(", Encoder right: ");
+  println(getEncoderRight());
   delay(5);
 }
