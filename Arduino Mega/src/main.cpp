@@ -10,58 +10,25 @@ volatile long int counterRIGHT = 0;
 float currentPwmLeft;
 float currentPwmRight;
 
-// LEFT_1
-void ai0()
-{
-  // ai0 is activated if DigitalPin nr 2 is going from LOW to HIGH
-  // Check pin 3 to determine the direction
-  if (digitalRead(LEFT_ENC_A_PHASE) == LOW)
-  {
-    counterLEFT++;
-  }
-  else
-  {
-    counterLEFT--;
-  }
+// encoder functions: LEFT 1, left 2, right 1, right 2
+void ai0() {
+  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { counterLEFT++; }
+  else { counterLEFT--; }
 }
 
-// LEFT_2
-void ai1()
-{
-  if (digitalRead(LEFT_ENC_B_PHASE) == LOW)
-  {
-    counterLEFT--;
-  }
-  else
-  {
-    counterLEFT++;
-  }
+void ai1() {
+  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) { counterLEFT--; }
+  else { counterLEFT++; }
 }
 
-// RIGHT_1
-void bi0()
-{
-  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW)
-  {
-    counterRIGHT++;
-  }
-  else
-  {
-    counterRIGHT--;
-  }
+void bi0() {
+  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) { counterRIGHT++; }
+  else { counterRIGHT--; }
 }
 
-// RIGHT_2
-void bi1()
-{
-  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW)
-  {
-    counterRIGHT--;
-  }
-  else
-  {
-    counterRIGHT++;
-  }
+void bi1() {
+  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) { counterRIGHT--; }
+  else { counterRIGHT++; }
 }
 
 void setup()
