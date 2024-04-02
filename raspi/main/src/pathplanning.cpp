@@ -1,5 +1,7 @@
 #include "pathplanning.h"
 #include <queue>
+#include <ostream>
+#include <iostream>
 
 
 int distanceSquared(Vector& from, Vector& to) {
@@ -43,13 +45,6 @@ Pathplanner::Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDista
     /* Init plants */
 
     int plantCords[12][2] = {
-        //Pot Stations
-        {35, 612},
-        {35, 1387},        
-        {2965, 1387},
-        {2965, 612},
-        {1000, 1965},
-        {2000, 1965},
         //Plant Stations        
         {1000, 700},
         {1000, 1300},
@@ -57,6 +52,13 @@ Pathplanner::Pathplanner(int plantsSafetyDistance, int forbiddenZonesSafetyDista
         {2000, 1300},
         {1500, 500},
         {1500, 1500},
+        //Pot Stations
+        {35, 612},
+        {35, 1387},        
+        {2965, 1387},
+        {2965, 612},
+        {1000, 1965},
+        {2000, 1965},
     };
 
     for (int i = 0; i < 12; i++) {
@@ -77,50 +79,109 @@ vector<Vector> Pathplanner::getPath(RobotPose from, Vector to) {
     path.push_back(from.position);
     path.push_back(to);
 
-    
+    //Check if path can be directly reached
     VectorFunction function = {from.position, {to.x - from.position.x, to.y - from.position.y}};
     Vector firstObstacle = crashPoint(function);
     if (distanceSquared(from.position, firstObstacle) < distanceSquared(from.position, to)) {
         path = bfs(from.position, to);
-        //Optimize the path
-        // for (int i = 0; i < path.size()-1; i++) {
-        //     vector<Vector> tangents = getTangentenEndpoints(path[i]);
-        //     for (int j = path.size() - 1; j > i + 1; j--) {
-        //         bool shortened = false;
-        //         int shortestPath = calculatePathDistance(path);
-        //         for (Vector t : tangents) {
-        //             Vector result;
-        //             if (crossLines(path[j], path[j-1], path[i], t, result)) {
-        //                 vector<Vector> newpath;
-        //                 for (int k = 0; k <= i; k++) {
-        //                     newpath.push_back(path[k]);
-        //                 }
-        //                 newpath.push_back(result);
-        //                 for (int k = j; k < path.size(); k++) {
-        //                     newpath.push_back(path[k]);
-        //                 }
-        //                 if (calculatePathDistance(newpath) < shortestPath) {
-        //                     path = newpath;
-        //                 }
-        //                 shortened = true;
-        //             }
-        //         }
-        //     }
-        // }
+
+        for (int i = 0; i < path.size(); i++) {
+            shortenPath(path, i);
+        }
     }
+
+    path.erase(path.begin());
+
     return path;
+}
+
+vector<Vector> Pathplanner::getPath(RobotPose from, PlantGroups to) {
+    //Remove plant
+    Vector plant = plantGroups[to];
+    plantGroups[to] = {4000, 3000};
+
+    //Get Path
+    vector<Vector> path = getPath(from, plant);
+
+    //Get intersection with plant radius
+    int pathSize = path.size()-1;
+    if (pathSize > 0) {
+            VectorFunction function = {path[pathSize-1], {path[pathSize].x - path[pathSize-1].x, path[pathSize].y - path[pathSize-1].y}};
+            findIntersectionWithCircle(function, plant, plantsRad, path[pathSize]);
+    } else if (pathSize == 0) {
+        VectorFunction function = {from.position, {path[pathSize].x - from.position.x, path[pathSize].y - from.position.y}};
+        findIntersectionWithCircle(function, plant, plantsRad, path[pathSize]);
+    }
+
+    //Add plant
+    plantGroups[to] = plant;
+
+    return path;
+}
+
+vector<Vector> Pathplanner::getPath(RobotPose from, DropOffAreas to) {
+    int coordinates[6][2] = {
+        {225, 225},
+        {2775, 1000},
+        {225, 1775},
+        {762, 200}, // 20cm in front of planter
+        {200, 612},
+        {2800, 1388}
+    };
+    Vector endpoint;
+    endpoint.x = coordinates[to][0];
+    endpoint.y = coordinates[to][1];
+
+    if (!isYellow) {
+        endpoint.x = 3000-endpoint.x;
+    }
+
+    return getPath(from, endpoint);
+}
+
+void Pathplanner::shortenPath(vector<Vector> &path, int node) {
+    vector<Vector> tangents = getTangentenEndpoints(path[node]);
+    for (int i = path.size()-1; i > node+1; i--) {
+        bool shortened = false;
+        int shortestPath = calculatePathDistance(path);
+        for (Vector t :tangents) {
+            Vector intersectionPoint;
+            if (crossLines(path[i], path[i-1], path[node], t, intersectionPoint)) {
+                vector<Vector> newpath;
+                for (int j = 0; j < node; j++) {
+                    newpath.push_back(path[j]);
+                }
+                newpath.push_back(intersectionPoint);
+                for (int j = i; j < path.size(); j++) {
+                    newpath.push_back(path[j]);
+                }
+
+                //Replace path with shortened path
+                int newDist = calculatePathDistance(newpath);
+                if (newDist < shortestPath) {
+                    shortened = true;
+                    path = newpath;
+                    shortestPath = newDist;
+                }
+            }
+        }
+
+        if (shortened) {
+            return;
+        }
+    } 
 }
 
 bool Pathplanner::freePath(RobotPose robot, vector<Vector> &path) {
     enemyPos = ldr.getEnemyPos(robot);
 
-    if (path.size() < 2) return false;
+    if (path.size() == 0) return false;
 
     Vector v;
-    VectorFunction f = {robot.position, {path[1].x - robot.position.x, path[1].y - robot.position.y}};
-    bool crash = (findIntersectionWithCircle(f, enemyPos, enemyDistance, v) && distanceSquared(robot.position, v) < distanceSquared(robot.position, path[1]));
+    VectorFunction f = {robot.position, {path[0].x - robot.position.x, path[0].y - robot.position.y}};
+    bool crash = (findIntersectionWithCircle(f, enemyPos, enemyDistance, v) && distanceSquared(robot.position, v) < distanceSquared(robot.position, path[0]));
 
-    for (int i = 1; i < path.size()-1; i++) {
+    for (int i = 0; i < path.size()-1; i++) {
         f = {path[i], {path[i+1].x - path[i].x, path[i+1].y - path[i].y}};
         crash = crash || (findIntersectionWithCircle(f, enemyPos, enemyDistance, v) && distanceSquared(path[i], v) < distanceSquared(path[i], path[i+1]));
     }
@@ -132,7 +193,7 @@ bool Pathplanner::isLegalPos(Vector pos) {
         if (distanceSquared(pos, v) < plantsRad*plantsRad) return false; //Inside of a plant group
     }
         
-    if (distanceSquared(pos, enemyPos) <= enemyDistance*enemyDistance) return false; 
+    if (distanceSquared(pos, enemyPos) <= enemyDistance*enemyDistance) return false; //Near to Robot
     if (forbiddenZones[0].coord.x >= pos.x || forbiddenZones[0].coord.y <= pos.y ) return false; //Outside of the playing field
     if (forbiddenZones[1].coord.x <= pos.x || forbiddenZones[1].coord.y >= pos.y ) return false; //Outside of the playing field
     if (forbiddenZones[2].coord.y >= pos.y && forbiddenZones[2].coord.x <= pos.x && forbiddenZones[3].coord.x >= pos.x) return false; //Inside the Sima Zone
@@ -368,3 +429,4 @@ vector<Vector> Pathplanner::bfs(Vector start, Vector end) {
     path.push_back(end);
     return path;
 }
+
