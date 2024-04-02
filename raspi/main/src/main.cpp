@@ -38,10 +38,13 @@ bool pullCordConnected() {
 }
 
 void stopMotor() { // 
+    std::string message = "s";
+    serialPrintf(sPort, "%s\n", message.c_str());
 }
 
 void turn(float degrees) {
-    // 
+    std::string message = "t," + std::to_string(degrees);
+    serialPrintf(sPort, "%s\n", message.c_str());
 }
 
 void driveDistance(int distance) {
@@ -85,6 +88,8 @@ void setup() {
     delay(500);
     
     driveDistance(500);
+    delay(500);
+    stopMotor();
 }
 
 void loop() {
