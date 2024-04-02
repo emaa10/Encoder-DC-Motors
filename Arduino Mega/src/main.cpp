@@ -74,15 +74,8 @@ void bi1() {
 }
 
 bool pullCordConnected() {
-  if (Serial.available() > 0) {
-    String message = Serial.readStringUntil('\n');
-    if (message == "p,0") {
-      return false;
-    } else if (message == "p,1") {
-      return true;
-    }
-  }
-  return true; // Standardmäßig false zurückgeben, wenn keine passende Nachricht empfangen wurde
+  getData();
+  return pullCordConnected();
 }
 
 long int getEncoderLeft() {
