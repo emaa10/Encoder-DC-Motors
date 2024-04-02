@@ -197,7 +197,7 @@ void turn(float degrees) {
     println(pwmSpeed);
     drive(-pwmSpeed, pwmSpeed); // links rückwrts
     counter = 0;
-    while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
+    while((abs(currentEncoderLeft)+abs(currentEncoderRight))/2 < (abs(pulsesLeft)+abs(pulsesRight))/2) { // solange wir noch nicht da sind
         print("enc left: ");
         print(currentEncoderLeft);
         print(" enc right: ");
@@ -212,7 +212,7 @@ void turn(float degrees) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
-                // drive(newPwmLeft, newPwmRight);
+                drive(newPwmLeft, newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // odom calc start
