@@ -1,27 +1,16 @@
 #include "./main.h"
 using namespace std;
 
-const std::string serialMega = "/dev/ttyACM0"; // both now
+const std::string serialMega = "/dev/ttyACM0"; // enc and dc
 std::ifstream serial(serialMega.c_str());
 int sPort = serialOpen(serialMega.c_str(), 115200);
-
-
-Pathplanner p(-20, 0, 0, 200, yellow);
+Pathplanner p(-20, 10, 50, 150, yellow);
 
 //odom
 float x=0; // curent bot x
 float y=0; // current bot y
 float theta=0; // current bot theta
-long int lastEncLeft=0;   // last enc position left
-long int lastEncRight=0;
 
-
-long int encoderLeft; // enc count left
-long int encoderRight;// enc count right
-
-int counter = 0;
-long int oldEncoderLeft = 0;
-long int oldEncoderRight = 0;
 
 template<typename T>
 void print(const T& input) {
@@ -40,7 +29,7 @@ void println(const char* input) {
 
 void signalHandler(int signal) {
     // run code on ctrl c
-    stopMotor(); // send signal
+    stopMotor();
     exit(signal);
 }
 
@@ -48,44 +37,8 @@ bool pullCordConnected() {
     return (digitalRead(pullCord) == 0);
 }
 
-long int getEncoderLeft() {
-    // getEncoderData();
-    return encoderLeft;
-}
-
-long int getEncoderRight() {
-    // getEncoderData();
-    return encoderRight;
-}
-
 void stopMotor() {setPwmZero();}
 
-void setPwmZero() {
-    // sendPWMValues(0, 0);
-}
-
-float getAngle(float input = theta) {
-    float result = theta*180/M_PI;
-    // result = fmod((result + 360.0), 360.0);
-    // now in updatepos with theta
-    return result;
-}
-
-std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x, int to_y) {
-    return p.getPath({{from_x, from_y}, angle}, {to_x, to_y});
-    // example: std::vector<Vector> path = generatePath(1, 1, 1, 1, 1);
-}
-
-void getNextCoord(int current_x, int current_y, std::vector<Vector> npath) {
-    // here get next coord code
-    // return ...
-    // USE NPATH INSTEAD OF PATH
-}
-
-bool isPathFree(int current_x, int current_y, double current_angle, std::vector<Vector> npath) {
-    // return true if free
-    return p.freePath({{current_x, current_y}, current_angle}, npath);
-}
 
 void drive(float drivePwmLeft, float drivePwmRight) {
     if(drivePwmLeft > 150) {drivePwmLeft = 150;}
@@ -99,162 +52,19 @@ void drive(float drivePwmLeft, float drivePwmRight) {
 };
 
 
-
-void turn(float degrees) {
-    float distance = turnValue * degrees;
-    float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
-    float pulsesRight = distance * pulsesPerMM;
-
-    int startEncLeft = getEncoderLeft();
-    int startEncRight = getEncoderRight();
-    int lastEncLeft = getEncoderLeft();
-    int lastEncRight = getEncoderRight();
-    long int currentEncoderLeft = 0;
-    long int currentEncoderRight = 0;
-    long int currentPIDleft = 0;
-    long int currentPIDright = 0;
-
-    print(-pwmSpeed);
-    print(" ");
-    println(pwmSpeed);
-    drive(-pwmSpeed, pwmSpeed); // links rückwrts
-    counter = 0;
-    while(currentEncoderLeft > pulsesLeft || currentEncoderRight < pulsesRight) { // solange wir noch nicht da sind
-        currentEncoderLeft = getEncoderLeft() - startEncLeft;
-        currentEncoderRight = getEncoderRight() - startEncRight;
-        currentPIDleft = getEncoderLeft() - lastEncLeft;
-        currentPIDright = getEncoderRight() - lastEncRight;
-        // check ob gegner auf stregge brauchen wir hier nicht
-        counter++;
-        if(counter >= syncCounterTurn) {
-            if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
-                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
-                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
-                drive(newPwmLeft, newPwmRight);
-                // lastEncLeft = getEncoderLeft();
-                // lastEncRight = getEncoderRight();
-                // odom calc start
-                // updatePosition(currentPIDleft, currentPIDright);
-                // odom calc end
-            }
-        }
-    }
-    drive(0, 0);
-    updatePosition(currentPIDleft, currentPIDright);
-    // odom manual start -> not recommended
-    // theta += degrees;
-    // theta = fmod((theta + 360.0), 360.0);
-    // odom manual end
-}
-
-void driveDistance(int distance) {
-    // RUN BEFORE DRIVING!!
-    int startEncLeft = getEncoderLeft();
-    int startEncRight = getEncoderRight();
-    int lastEncLeft = getEncoderLeft();
-    int lastEncRight = getEncoderRight();
-    float distancePulses = distance * pulsesPerMM;
-
-    // need these 2 lines to recalculate current enc values. 
-    long int currentEncoderLeft = 0; // for driving
-    long int currentEncoderRight = 0;
-    long int currentPIDleft = 0;
-    long int currentPIDright = 0;
-
-    drive(pwmSpeed, pwmSpeed); // start with 100 pwm
-    counter = 0;
-    while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
-        print("durchschnitt enc: ");
-        println((currentEncoderLeft + currentEncoderRight)/2);
-        // solange wir noch nicht da sind
-        currentEncoderLeft = getEncoderLeft() - startEncLeft;
-        currentEncoderRight = getEncoderRight() - startEncRight;
-        currentPIDleft = getEncoderLeft() - lastEncLeft;
-        currentPIDright = getEncoderRight() - lastEncRight;
-        // hier check ob gegner auf strecke
-        counter++;
-        if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
-            // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
-            if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
-                float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
-                float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
-                // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
-                drive(newPwmLeft, newPwmRight);
-                print("Newpwmleft: ");
-                print(newPwmLeft);
-                print(", Newpwmright: ");
-                println(newPwmRight);
-                // lastEncLeft = getEncoderLeft();
-                // lastEncRight = getEncoderRight();
-                // updatePosition(currentPIDleft, currentPIDright);
-            }
-            counter = 0;
-        }
-        delay(5);
-    }
-    drive(0, 0); // stop motor
-    // updatePosition(currentPIDleft, currentPIDright);
-}
-
-
-void printPath(const vector<Vector>& path) {
-    cout << "Path Coordinates:" << endl;
-    for (const auto& point : path) {
-        cout << "(" << point.x << ", " << point.y << ")" << endl;
-    }
-}
-
 void setup() {
-    // initialize stream
-    if (!serial.is_open()) {
-        std::cerr << "Port error on Mega A Encoder, Port" << serialMegaA << std::endl;
-    }
-
-    // initialize wiringpi
-    if (wiringPiSetup() == -1) {
-        std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
-    }
-    if (sPortB < 0) {
-        std::cerr << "Port error on Mega B Motor, Port " << serialMegaB << std::endl;
-    }
-    std::signal(SIGINT, signalHandler); // control c stops motors
-    pinMode(8, INPUT);
-
-    std::thread t(getEncoderDataThread);
-    t.detach();
-    std::thread t2(updatePositionThread);
-    t2.detach();
-
-    setPwmZero();
-    while(pullCordConnected()) {delay(20);}
-    delay(500);
-    setEncoderZero(); // just to be sure
-    delay(1000);
-
-    println("START");
-    
-    driveDistance(500);
-    // turn(90);
-    // driveDistance(100);
-    // turn(90);
-    // driveDistance(200);
-    println("SIND DA");
+    //
 }
-
 
 void loop() {
-    print("Encoder left: ");
-    print(getEncoderLeft());
-    print(", Encoder right: ");
-    println(getEncoderRight());
-    delay(5);
+    //
 }
 
 
 
-// ---
+
 
 int main() {
     setup();
-    while(true) {loop();}
+    while(1) {loop();}
 }
