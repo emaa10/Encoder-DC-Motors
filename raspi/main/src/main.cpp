@@ -37,23 +37,48 @@ bool pullCordConnected() {
     return (digitalRead(pullCord) == 0);
 }
 
-void stopMotor() {setPwmZero();}
+void stopMotor() { // 
+}
 
+void turn(float degrees) {
+    // 
+}
 
-void drive(float drivePwmLeft, float drivePwmRight) {
-    if(drivePwmLeft > 150) {drivePwmLeft = 150;}
-    if(drivePwmRight > 150) {drivePwmRight = 150;}
-    if(drivePwmLeft < -150) {drivePwmLeft = -150;}
-    if(drivePwmRight < -150) {drivePwmRight = -150;}
-    println("SENT VALUES");
-    sendPWMValues(drivePwmLeft, drivePwmRight);
-    // std::cout << "in drive func: " << drivePwmLeft << " " << drivePwmRight << std::endl;
-    // here odometry
-};
+void driveDistance(float distance) {
+    std::string message = "d," + std::to_string(distance);
+    serialPrintf(sPort, "%s\n", message.c_str());
+}
 
+float getCurrentX() {
+    //
+}
+
+float getCurrentY() {
+    //
+}
 
 void setup() {
-    //
+    // initialize stream
+    if (!serial.is_open()) {
+        std::cerr << "Port error on Mega A Encoder, Port" << serialMega << std::endl;
+    }
+
+    // initialize wiringpi
+    if (wiringPiSetup() == -1) {
+        std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
+    }
+
+    std::signal(SIGINT, signalHandler); // control c stops motors
+    pinMode(8, INPUT);
+    std::thread t(getPosThread); // get current pos from arduino
+    t.detach();
+
+    stopMotor();
+
+    while(pullCordConnected()) {delay(20);}
+    delay(500);
+    
+    driveDistance(500);
 }
 
 void loop() {

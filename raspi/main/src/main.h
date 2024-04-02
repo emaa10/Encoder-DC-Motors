@@ -31,12 +31,6 @@ extern bool pullCordConnected();
 
 void stopMotor();
 
-extern std::vector<Vector> generatePath(int from_x, int from_y, double angle, int to_x, int to_y);
-
-void getNextCoord(int current_x, int current_y, std::vector<Vector> npath);
-
-extern bool isPathFree(int current_x, int current_y, double current_angle, std::vector<Vector> npath);
-
 void turn(float degrees);
 
 /**
@@ -44,8 +38,6 @@ void turn(float degrees);
 * @param distance: distance in mm
 */
 void driveDistance(int distance);
-
-void printPath(const vector<Vector>& path);
 
 extern float getCurrentX();
 
