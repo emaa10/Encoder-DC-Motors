@@ -16,8 +16,8 @@ const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; //default pwm speed
 const float pulsesPerSec = pulsesPerRev; //goal pulses per sec 1680, 1 round per second
-const float wheelDistance = 121; //abstand der encoderräder in mm, muss vllt geändert werden
-const float wheelDistanceBig = 184; // in mm, muss vllt geändert werden
+const float wheelDistance = 128; //abstand der encoderräder in mm, muss vllt geändert werden
+const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
 const int syncInterval = 1; // sync motors with encoders every second

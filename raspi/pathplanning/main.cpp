@@ -19,7 +19,10 @@ int main() {
     Pathplanner p(-20, 0,0,200,true);
     std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
 
-    while(true) {
-        std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
-    }
+    for()
+    std::cout << path[0].x << " " << path[0].y << std::endl;
+    std::cout << path.size() << std::endl;
+    // while(true) {
+    //     std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
+    // }
 }

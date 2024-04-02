@@ -154,7 +154,7 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     Serial.print(" Y: ");
     Serial.print(y);
     Serial.print(" Theta: ");
-    Serial.println(theta);
+    Serial.println(getAngle());
 }
 
 void updatePositionThread() { // NEED MILLIS
@@ -175,7 +175,7 @@ void updatePositionThread() { // NEED MILLIS
 }
 
 void turn(float degrees) {
-    float distance = turnValue * degrees;
+    float distance = turnValue * degrees; // in mm
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
     float pulsesRight = distance * pulsesPerMM;
     print("left pulses: ");
@@ -213,14 +213,19 @@ void turn(float degrees) {
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
                 drive(newPwmLeft, newPwmRight);
+                // print("new pwm left: ");
+                // print(newPwmLeft);
+                // print(" new pwm right: ");
+                // println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // odom calc start
                 // updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
             }
+            counter = 0;
         }
-        delay(5);
+        delay(1);
         updatePositionThread();
     }
     drive(0, 0);
@@ -314,7 +319,7 @@ void setup()
   println("START");
 
   // driveDistance(1000);
-  turn(90);
+  turn(360);
   // drive(50, 0);
   // delay(10000);
   // drive(0,0);
