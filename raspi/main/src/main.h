@@ -47,6 +47,8 @@ void getDataThread();
 
 void getData();
 
+void sendData();
+
 void setup();
 
 void loop();

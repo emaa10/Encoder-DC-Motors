@@ -91,6 +91,10 @@ void turn(float degrees);
 
 void driveDistance(int distance);
 
+// get drive information and more from raspi
 void getData();
+
+// Send x, y and theta to the raspi
+void sendData();
 
 #endif

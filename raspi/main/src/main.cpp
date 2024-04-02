@@ -79,6 +79,7 @@ float getCurrentY() {
 void getDataThread() {
     while(true) {
         getData();
+        sendData();
     }
 }
 
@@ -134,13 +135,13 @@ void setup() {
     // delay(500);
     // stopMotor();
     // println(int(pullCordConnected()));
-    std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
-    for (Vector target : path) {
-        // std::cout << target.x << std::endl;
-        // std::cout << target.y << std::endl;
-        driveTo(target.x, target.y);
-    }
-    std::cout << path.size() << std::endl;
+    // std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
+    // for (Vector target : path) {
+    //     // std::cout << target.x << std::endl;
+    //     // std::cout << target.y << std::endl;
+    //     driveTo(target.x, target.y);
+    // }
+    // std::cout << path.size() << std::endl;
 }
 
 void loop() {

@@ -359,7 +359,7 @@ void setup()
   // setEncoderZero();
   // delay(1000);
 
-  println("START");
+  // println("START");
 
   // driveDistance(1000);
   // driveDistance(500);
@@ -375,8 +375,10 @@ void setup()
 void loop()
 {
   updatePositionThread(); // NEEDS TO RUN AS OFTEN AS POSSIBLE
-  getData();
-  sendData();
+  getData(); // get all data and process stuff
+  sendData(); 
+
+  println(pullCordConnected());
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
