@@ -10,6 +10,8 @@
 float currentPwmLeft;
 float currentPwmRight;
 
+bool pullCordState=true;
+
 float x=0; //muss mittelpunkt sein
 float y=0;
 float theta=0;
@@ -174,6 +176,8 @@ void updatePositionThread() { // NEED MILLIS
     }
 }
 
+
+
 void turn(float degrees) {
     float distance = turnValue * degrees; // in mm
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
@@ -222,11 +226,14 @@ void turn(float degrees) {
                 // odom calc start
                 // updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
+                getData();
             }
             counter = 0;
+            getData();
         }
         delay(1);
         updatePositionThread();
+        getData();
     }
     drive(0, 0);
     // updatePosition(currentPIDleft, currentPIDright);
@@ -282,14 +289,40 @@ void driveDistance(int distance) {
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // updatePosition(currentPIDleft, currentPIDright);
+                getData();
             }
             counter = 0;
+            getData();
         }
         delay(5);
         updatePositionThread();
+        getData();
     }
     drive(0, 0); // stop motor
     // updatePosition(currentPIDleft, currentPIDright);
+}
+
+void getData() { // get the data and run the actions
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n'); 
+    char command = input.charAt(0);
+
+    if (command == 'p') {
+      String valueStr = input.substring(2); 
+      int value = valueStr.toInt();
+      pullCordState = (value == 0);
+    } else if (command == 's') {
+      stopMotor();
+    } else if (command == 'd') {
+      String valueStr = input.substring(2); 
+      int distance = valueStr.toInt();
+      driveDistance(distance); 
+    } else if (command == 't') {
+      String valueStr = input.substring(2); 
+      float angle = valueStr.toFloat(); 
+      turn(angle);
+    }
+  }
 }
 
 void setup()
@@ -319,7 +352,7 @@ void setup()
   println("START");
 
   // driveDistance(1000);
-  turn(360);
+  // turn(360);
   // drive(50, 0);
   // delay(10000);
   // drive(0,0);
@@ -331,12 +364,13 @@ void setup()
 void loop()
 {
   updatePositionThread(); // NEEDS TO RUN AS OFTEN AS POSSIBLE
+  getData();
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
-  print("Encoder left: ");
-  print(getEncoderLeft());
-  print(", Encoder right: ");
-  println(getEncoderRight());
+  // print("Encoder left: ");
+  // print(getEncoderLeft());
+  // print(", Encoder right: ");
+  // println(getEncoderRight());
   delay(5);
 }

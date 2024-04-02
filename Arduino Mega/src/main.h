@@ -91,4 +91,6 @@ void turn(float degrees);
 
 void driveDistance(int distance);
 
+void getData();
+
 #endif
