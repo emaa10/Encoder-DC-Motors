@@ -12,8 +12,8 @@ float currentPwmRight;
 
 bool pullCordState=true;
 
-float x=0; //muss mittelpunkt sein
-float y=0;
+float x=225; //muss mittelpunkt sein
+float y=225;
 float theta=0;
 long int lastEncLeft=0; // maybe not needed
 long int lastEncRight=0;
