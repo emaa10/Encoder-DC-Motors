@@ -36,6 +36,7 @@ const long updatePosInterval = 1000;
 long int oldEncoderLeft;
 long int oldEncoderRight;
 
+
 template<typename T>
 void print(const T& input) {
   Serial.print(input);
@@ -325,6 +326,15 @@ void getData() { // get the data and run the actions
   }
 }
 
+void sendData() {
+  Serial.print("x,");
+  Serial.println(x);
+  Serial.print("y,");
+  Serial.println(y);
+  Serial.print("t,");
+  Serial.println(theta);
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -352,6 +362,7 @@ void setup()
   println("START");
 
   // driveDistance(1000);
+  // driveDistance(500);
   // turn(360);
   // drive(50, 0);
   // delay(10000);
@@ -365,6 +376,7 @@ void loop()
 {
   updatePositionThread(); // NEEDS TO RUN AS OFTEN AS POSSIBLE
   getData();
+  sendData();
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
