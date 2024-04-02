@@ -44,7 +44,7 @@ void turn(float degrees) {
     // 
 }
 
-void driveDistance(float distance) {
+void driveDistance(int distance) {
     std::string message = "d," + std::to_string(distance);
     serialPrintf(sPort, "%s\n", message.c_str());
 }
@@ -55,6 +55,12 @@ float getCurrentX() {
 
 float getCurrentY() {
     //
+}
+
+void getPosThread() {
+    while(true) {
+        // get pos
+    }
 }
 
 void setup() {
