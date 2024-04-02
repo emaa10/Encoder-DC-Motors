@@ -62,18 +62,31 @@ float getCurrentY() {
     //
 }
 
-void getPosThread() {
+void getDataThread() {
     while(true) {
-        // get pos
+        getData();
     }
 }
 
 void getData() {
-    while (serialDataAvail(sPort)) {
-        serial_data = serialGetchar(sPort);
-        putchar(serial_data);
-        fflush(stdout); 
+    std::string line;
+    while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
+        std::stringstream ss(line);
+        char type;
+        double value;
+        ss >> type; // Lese den Typ (x, y oder theta)
+        ss.ignore(); // Ignoriere das Komma
+        ss >> value; // Lese den Wert
+
+        if (type == 'x') {
+            x = value;
+        } else if (type == 'y') {
+            y = value;
+        } else if (type == 't') {
+            theta = value;
+        }
     }
+
 }
 
 void sendData() { // send pullcord
@@ -95,7 +108,7 @@ void setup() {
 
     std::signal(SIGINT, signalHandler); // control c stops motors
     pinMode(8, INPUT);
-    std::thread t(getPosThread); // get current pos from arduino
+    std::thread t(getDataThread); // get current pos from arduino
     t.detach();
 
     stopMotor();
@@ -110,7 +123,8 @@ void setup() {
 }
 
 void loop() {
-    getData();
+    std::cout << x << std::endl;
+    delay(5);
 }
 
 

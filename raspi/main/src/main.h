@@ -43,6 +43,10 @@ extern float getCurrentX();
 
 extern float getCurrentY();
 
+void getDataThread();
+
+void getData();
+
 void setup();
 
 void loop();
