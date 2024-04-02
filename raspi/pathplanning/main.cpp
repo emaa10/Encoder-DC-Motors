@@ -17,9 +17,9 @@ static inline void delay(sl_word_size_t ms) {
 
 int main() {
     Pathplanner p(-20, 0,0,200,true);
-    std::vector<Vector> path = p.getPath({{50, 50}, 0}, {300,300});
+    std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
 
     while(true) {
-        std::cout << p.freePath({{0, 1000}, 0}, path) << std::endl;
+        std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
     }
 }
