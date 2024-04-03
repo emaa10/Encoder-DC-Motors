@@ -141,9 +141,12 @@ void setup() {
     for (Vector target : path) {
         std::cout << "target x: " << target.x << std::endl;
         std::cout << "target y: " << target.y << std::endl;
-        driveTo(target.x, target.y);
+        // driveTo(target.x, target.y);
     }
     std::cout << "path size: " << path.size() << std::endl;
+    while(1) {
+        std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
+    }
 }
 
 void loop() {
