@@ -4,7 +4,7 @@ using namespace std;
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
 std::ifstream serial(serialMega.c_str());
 int sPort = serialOpen(serialMega.c_str(), 115200);
-Pathplanner p(-20, 0, 0, 150, yellow);
+Pathplanner p(-20, 0, 0, 200, yellow);
 
 //odom
 float x=225; // curent bot x
@@ -121,12 +121,17 @@ void setup() {
         std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
     }
 
+    if (sPort < 0) {
+        std::cerr << "Fehler beim Öffnen des seriellen Ports." << std::endl;
+    }
+
     std::signal(SIGINT, signalHandler); // control c stops motors
     pinMode(8, INPUT);
     std::thread t(getDataThread); // get current pos from arduino
     t.detach();
 
-    stopMotor();
+    // stopMotor();
+    // driveDistance(50);
 
     // while(pullCordConnected()) {delay(20);}
     delay(500);
