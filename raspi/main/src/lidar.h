@@ -121,9 +121,9 @@ public:
 
         op_result = drv->getHealth(healthinfo);
         if (SL_IS_OK(op_result)) { // the macro IS_OK is the preperred way to judge whether the operation is succeed.
-            printf("SLAMTEC Lidar health status : %d\n", healthinfo.status);
+            std::cout << "SLAMTEC Lidar health status :" << healthinfo.status << std::endl;
             if (healthinfo.status == SL_LIDAR_STATUS_ERROR) {
-                printf("Error, slamtec lidar internal error detected. Please reboot the device to retry.\n");
+                std::cout << "Error, slamtec lidar internal error detected. Please reboot the device to retry." << std::endl;
                 // enable the following code if you want slamtec lidar to be reboot by software
                 drv->reset();
                 return false;
@@ -132,7 +132,7 @@ public:
             }
 
         } else {
-            printf("Error, cannot retrieve the lidar health code: %x\n", op_result);
+            std::cout << "Error, cannot retrieve the lidar health code: " << op_result << std::endl;
             return false;
         }
     }
