@@ -128,20 +128,21 @@ void setup() {
 
     stopMotor();
 
-    while(pullCordConnected()) {delay(20);}
+    // while(pullCordConnected()) {delay(20);}
+    // print("pullcord 1");
     delay(500);
     
     // driveDistance(500);
     // delay(500);
     // stopMotor();
-    // println(int(pullCordConnected()));
-    // std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
-    // for (Vector target : path) {
-    //     // std::cout << target.x << std::endl;
-    //     // std::cout << target.y << std::endl;
-    //     driveTo(target.x, target.y);
-    // }
-    // std::cout << path.size() << std::endl;
+    println(int(pullCordConnected()));
+    std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
+    for (Vector target : path) {
+        // std::cout << target.x << std::endl;
+        // std::cout << target.y << std::endl;
+        driveTo(target.x, target.y);
+    }
+    std::cout << path.size() << std::endl;
 }
 
 void loop() {

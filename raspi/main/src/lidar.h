@@ -3,6 +3,7 @@
 #include "sl_lidar.h" 
 #include "sl_lidar_driver.h"
 #include "structs.h"
+#include <iostream>
 #include <cmath>
 #include <cstring>
 
@@ -81,6 +82,7 @@ public:
             return {0,0};
         }
 
+        std::cout << fullestSquare.x*100 << " " << fullestSquare.y*100 << std::endl;
         return {fullestSquare.x*100, fullestSquare.y*100};
 
         // Vector enemyPos;
