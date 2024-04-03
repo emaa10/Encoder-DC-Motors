@@ -55,17 +55,22 @@ void driveDistance(int distance) {
 }
 
 void driveTo(int to_x, int to_y) {
+    std::cout << "To X: " << to_x << ", To Y: " << to_y << std::endl;
+    std::cout << "X: " << x << ", Y: " << y << std::endl;
     float deltaX = to_x - x;
     float deltaY = to_y - y;
     float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
     float angle = theta*180/M_PI;
+    std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
+    std::cout << "Distance: " << distance << std::endl;
 
     angle = atan2(deltaY,deltaX) * 180/PI - angle;
+    std::cout << "Angle: " << angle << std::endl;
 
-    turn(angle);
-    delay(2000); // SDFKJJKLSDFJKLFSDLJKSDFÖDLJKSDFJKLÖSDKLJFFSJKLJKDFSSFJKLSDKJLFDJSKLÖJKSDFÖJKLFDSJLSDJKLSDF
-    driveDistance(distance);
-    delay(2000);
+    // turn(angle);
+    // delay(2000); // SDFKJJKLSDFJKLFSDLJKSDFÖDLJKSDFJKLÖSDKLJFFSJKLJKDFSSFJKLSDKJLFDJSKLÖJKSDFÖJKLFDSJLSDJKLSDF
+    // driveDistance(distance);
+    // delay(2000);
 }
 
 float getCurrentX() {
@@ -137,16 +142,34 @@ void setup() {
     delay(500);
     
     // println(int(pullCordConnected()));
-    std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
-    for (Vector target : path) {
-        std::cout << "target x: " << target.x << std::endl;
-        std::cout << "target y: " << target.y << std::endl;
-        driveTo(target.x, target.y);
-    }
-    std::cout << "path size: " << path.size() << std::endl;
-    while(1) {
-        std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
-    }
+    // std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
+    // for (Vector target : path) {
+    //     std::cout << "target x: " << target.x << std::endl;
+    //     std::cout << "target y: " << target.y << std::endl;
+    //     driveTo(target.x, target.y);
+    // }
+    // std::cout << "path size: " << path.size() << std::endl;
+    // while(1) {
+    //     std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
+    // }
+
+
+    driveTo(382, 1040);
+    x = 382;
+    y = 1040;
+
+    driveTo(764, 1201);
+    x = 764;
+    y = 1201;
+
+    driveTo(800, 1000);
+    x = 800;
+    y = 1000;
+
+    driveTo(700, 1000);
+    x = 700;
+
+    driveTo(500, 500);
 }
 
 void loop() {
