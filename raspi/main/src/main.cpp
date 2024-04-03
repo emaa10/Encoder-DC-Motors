@@ -7,8 +7,8 @@ int sPort = serialOpen(serialMega.c_str(), 115200);
 Pathplanner p(-20, 0, 0, 150, yellow);
 
 //odom
-float x=0; // curent bot x
-float y=0; // current bot y
+float x=225; // curent bot x
+float y=225; // current bot y
 float theta=0; // current bot theta
 
 char serial_data;
@@ -132,7 +132,7 @@ void setup() {
     delay(500);
     
     // println(int(pullCordConnected()));
-    std::vector<Vector> path = p.getPath({{225, 225}, 0}, group1);
+    std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
     for (Vector target : path) {
         std::cout << "target x: " << target.x << std::endl;
         std::cout << "target y: " << target.y << std::endl;
