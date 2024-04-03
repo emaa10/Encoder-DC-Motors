@@ -37,7 +37,8 @@ public:
 
         drv->setMotorSpeed();
         result = drv->startScan(0,1);
-        std::cout << "status driver: " << checkSLAMTECLIDARHealth(drv) << std::endl;
+        bool health = checkSLAMTECLIDARHealth(drv);
+        std::cout << "status driver: " << health << std::endl;
     }
 
     Vector getEnemyPos(RobotPose current_pos) {
@@ -49,10 +50,10 @@ public:
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         size_t count = _countof(nodes);
         sl_result result = drv->grabScanDataHq(nodes, count);
-        std::cout << "count: " << count << std::endl;
         if (SL_IS_OK(result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
+                std::cout << "irgendwas" << std::endl;
                 Vector point;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
@@ -86,8 +87,8 @@ public:
         }
 
         if (maxPoints == 0) {
-            return {0,0};
             std::cout << "kein gegner gefunden" << std::endl;
+            return {0,0};
         }
 
         std::cout << fullestSquare.x*100 << " " << fullestSquare.y*100 << std::endl;

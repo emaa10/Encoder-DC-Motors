@@ -71,6 +71,7 @@ vector<Vector> Pathplanner::getPath(RobotPose from, Vector to) {
 
     //Get enemy Position and check if the robot is inside it
     enemyPos = ldr.getEnemyPos(from);
+    std::cout << "Enemy Position: " << enemyPos.x << " " << enemyPos.y << std::endl; 
     if (!isLegalPos(from.position) || !isLegalPos(to)) {
         return path;
     }
