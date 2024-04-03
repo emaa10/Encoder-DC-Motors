@@ -3,9 +3,9 @@
 #include "sl_lidar.h" 
 #include "sl_lidar_driver.h"
 #include "structs.h"
-#include <iostream>
 #include <cmath>
 #include <cstring>
+#include <iostream>
 
 using namespace sl;
 
@@ -13,15 +13,11 @@ using namespace sl;
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
 
-
-
-
 class LIDAR {
 public:
     LIDAR() {
         drv = *createLidarDriver();
         if (!drv) {
-            std::cout << "couldnt create driver" << std::endl;
             return;
         }
 
@@ -32,13 +28,10 @@ public:
         result = drv->getDeviceInfo(devinfo);
         if (!SL_IS_OK(result)) {
             return;
-            std::cout << "sl not ok" << std::endl;
         }
 
         drv->setMotorSpeed();
         result = drv->startScan(0,1);
-        bool health = checkSLAMTECLIDARHealth(drv);
-        std::cout << "status driver: " << health << std::endl;
     }
 
     Vector getEnemyPos(RobotPose current_pos) {
@@ -46,6 +39,7 @@ public:
         std::memset(collectionRough, 0, sizeof(collectionRough));
         int collectionFine[300][200];
         std::memset(collectionFine, 0, sizeof(collectionFine));
+        // std::cout << "searching enemy" << std::endl;
 
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         size_t count = _countof(nodes);
@@ -53,8 +47,8 @@ public:
         if (SL_IS_OK(result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
-                std::cout << "irgendwas" << std::endl;
                 Vector point;
+                // std::cout << "found lidar scan" << std::endl;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
                 int distance = nodes[pos].dist_mm_q2/4.0f;
@@ -85,13 +79,11 @@ public:
                 }
             }
         }
-
+        
         if (maxPoints == 0) {
-            std::cout << "kein gegner gefunden" << std::endl;
             return {0,0};
         }
 
-        std::cout << fullestSquare.x*100 << " " << fullestSquare.y*100 << std::endl;
         return {fullestSquare.x*100, fullestSquare.y*100};
 
         // Vector enemyPos;
@@ -105,40 +97,12 @@ public:
         // enemyPos.y /= maxPoints;
 
         // return enemyPos;
-
-
     }
     void stopLidar() {
         drv->stop();
         drv->disconnect();
         delete drv;
     }
-
-
-    bool checkSLAMTECLIDARHealth(ILidarDriver * drv)
-    {
-        sl_result op_result;
-        sl_lidar_response_device_health_t healthinfo;
-
-        op_result = drv->getHealth(healthinfo);
-        if (SL_IS_OK(op_result)) { // the macro IS_OK is the preperred way to judge whether the operation is succeed.
-            std::cout << "SLAMTEC Lidar health status :" << healthinfo.status << std::endl;
-            if (healthinfo.status == SL_LIDAR_STATUS_ERROR) {
-                std::cout << "Error, slamtec lidar internal error detected. Please reboot the device to retry." << std::endl;
-                // enable the following code if you want slamtec lidar to be reboot by software
-                drv->reset();
-                return false;
-            } else {
-                return true;
-            }
-
-        } else {
-            std::cout << "Error, cannot retrieve the lidar health code: " << op_result << std::endl;
-            return false;
-        }
-    }
-
-
 private:
     ILidarDriver * drv;
 };
