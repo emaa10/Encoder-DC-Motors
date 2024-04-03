@@ -43,6 +43,7 @@ public:
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         size_t count = _countof(nodes);
         sl_result result = drv->grabScanDataHq(nodes, count);
+        std::cout << "count: " << count << std::endl;
         if (SL_IS_OK(result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
@@ -80,6 +81,7 @@ public:
 
         if (maxPoints == 0) {
             return {0,0};
+            std::cout << "kein gegner gefunden" << std::endl;
         }
 
         std::cout << fullestSquare.x*100 << " " << fullestSquare.y*100 << std::endl;
