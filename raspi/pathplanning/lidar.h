@@ -5,6 +5,7 @@
 #include "structs.h"
 #include <cmath>
 #include <cstring>
+#include <iostream>
 
 using namespace sl;
 
@@ -38,6 +39,7 @@ public:
         std::memset(collectionRough, 0, sizeof(collectionRough));
         int collectionFine[300][200];
         std::memset(collectionFine, 0, sizeof(collectionFine));
+        // std::cout << "searching enemy" << std::endl;
 
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         size_t count = _countof(nodes);
@@ -46,6 +48,7 @@ public:
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
                 Vector point;
+                // std::cout << "found lidar scan" << std::endl;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
                 int distance = nodes[pos].dist_mm_q2/4.0f;
@@ -76,7 +79,7 @@ public:
                 }
             }
         }
-
+        
         if (maxPoints == 0) {
             return {0,0};
         }
