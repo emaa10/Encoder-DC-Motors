@@ -4,7 +4,7 @@ using namespace std;
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
 std::ifstream serial(serialMega.c_str());
 int sPort = serialOpen(serialMega.c_str(), 115200);
-Pathplanner p(-20, 0, 0, 200, yellow);
+Pathplanner p(-20, 0, 100, 200, yellow);
 
 //odom
 float x=225; // curent bot x
@@ -152,7 +152,9 @@ void setup() {
     delay(500);
     
     // println(int(pullCordConnected()));
+    std::cout << "vor getpath" << std::endl;
     std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
+    std::cout << "nach getpath" << std::endl;
     for (Vector target : path) {
         std::cout << "target x: " << target.x << std::endl;
         std::cout << "target y: " << target.y << std::endl;
