@@ -4,7 +4,7 @@ using namespace std;
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
 std::ifstream serial(serialMega.c_str());
 int sPort = serialOpen(serialMega.c_str(), 115200);
-Pathplanner p(-20, 0, 100, 200, yellow);
+Pathplanner p(-20, 0, 10, 200, yellow);
 
 //odom
 float x=225; // curent bot x
@@ -47,18 +47,22 @@ void stopMotor() { //
 }
 
 void turn(float degrees) {
-    driving = true;
     std::string message = "t," + std::to_string(degrees);
     serialPrintf(sPort, "%s\n", message.c_str());
+    while (driving == false) {
+        delay(5);
+    }
     while(driving == true) {
         delay(5);
     }
 }
 
 void driveDistance(int distance) {
-    driving = true;
     std::string message = "d," + std::to_string(distance);
     serialPrintf(sPort, "%s\n", message.c_str());
+    while (driving == false) {
+        delay(5);
+    }
     while(driving == true) {
         delay(5);
     }
@@ -101,20 +105,16 @@ void getData() {
     std::cout << line << std::endl;
     while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
         std::stringstream ss(line);
-        ss >> driving;
-        char type;
-        double value;
-        ss >> type; // Lese den Typ (x, y oder theta)
-        ss.ignore(); // Ignoriere das Komma
-        ss >> value; // Lese den Wert
-
-        if (type == 'x') {
-            x = value;
-        } else if (type == 'y') {
-            y = value;
-        } else if (type == 't') {
-            theta = value;
-        } 
+        char bullshit;
+        ss >> bullshit;
+        driving = bullshit == 'd';
+        
+        ss >> bullshit;
+        ss >> x; // Lese den Wert
+        ss >> bullshit;
+        ss >> y;
+        ss >> bullshit;
+        ss >> theta;
     }
 
 }
@@ -152,20 +152,17 @@ void setup() {
     delay(500);
     
     // println(int(pullCordConnected()));
-    std::cout << "vor getpath" << std::endl;
-    std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
-    std::cout << "nach getpath" << std::endl;
-    for (Vector target : path) {
-        std::cout << "target x: " << target.x << std::endl;
-        std::cout << "target y: " << target.y << std::endl;
-        driveTo(target.x, target.y);
-    }
-    std::cout << "path size: " << path.size() << std::endl;
-    while(1) {
-        std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
-    }
-
-
+    // std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
+    // for (Vector target : path) {
+    //     std::cout << "target x: " << target.x << std::endl;
+    //     std::cout << "target y: " << target.y << std::endl;
+    //     driveTo(target.x, target.y);
+    // }
+    driveTo(225, 500);
+    //std::cout << "path size: " << path.size() << std::endl;
+    std::cout << x << std::endl;
+    delay(2000);
+    std::cout << x << std::endl;
 
     // driveTo(382, 1040);
     // x = 382;

@@ -104,14 +104,6 @@ void setPwmValues(float pwmLeft, float pwmRight) {
   currentPwmLeft=pwmLeft;
   currentPwmRight=pwmRight;
 
-  print("pL: ");
-  print(pL);
-  print(" pR: ");
-  print(pR);
-  print(" pwmLeft: ");
-  print(pwmLeft);
-  print(" pwmRight: ");
-  println(pwmRight);
   if(pwmLeft < 0) { // wenn wir links rückwärts fahren wollen
     analogWrite(LEFT_LPWM, 0);
     analogWrite(LEFT_RPWM, pL);
@@ -149,22 +141,14 @@ void updatePosition(float leftEncChange, float rightEncChange) {
     y += distance * sin(theta + dTheta / 2);
     theta += dTheta;
     theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
-    Serial.print("X: ");
-    Serial.print(x);
-    Serial.print(" Y: ");
-    Serial.print(y);
-    Serial.print(" Theta: ");
-    Serial.println(getAngle());
+    sendData();
 }
 
 void updatePositionThread() { // NEED MILLIS
     unsigned long currentMillis = millis();
-    if(currentMillis - previousMillis >= updatePosInterval) {
+    if(currentMillis - previousMillis >= 100) {
       previousMillis = currentMillis;
-      // print("current");
-      // print(currentMillis);
-      // print(" previous ");
-      // print(previousMillis);
+
 
       leftEnc2 = getEncoderLeft();
       rightEnc2 = getEncoderRight();
@@ -180,10 +164,6 @@ void turn(float degrees) {
     float distance = turnValue * degrees; // in mm
     float pulsesLeft = -1.0f * (distance * pulsesPerMM); // links rückwärts... sollte passen ig
     float pulsesRight = distance * pulsesPerMM;
-    print("left pulses: ");
-    print(pulsesLeft);
-    print(" right pulses: ");
-    println(pulsesRight);
 
     int startEncLeft = getEncoderLeft();
     int startEncRight = getEncoderRight();
@@ -194,16 +174,9 @@ void turn(float degrees) {
     long int currentPIDleft = 0;
     long int currentPIDright = 0;
 
-    print(-pwmSpeed);
-    print(" ");
-    println(pwmSpeed);
     drive(-pwmSpeed, pwmSpeed); // links rückwrts
     counter = 0;
     while((abs(currentEncoderLeft)+abs(currentEncoderRight))/2 < (abs(pulsesLeft)+abs(pulsesRight))/2) { // solange wir noch nicht da sind
-        print("enc left: ");
-        print(currentEncoderLeft);
-        print(" enc right: ");
-        println(currentEncoderRight);
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
         currentPIDleft = getEncoderLeft() - lastEncLeft;
@@ -215,10 +188,6 @@ void turn(float degrees) {
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
                 drive(newPwmLeft, newPwmRight);
-                // print("new pwm left: ");
-                // print(newPwmLeft);
-                // print(" new pwm right: ");
-                // println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // odom calc start
@@ -247,8 +216,7 @@ void driveDistance(int distance) {
     int startEncRight = getEncoderRight();
     int lastEncLeft = getEncoderLeft();
     int lastEncRight = getEncoderRight();
-    print("alles davor: ");
-    println(getEncoderLeft());
+
     float distancePulses = distance * pulsesPerMM;
 
     // need these 2 lines to recalculate current enc values. 
@@ -260,8 +228,6 @@ void driveDistance(int distance) {
     drive(pwmSpeed, pwmSpeed); // start with 100 pwm
     counter = 0;
     while(distancePulses > (currentEncoderLeft + currentEncoderRight)/2) { // might need correction
-        print("durchschnitt enc: ");
-        println((currentEncoderLeft + currentEncoderRight)/2);
         // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
         currentEncoderRight = getEncoderRight() - startEncRight;
@@ -273,17 +239,9 @@ void driveDistance(int distance) {
             // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
-                print("currentPIDleft: ");
-                print(currentPIDleft);
-                print(" currentpwmleft: ");
-                println(currentPwmLeft);
                 float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
-                print("Newpwmleft: ");
-                print(newPwmLeft);
-                print(", Newpwmright: ");
-                println(newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
                 // updatePosition(currentPIDleft, currentPIDright);
@@ -301,9 +259,8 @@ void driveDistance(int distance) {
 }
 
 void getData() { // get the data and run the actions
-  if (Serial.available() > 0) {
+  if (Serial.available() > 0) { // hier kommt err rein
     String input = Serial.readStringUntil('\n'); 
-    Serial.println(input);
     char command = input.charAt(0);
 
     if (command == 'p') {
@@ -325,13 +282,15 @@ void getData() { // get the data and run the actions
 }
 
 void sendData() {
-  Serial.print(driving);
-  Serial.print("x,");
-  Serial.println(x);
-  Serial.print("y,");
-  Serial.println(y);
-  Serial.print("t,");
-  Serial.println(theta);
+  String data;
+  data += driving? "d" : "s";
+  data += "x";
+  data += String(x);
+  data += "y";
+  data += String(y);
+  data += "t";
+  data += String(theta);
+  Serial.println(data);
 }
 
 void setup()
@@ -368,7 +327,7 @@ void setup()
   // drive(0,0);
 
 
-  println("SIND DA");
+
 }
 
 void loop()
@@ -377,7 +336,6 @@ void loop()
   getData(); // get all data and process stuff
   sendData(); 
 
-  println(pullCordConnected());
   // setPwmValues(50,50);
   // analogWrite(LEFT_LPWM, 100);
   // analogWrite(RIGHT_RPWM, 100);
