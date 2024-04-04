@@ -192,6 +192,7 @@ bool Pathplanner::isLegalPos(Vector pos) {
     for (Vector &v : plantGroups) {
         if (distanceSquared(pos, v) < plantsRad*plantsRad) return false; //Inside of a plant group
     }
+    // std::cout << "1" << std::endl;
         
     if (distanceSquared(pos, enemyPos) <= enemyDistance*enemyDistance) return false; //Near to Robot
     if (forbiddenZones[0].coord.x >= pos.x || forbiddenZones[0].coord.y <= pos.y ) return false; //Outside of the playing field

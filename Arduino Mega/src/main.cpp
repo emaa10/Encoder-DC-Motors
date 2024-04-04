@@ -74,8 +74,8 @@ void bi1() {
 }
 
 bool pullCordConnected() {
-  getData();
-  return pullCordConnected();
+  // getData();
+  return pullCordState;
 }
 
 long int getEncoderLeft() {
@@ -299,6 +299,7 @@ void driveDistance(int distance) {
 void getData() { // get the data and run the actions
   if (Serial.available() > 0) {
     String input = Serial.readStringUntil('\n'); 
+    Serial.println(input);
     char command = input.charAt(0);
 
     if (command == 'p') {

@@ -81,7 +81,7 @@ public:
         }
         
         if (maxPoints == 0) {
-            return {0,0};
+            return {-100, -100};
         }
 
         return {fullestSquare.x*100, fullestSquare.y*100};

@@ -13,6 +13,8 @@ float theta=0; // current bot theta
 
 char serial_data;
 
+bool driving = false;
+
 
 template<typename T>
 void print(const T& input) {
@@ -45,13 +47,21 @@ void stopMotor() { //
 }
 
 void turn(float degrees) {
+    driving = true;
     std::string message = "t," + std::to_string(degrees);
     serialPrintf(sPort, "%s\n", message.c_str());
+    while(driving == true) {
+        delay(5);
+    }
 }
 
 void driveDistance(int distance) {
+    driving = true;
     std::string message = "d," + std::to_string(distance);
     serialPrintf(sPort, "%s\n", message.c_str());
+    while(driving == true) {
+        delay(5);
+    }
 }
 
 void driveTo(int to_x, int to_y) {
@@ -67,10 +77,10 @@ void driveTo(int to_x, int to_y) {
     angle = atan2(deltaY,deltaX) * 180/PI - angle;
     std::cout << "Angle: " << angle << std::endl;
 
-    // turn(angle);
-    // delay(2000); // SDFKJJKLSDFJKLFSDLJKSDFÖDLJKSDFJKLÖSDKLJFFSJKLJKDFSSFJKLSDKJLFDJSKLÖJKSDFÖJKLFDSJLSDJKLSDF
-    // driveDistance(distance);
-    // delay(2000);
+    turn(angle);
+    delay(2000); // SDFKJJKLSDFJKLFSDLJKSDFÖDLJKSDFJKLÖSDKLJFFSJKLJKDFSSFJKLSDKJLFDJSKLÖJKSDFÖJKLFDSJLSDJKLSDF
+    driveDistance(distance);
+    delay(2000);
 }
 
 float getCurrentX() {
@@ -84,12 +94,13 @@ float getCurrentY() {
 void getDataThread() {
     while(true) {
         getData();
-        sendData();
+        // sendData();
     }
 }
 
 void getData() {
     std::string line;
+    std::cout << line << std::endl;
     while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
         std::stringstream ss(line);
         char type;
@@ -104,6 +115,8 @@ void getData() {
             y = value;
         } else if (type == 't') {
             theta = value;
+        } else if( type == 'done') {
+            driving = false;
         }
     }
 
@@ -141,7 +154,7 @@ void setup() {
     // while(pullCordConnected()) {delay(20);}
     delay(500);
     
-    println(int(pullCordConnected()));
+    // println(int(pullCordConnected()));
     std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
     for (Vector target : path) {
         std::cout << "target x: " << target.x << std::endl;
@@ -152,6 +165,7 @@ void setup() {
     while(1) {
         std::cout << p.freePath({{225, 225}, 0}, path) << std::endl;
     }
+
 
 
     // driveTo(382, 1040);
@@ -173,6 +187,7 @@ void setup() {
 }
 
 void loop() {
+    // println(x);
     delay(5);
 }
 
