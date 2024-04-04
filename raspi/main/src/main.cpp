@@ -78,9 +78,7 @@ void driveTo(int to_x, int to_y) {
     std::cout << "Angle: " << angle << std::endl;
 
     turn(angle);
-    delay(2000); // SDFKJJKLSDFJKLFSDLJKSDFÖDLJKSDFJKLÖSDKLJFFSJKLJKDFSSFJKLSDKJLFDJSKLÖJKSDFÖJKLFDSJLSDJKLSDF
     driveDistance(distance);
-    delay(2000);
 }
 
 float getCurrentX() {
@@ -103,6 +101,7 @@ void getData() {
     std::cout << line << std::endl;
     while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
         std::stringstream ss(line);
+        ss >> driving;
         char type;
         double value;
         ss >> type; // Lese den Typ (x, y oder theta)
@@ -115,9 +114,7 @@ void getData() {
             y = value;
         } else if (type == 't') {
             theta = value;
-        } else if( type == 'done') {
-            driving = false;
-        }
+        } 
     }
 
 }

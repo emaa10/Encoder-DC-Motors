@@ -10,6 +10,7 @@
 float currentPwmLeft;
 float currentPwmRight;
 
+bool driving = false;
 bool pullCordState=true;
 
 float x=225; //muss mittelpunkt sein
@@ -125,6 +126,9 @@ void setPwmValues(float pwmLeft, float pwmRight) {
   } else{
     analogWrite(RIGHT_LPWM, pR);
     analogWrite(RIGHT_RPWM, 0);
+  }
+  if(pwmLeft == 0 && pwmRight == 0) {
+    driving = false;
   }
 }
 
@@ -321,6 +325,7 @@ void getData() { // get the data and run the actions
 }
 
 void sendData() {
+  Serial.print(driving);
   Serial.print("x,");
   Serial.println(x);
   Serial.print("y,");
