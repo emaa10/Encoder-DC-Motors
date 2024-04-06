@@ -176,7 +176,8 @@ void setup() {
     //     driveTo(target.x, target.y);
     // }
     // turn(-10);
-    driveDistance(500);
+    // driveDistance(500);
+    turn(90);
     //std::cout << "path size: " << path.size() << std::endl;
     // std::cout << x << std::endl;
     // delay(2000);

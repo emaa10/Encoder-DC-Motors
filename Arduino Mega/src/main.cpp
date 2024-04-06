@@ -4,9 +4,8 @@
 // How many motors
 #define NMOTORS 2
 
-int target[2] = {};
-target[0] = 7.639437 * 1000;
-target[1] = 0;
+int target0 = 0;
+int target1 = 0;
 
 // Pins
 const int enca[] = {2,18};
@@ -83,17 +82,6 @@ void setMotor(int dir, int pwmVal, int lpwm, int rpwm){
   }  
 }
 
-// template <int j>
-// void readEncoder(){
-//   Serial.println("Test");
-//   if(digitalRead(encb[j]) == HIGH){
-//     posi[j]++;
-//   }
-//   else{
-//     posi[j]--;
-//   }
-// }
-
 #define LEFT_ENC_A_PHASE 18
 #define LEFT_ENC_B_PHASE 19
 #define RIGHT_ENC_A_PHASE 2
@@ -123,8 +111,17 @@ void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
 
-  target[0] = 7.639437 * distance;
-  target[0] = 7.639437 * distance;
+  target0 = 7.639437 * distance;
+  target1 = 7.639437 * distance;
+}
+
+void turnAngle(int degree) {
+  posi[0] = 0;
+  posi[1] = 0;
+
+  int distance = 128*3.1415926/360*degree;
+  target0 = 7.639437 * distance;
+  target1 = -7.639437 * distance;
 }
 
 void getData() { // get the data and run the actions
@@ -141,7 +138,7 @@ void getData() { // get the data and run the actions
     } else if (command == 't') {
       String valueStr = input.substring(2); 
       float angle = valueStr.toFloat(); 
-      //turn(angle);
+      turnAngle(angle);
     }
   }
 }
@@ -176,16 +173,25 @@ void setup() {
   for(int k = 0; k < NMOTORS; k++){
     pid[k].setParams(1,0,0,100);
   }
-  
-  Serial.println("target pos");
+
+  turnAngle(360);
 }
 
 void updatePosition() {
   posi[0] = 0;
   posi[1] = 0;
+  target0 = 0;
+  target1 = 0;
 }
 
 void loop() {
+  getData();
+
+  int target[NMOTORS];
+
+  // Initialize array elements
+  target[0] = target0;
+  target[1] = target1;
 
   // time difference
   long currT = micros();
@@ -201,7 +207,6 @@ void loop() {
   }
   
   if (freePath) {
-    bool isDriving = false;
     // loop through the motors
     for(int k = 0; k < NMOTORS; k++){
       int pwr, dir;
@@ -209,20 +214,6 @@ void loop() {
       pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
-      isDriving = isDriving | pwr;
     }
-    if (!isDriving) {
-      updatePosition();
-    }
-  } else {
-    updatePosition();
   }
-
-  for (int k = 0; k < NMOTORS; k++){
-    Serial.print(target[k]);
-    Serial.print(" ");
-    Serial.print(posi[k]);
-    Serial.print(" ");
-  }
-  Serial.println();
 }
