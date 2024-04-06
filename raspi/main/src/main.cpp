@@ -137,11 +137,6 @@ void getData() {
 
 }
 
-void sendData() { // send pullcord
-    int state = pullCordConnected();
-    std::string message = "p," + std::to_string(state);
-    serialPrintf(sPort, "%s\n", message.c_str()); 
-}
 
 void setup() {
     // initialize stream

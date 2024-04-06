@@ -10,6 +10,7 @@ const int encb[] = {3,19};
 const int lpwm[] = {9,11};
 const int rpwm[] = {8,10};
 
+bool freePath = true;
 
 //Class
 class SimplePID{
@@ -78,16 +79,6 @@ void setMotor(int dir, int pwmVal, int lpwm, int rpwm){
   }  
 }
 
-// template <int j>
-// void readEncoder(){
-//   Serial.println("Test");
-//   if(digitalRead(encb[j]) == HIGH){
-//     posi[j]++;
-//   }
-//   else{
-//     posi[j]--;
-//   }
-// }
 
 #define LEFT_ENC_A_PHASE 18
 #define LEFT_ENC_B_PHASE 19
@@ -114,28 +105,24 @@ void bi1() {
   else { posi[0]++; }
 }
 
-// void getData() { // get the data and run the actions
-//   if (Serial.available() > 0) {
-//     String input = Serial.readStringUntil('\n'); 
-//     char command = input.charAt(0);
-
-//     if (command == 'p') {
-//       String valueStr = input.substring(2); 
-//       int value = valueStr.toInt();
-//       pullCordState = (value == 0);
-//     } else if (command == 's') {
-//       stopMotor();
-//     } else if (command == 'd') {
-//       String valueStr = input.substring(2); 
-//       int distance = valueStr.toInt();
-//       driveDistance(distance); 
-//     } else if (command == 't') {
-//       String valueStr = input.substring(2); 
-//       float angle = valueStr.toFloat(); 
-//       turn(angle);
-//     }
-//   }
-// }
+void getData() { // get the data and run the actions
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n'); 
+    char command = input.charAt(0);
+  
+    if (command == 's') {
+      freePath = false;
+    } else if (command == 'd') {
+      String valueStr = input.substring(2); 
+      int distance = valueStr.toInt();
+      driveDistance(distance); 
+    } else if (command == 't') {
+      String valueStr = input.substring(2); 
+      float angle = valueStr.toFloat(); 
+      turn(angle);
+    }
+  }
+}
 
 // void sendData() {
 //   String data;
