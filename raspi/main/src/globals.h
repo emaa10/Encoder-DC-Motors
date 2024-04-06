@@ -12,6 +12,7 @@
 #include <math.h>
 #include <thread>
 #include <csignal>
+#include <cstdlib> // Für die system() Funktion
 
 
 #endif

@@ -1,9 +1,13 @@
 #include "./main.h"
+// 
+
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-std::ifstream serial(serialMega.c_str());
 int sPort = serialOpen(serialMega.c_str(), 115200);
+const char* command1 = "screen -XS platformio quit";
+const char* command = "screen -d -m platformio /home/bot/.local/bin/pio device monitor -p /dev/ttyACM0 -b 115200";
+std::ifstream serial(serialMega.c_str());
 Pathplanner p(-20, 0, 10, 200, yellow);
 
 //odom
@@ -100,14 +104,15 @@ void getDataThread() {
     }
 }
 
+
 void getData() {
     std::string line;
-    std::cout << line << std::endl;
     while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
         std::stringstream ss(line);
+
         char bullshit;
         ss >> bullshit;
-        driving = bullshit == 'd';
+        driving = (bullshit == 'd');
         
         ss >> bullshit;
         ss >> x; // Lese den Wert
@@ -115,6 +120,9 @@ void getData() {
         ss >> y;
         ss >> bullshit;
         ss >> theta;
+
+        std::cout << line << std::endl;
+        line = "";
     }
 
 }
@@ -127,9 +135,9 @@ void sendData() { // send pullcord
 
 void setup() {
     // initialize stream
-    if (!serial.is_open()) {
-        std::cerr << "Port error on Mega A Encoder, Port" << serialMega << std::endl;
-    }
+    // if (!serial.is_open()) {
+    //     std::cerr << "Port error on Mega A Encoder, Port" << serialMega << std::endl;
+    // }
 
     // initialize wiringpi
     if (wiringPiSetup() == -1) {
@@ -145,11 +153,15 @@ void setup() {
     std::thread t(getDataThread); // get current pos from arduino
     t.detach();
 
+    system(command1);
+    delay(100);
+    system(command);
+
     // stopMotor();
     // driveDistance(50);
 
+    delay(2000);
     // while(pullCordConnected()) {delay(20);}
-    delay(500);
     
     // println(int(pullCordConnected()));
     // std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
@@ -158,7 +170,7 @@ void setup() {
     //     std::cout << "target y: " << target.y << std::endl;
     //     driveTo(target.x, target.y);
     // }
-    driveTo(225, 500);
+    turn(90);
     //std::cout << "path size: " << path.size() << std::endl;
     std::cout << x << std::endl;
     delay(2000);

@@ -119,9 +119,7 @@ void setPwmValues(float pwmLeft, float pwmRight) {
     analogWrite(RIGHT_LPWM, pR);
     analogWrite(RIGHT_RPWM, 0);
   }
-  if(pwmLeft == 0 && pwmRight == 0) {
-    driving = false;
-  }
+  driving = !(pwmLeft == 0 && pwmRight == 0);
 }
 
 void drive(float drivePwmLeft, float drivePwmRight) {
