@@ -51,7 +51,17 @@ void stopMotor() { //
 }
 
 void turn(float degrees) {
+    while(degrees >= 360) {
+        degrees -= 360;
+    }
+    while(degrees >= 180) {
+        degrees -= 180;
+    }
+    while(degrees <= -180) {
+        degrees += 180;
+    }
     std::string message = "t," + std::to_string(degrees);
+    std::cout << "degrees: " << degrees << std::endl;
     serialPrintf(sPort, "%s\n", message.c_str());
     while (driving == false) {
         delay(5);
@@ -170,11 +180,11 @@ void setup() {
     //     std::cout << "target y: " << target.y << std::endl;
     //     driveTo(target.x, target.y);
     // }
-    turn(360);
+    turn(-10);
     //std::cout << "path size: " << path.size() << std::endl;
-    std::cout << x << std::endl;
-    delay(2000);
-    std::cout << x << std::endl;
+    // std::cout << x << std::endl;
+    // delay(2000);
+    // std::cout << x << std::endl;
 
     // driveTo(382, 1040);
     // x = 382;
