@@ -173,7 +173,7 @@ void turn(float degrees) {
     long int currentPIDleft = 0;
     long int currentPIDright = 0;
 
-    drive(-pwmSpeed, pwmSpeed); // links rückwrts
+    drive(-pwmSpeed/2, pwmSpeed/2);
     counter = 0;
     while((abs(currentEncoderLeft)+abs(currentEncoderRight))/2 < (abs(pulsesLeft)+abs(pulsesRight))/2) { // solange wir noch nicht da sind
         currentEncoderLeft = getEncoderLeft() - startEncLeft;
@@ -185,9 +185,9 @@ void turn(float degrees) {
         // debug = "PULSES NEEDED IN TIME: " + String(pulsesPerSec/(1000/syncCounterTurn));
         if(counter >= syncCounterTurn) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
-                float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
-                float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
-                debug = String(currentPIDleft) +  " " + String(currentPIDright);
+                float newPwmLeft = (pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft) / 2; // geteilt durch 5 wegen syncCounterTurn
+                float newPwmRight = (pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight) / 2;
+                debug = String(newPwmLeft) +  " " + String(newPwmRight) + " , " + String(currentPIDleft) + " " + String(currentPIDright);
                 drive(newPwmLeft, newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
@@ -195,9 +195,11 @@ void turn(float degrees) {
                 // updatePosition(currentPIDleft, currentPIDright);
                 // odom calc end
                 getData();
+                updatePositionThread();
             }
             counter = 0;
             getData();
+            updatePositionThread();
         }
         delay(1);
         updatePositionThread();

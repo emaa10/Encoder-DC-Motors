@@ -170,7 +170,7 @@ void setup() {
     //     std::cout << "target y: " << target.y << std::endl;
     //     driveTo(target.x, target.y);
     // }
-    turn(90);
+    turn(360);
     //std::cout << "path size: " << path.size() << std::endl;
     std::cout << x << std::endl;
     delay(2000);
