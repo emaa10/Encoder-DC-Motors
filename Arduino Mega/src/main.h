@@ -22,7 +22,7 @@ const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 
 
 const int syncInterval = 1; // sync motors with encoders every second
 const int syncCounter = syncInterval * 1000 / 5;
-const int syncCounterTurn = 200; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
+const int syncCounterTurn = 50; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
 
 extern float currentPwmLeft;
 extern float currentPwmRight;

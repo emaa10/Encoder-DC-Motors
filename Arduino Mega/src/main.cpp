@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include "./main.h"
 
+String debug = "";
 
 float currentPwmLeft;
 float currentPwmRight;
@@ -181,10 +182,12 @@ void turn(float degrees) {
         currentPIDright = getEncoderRight() - lastEncRight;
         // check ob gegner auf stregge brauchen wir hier nicht
         counter++;
+        // debug = "PULSES NEEDED IN TIME: " + String(pulsesPerSec/(1000/syncCounterTurn));
         if(counter >= syncCounterTurn) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) { // fehler vermeiden
                 float newPwmLeft = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDleft) * currentPwmLeft; // geteilt durch 5 wegen syncCounterTurn
                 float newPwmRight = pulsesPerSec/(1000/syncCounterTurn) / abs(currentPIDright) * currentPwmRight;
+                debug = String(currentPIDleft) +  " " + String(currentPIDright);
                 drive(newPwmLeft, newPwmRight);
                 lastEncLeft = getEncoderLeft();
                 lastEncRight = getEncoderRight();
@@ -288,6 +291,8 @@ void sendData() {
   data += String(y);
   data += "t";
   data += String(theta);
+  data += " DEBUG ";
+  data += debug;
   Serial.println(data);
 }
 
