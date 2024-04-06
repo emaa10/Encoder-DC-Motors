@@ -4,6 +4,10 @@
 // How many motors
 #define NMOTORS 2
 
+int target[2] = {};
+target[0] = 7.639437 * 1000;
+target[1] = 0;
+
 // Pins
 const int enca[] = {2,18};
 const int encb[] = {3,19};
@@ -79,6 +83,16 @@ void setMotor(int dir, int pwmVal, int lpwm, int rpwm){
   }  
 }
 
+// template <int j>
+// void readEncoder(){
+//   Serial.println("Test");
+//   if(digitalRead(encb[j]) == HIGH){
+//     posi[j]++;
+//   }
+//   else{
+//     posi[j]--;
+//   }
+// }
 
 #define LEFT_ENC_A_PHASE 18
 #define LEFT_ENC_B_PHASE 19
@@ -105,6 +119,14 @@ void bi1() {
   else { posi[0]++; }
 }
 
+void driveDistance(int distance) {
+  posi[0] = 0;
+  posi[1] = 0;
+
+  target[0] = 7.639437 * distance;
+  target[0] = 7.639437 * distance;
+}
+
 void getData() { // get the data and run the actions
   if (Serial.available() > 0) {
     String input = Serial.readStringUntil('\n'); 
@@ -119,7 +141,7 @@ void getData() { // get the data and run the actions
     } else if (command == 't') {
       String valueStr = input.substring(2); 
       float angle = valueStr.toFloat(); 
-      turn(angle);
+      //turn(angle);
     }
   }
 }
@@ -152,26 +174,18 @@ void setup() {
 
 
   for(int k = 0; k < NMOTORS; k++){
-    // pinMode(enca[k],INPUT_PULLUP);
-    // pinMode(encb[k],INPUT_PULLUP);
-    // pinMode(lpwm[k],OUTPUT);
-    // pinMode(lpwm[k],OUTPUT);
-
     pid[k].setParams(1,0,0,100);
   }
-  
-  // attachInterrupt((enca[0]),readEncoder<0>,RISING);
-  // attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
   
   Serial.println("target pos");
 }
 
-void loop() {
+void updatePosition() {
+  posi[0] = 0;
+  posi[1] = 0;
+}
 
-  // set target position
-  int target[NMOTORS];
-  target[0] = 7.639437 * 1000;
-  target[1] = 7.639437 * 1200;
+void loop() {
 
   // time difference
   long currT = micros();
@@ -186,13 +200,22 @@ void loop() {
     }
   }
   
-  // loop through the motors
-  for(int k = 0; k < NMOTORS; k++){
-    int pwr, dir;
-    // evaluate the control signal
-    pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
-    // signal the motor
-    setMotor(dir,pwr,lpwm[k], rpwm[k]);
+  if (freePath) {
+    bool isDriving = false;
+    // loop through the motors
+    for(int k = 0; k < NMOTORS; k++){
+      int pwr, dir;
+      // evaluate the control signal
+      pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
+      // signal the motor
+      setMotor(dir,pwr,lpwm[k], rpwm[k]);
+      isDriving = isDriving | pwr;
+    }
+    if (!isDriving) {
+      updatePosition();
+    }
+  } else {
+    updatePosition();
   }
 
   for (int k = 0; k < NMOTORS; k++){
