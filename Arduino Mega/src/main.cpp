@@ -15,6 +15,7 @@ const int lpwm[] = {9,11};
 const int rpwm[] = {8,10};
 
 bool freePath = true;
+bool reachedGoal = false;
 
 //Class
 class SimplePID{
@@ -108,12 +109,69 @@ void bi1() {
   else { posi[0]++; }
 }
 
+void drive(){
+  Serial.print("posi 0: ");
+  Serial.println(posi[0]);
+  Serial.print("posi 1: ");
+  Serial.println(posi[1]);
+  Serial.print("target 0: ");
+  Serial.println(target[0]);
+  Serial.print("target 1: ");
+  Serial.println(target[1]);
+  long currT = micros();
+  float deltaT = ((float) (currT - prevT))/( 1.0e6 );
+  prevT = currT;
+
+  // Read the position in an atomic block to avoid a potential misread
+  int pos[NMOTORS];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+    for(int k = 0; k < NMOTORS; k++){
+      pos[k] = posi[k];
+    }
+  }
+
+  int pwmVals[] = {0, 0};
+
+  if (freePath) {
+    // loop through the motors
+    for(int k = 0; k < NMOTORS; k++){
+      int pwr, dir;
+      // evaluate the control signal
+      pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
+
+      if(pwr < 15){
+        pwr = 15;
+      }
+      // signal the motor
+      setMotor(dir,pwr,lpwm[k], rpwm[k]);
+    }
+  }
+
+  if(abs(pos[0] - target[0]) < 8 && abs(pos[1] - target[1]) < 8) {
+    reachedGoal = true;
+  } else {
+    reachedGoal = false;
+  }
+}
+
 void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
 
   target[0] = 7.639437 * distance;
   target[1] = 7.639437 * distance;
+
+  reachedGoal = false;
+
+  while(!reachedGoal){
+    // getData();
+    drive();
+  }
+
+  setMotor(0,0,lpwm[0], rpwm[0]);
+  setMotor(0,0,lpwm[1], rpwm[1]);
+
+  delay(250);
 }
 
 void turnAngle(int degree) {
@@ -123,6 +181,18 @@ void turnAngle(int degree) {
   int distance = 128*3.1415926/360*degree;
   target[0] = 7.639437 * distance;
   target[1] = -7.639437 * distance;
+
+  reachedGoal = false;
+
+  while(!reachedGoal){
+    // getData();
+    drive();
+  }
+
+  setMotor(0,0,lpwm[0], rpwm[0]);
+  setMotor(0,0,lpwm[1], rpwm[1]);
+
+  delay(250);
 }
 
 void getData() { // get the data and run the actions
@@ -177,11 +247,6 @@ void setup() {
   for(int k = 0; k < NMOTORS; k++){
     pid[k].setParams(1,0,0,100);
   }
-
-
-
-
-  turnAngle(360);
 }
 
 void updatePosition() {
@@ -191,36 +256,7 @@ void updatePosition() {
   target[1] = 0;
 }
 
-void loop() {
+
+void loop() {  
   getData();
-
-  int target[NMOTORS];
-
-  // Initialize array elements
-  // target[0] = target0;
-  // target[1] = target1;
-
-  // time difference
-  long currT = micros();
-  float deltaT = ((float) (currT - prevT))/( 1.0e6 );
-  prevT = currT;
-
-  // Read the position in an atomic block to avoid a potential misread
-  int pos[NMOTORS];
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-    for(int k = 0; k < NMOTORS; k++){
-      pos[k] = posi[k];
-    }
-  }
-  
-  if (freePath) {
-    // loop through the motors
-    for(int k = 0; k < NMOTORS; k++){
-      int pwr, dir;
-      // evaluate the control signal
-      pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
-      // signal the motor
-      setMotor(dir,pwr,lpwm[k], rpwm[k]);
-    }
-  }
 }
