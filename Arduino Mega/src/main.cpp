@@ -2,10 +2,11 @@
 #include <util/atomic.h>
 
 // How many motors
-#define NMOTORS 2
+const int NMOTORS = 2;
 
-int target0 = 0;
-int target1 = 0;
+int target[NMOTORS] = {0};
+// target[0] = 0;
+// target[1] = 0;
 
 // Pins
 const int enca[] = {2,18};
@@ -111,8 +112,8 @@ void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
 
-  target0 = 7.639437 * distance;
-  target1 = 7.639437 * distance;
+  target[0] = 7.639437 * distance;
+  target[1] = 7.639437 * distance;
 }
 
 void turnAngle(int degree) {
@@ -120,8 +121,8 @@ void turnAngle(int degree) {
   posi[1] = 0;
 
   int distance = 128*3.1415926/360*degree;
-  target0 = 7.639437 * distance;
-  target1 = -7.639437 * distance;
+  target[0] = 7.639437 * distance;
+  target[1] = -7.639437 * distance;
 }
 
 void getData() { // get the data and run the actions
@@ -168,11 +169,17 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(LEFT_ENC_A_PHASE), ai1, RISING);
   attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_B_PHASE), bi0, RISING);
   attachInterrupt(digitalPinToInterrupt(RIGHT_ENC_A_PHASE), bi1, RISING);
+  
+  target[0] = 0;
+  target[1] = 0;
 
 
   for(int k = 0; k < NMOTORS; k++){
     pid[k].setParams(1,0,0,100);
   }
+
+
+
 
   turnAngle(360);
 }
@@ -180,8 +187,8 @@ void setup() {
 void updatePosition() {
   posi[0] = 0;
   posi[1] = 0;
-  target0 = 0;
-  target1 = 0;
+  target[0] = 0;
+  target[1] = 0;
 }
 
 void loop() {
@@ -190,8 +197,8 @@ void loop() {
   int target[NMOTORS];
 
   // Initialize array elements
-  target[0] = target0;
-  target[1] = target1;
+  // target[0] = target0;
+  // target[1] = target1;
 
   // time difference
   long currT = micros();
