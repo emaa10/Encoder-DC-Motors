@@ -50,6 +50,12 @@ void stopMotor() { //
     serialPrintf(sPort, "%s\n", message.c_str());
 }
 
+void interruptDriving() {
+    std::string message = "s";
+    std::cout << "interrupted driving" << std::endl;
+    serialPrintf(sPort, "%s\n", message.c_str()); 
+}
+
 void turn(float degrees) {
     while(degrees >= 360) {
         degrees -= 360;
@@ -68,6 +74,8 @@ void turn(float degrees) {
     }
     while(driving == true) {
         delay(5);
+        // hier lidar check
+        // wenn enemy detected, interruptDriving() ausführen
     }
 }
 

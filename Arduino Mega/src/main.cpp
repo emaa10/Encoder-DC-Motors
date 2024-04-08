@@ -198,6 +198,8 @@ void drive(){
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
     }
+
+    reachedGoal = true; // needs testing
   }
 
   if(abs(pos[0] - target[0]) < 8 && abs(pos[1] - target[1]) < 8) {
@@ -248,6 +250,7 @@ void turnAngle(int degree) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
+  sendData();
 }
 
 void getData() { // get the data and run the actions
