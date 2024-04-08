@@ -143,7 +143,10 @@ void getData() {
         ss >> tempchar;
         ss >> theta;
 
-        std::cout << line << std::endl;
+        std::cout << "X: " << x << std::endl;
+        std::cout << "Y: " << y << std::endl;
+        std::cout << "Theta: " << theta << std::endl;
+        std::cout << "Line: " << line << std::endl;
         line = "";
     }
 

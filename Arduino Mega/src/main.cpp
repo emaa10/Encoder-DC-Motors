@@ -37,6 +37,8 @@ float theta = 0;
 float leftEncoderChange=0;
 float rightEncoderChange=0;
 
+String DEBUG = "";
+
 //Class
 class SimplePID{
   private:
@@ -139,6 +141,8 @@ void sendData() {
   data += String(y);
   data += "t";
   data += String(theta);
+  data += " ";
+  data += DEBUG;
   Serial.println(data);
 }
 
@@ -160,14 +164,15 @@ void updatePosition(float leftEncChange, float rightEncChange) {
 }
 
 void drive(){
-  Serial.print("posi 0: ");
-  Serial.println(posi[0]);
-  Serial.print("posi 1: ");
-  Serial.println(posi[1]);
-  Serial.print("target 0: ");
-  Serial.println(target[0]);
-  Serial.print("target 1: ");
-  Serial.println(target[1]);
+  DEBUG = "";
+  DEBUG += "posi 0: ";
+  DEBUG +=  posi[0];
+  DEBUG +=  " posi 1: ";
+  DEBUG += posi[1];
+  DEBUG += " target 0: ";
+  DEBUG += target[0];
+  DEBUG += " target 1: ";
+  DEBUG += target[1];
   long currT = micros();
   float deltaT = ((float) (currT - prevT))/( 1.0e6 );
   prevT = currT;
@@ -192,8 +197,8 @@ void drive(){
       // evaluate the control signal
       pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
 
-      if(pwr < 15){
-        pwr = 15;
+      if(pwr < 16){
+        pwr = 16;
       }
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
@@ -202,7 +207,7 @@ void drive(){
     reachedGoal = true; // needs testing
   }
 
-  if(abs(pos[0] - target[0]) < 8 && abs(pos[1] - target[1]) < 8) {
+  if(abs(pos[0] - target[0]) < 9 && abs(pos[1] - target[1]) < 9) {
     reachedGoal = true;
     Serial.println(pos[0]);
     Serial.println(target[0]);
@@ -215,8 +220,8 @@ void driveUntilSwitch() {
   posi[0] = 0;
   posi[1] = 0;
 
-  target[0] = 10000000000; // random high value
-  target[1] = 10000000000; // random high value
+  target[0] = 1000000; // random high value
+  target[1] = 1000000; // random high value
 
   reachedGoal = false;
 
