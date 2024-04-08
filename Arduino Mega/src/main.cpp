@@ -267,7 +267,8 @@ void driveUntilSwitch() {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
-  sendData();
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void driveDistance(int distance) {
@@ -290,7 +291,8 @@ void driveDistance(int distance) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
-  sendData();
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void turnAngle(int degree) {
@@ -314,7 +316,8 @@ void turnAngle(int degree) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
-  sendData();
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void getData() { // get the data and run the actions

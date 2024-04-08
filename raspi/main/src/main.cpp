@@ -116,8 +116,8 @@ void driveTo(int to_x, int to_y) {
     std::cout << "Distance: " << distance << std::endl;
 
     turn(angle);
-    delay(2000);
-    cout << " TURN DONE " << endl;
+    // delay(2000);
+    // cout << " TURN DONE " << endl;
     driveDistance(distance);
 }
 
@@ -189,7 +189,7 @@ void setup() {
 
     // turn(90)
 
-    driveTo(500, 500);
+    driveTo(500, -500);
     std::cout << "500, 500" << endl;
     delay(5000);
     driveTo(500, 200);
