@@ -162,43 +162,9 @@ void setup() {
     delay(100);
     system(command);
 
-    // stopMotor();
-    // driveDistance(50);
-
     delay(2000);
-    // while(pullCordConnected()) {delay(20);}
-    
-    // println(int(pullCordConnected()));
-    // std::vector<Vector> path = p.getPath({{x, y}, 0}, group1);
-    // for (Vector target : path) {
-    //     std::cout << "target x: " << target.x << std::endl;
-    //     std::cout << "target y: " << target.y << std::endl;
-    //     driveTo(target.x, target.y);
-    // }
-    // turn(-10);
+
     driveDistance(500);
-    // turn(90);
-    //std::cout << "path size: " << path.size() << std::endl;
-    // std::cout << x << std::endl;
-    // delay(2000);
-    // std::cout << x << std::endl;
-
-    // driveTo(382, 1040);
-    // x = 382;
-    // y = 1040;
-
-    // driveTo(764, 1201);
-    // x = 764;
-    // y = 1201;
-
-    // driveTo(800, 1000);
-    // x = 800;
-    // y = 1000;
-
-    // driveTo(700, 1000);
-    // x = 700;
-
-    // driveTo(500, 500);
 }
 
 void loop() {
