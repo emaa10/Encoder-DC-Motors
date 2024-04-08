@@ -180,6 +180,7 @@ void setup() {
     delay(2000);
 
     driveDistance(500);
+    turn(90);
     // nächste aktion wird ausgeführt, wenn gegner erkannt wird oder er am ziel ist - fixen noch
 }
 

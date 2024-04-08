@@ -188,6 +188,7 @@ void drive(){
   rightEncoderChange = pos[1] - posP[1];
   posP[0] = pos[0];
   posP[1] = pos[1];
+  // DEBUG += "PWM LEFT: " + String(lpwm[0]) + " " + String(lpwm[1]) + " PWM RIGHT: " + String(rpwm[0]) + " " + String(rpwm[1]);
   updatePosition(leftEncoderChange, rightEncoderChange);
 
   if (freePath) {
@@ -202,15 +203,21 @@ void drive(){
       }
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
+      // DEBUG += " ";
+      // DEBUG += "lpwm von " + k;
+      // DEBUG += " " + lpwm[k];
+      // DEBUG += " rpwm von " + k;
+      // DEBUG += " " + rpwm[k];
     }
 
-    reachedGoal = true; // needs testing
+
+    // reachedGoal = true; // needs testing
   }
 
   if(abs(pos[0] - target[0]) < 9 && abs(pos[1] - target[1]) < 9) {
     reachedGoal = true;
-    Serial.println(pos[0]);
-    Serial.println(target[0]);
+    // Serial.println(pos[0]);
+    // Serial.println(target[0]);
   } else {
     reachedGoal = false;
   }
@@ -259,6 +266,7 @@ void driveDistance(int distance) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
+  sendData();
 }
 
 void turnAngle(int degree) {
