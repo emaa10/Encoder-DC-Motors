@@ -16,7 +16,7 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
 unsigned long previousMillis = 0;
-const long updatePosInterval = 100;
+const long updatePosInterval = 500;
 
 
 // How many motors
@@ -150,10 +150,16 @@ void sendData() {
   Serial.println(data);
 }
 
-void updatePosition(float leftEncChange, float rightEncChange) {
+void updatePosition() {
   unsigned long currentMillis = millis();
   if(currentMillis - previousMillis >= updatePosInterval) {
     previousMillis = currentMillis;
+    
+      float leftEncChange = posi[0] - posP[0];
+      float rightEncChange = posi[1] - posP[1];
+      posP[0] = posi[0];
+      posP[1] = posi[1];
+
     float leftDistance = leftEncChange / pulsesPerMM;
     float rightDistance = rightEncChange / pulsesPerMM;
     float distance = (leftDistance + rightDistance) / 2;
@@ -193,12 +199,12 @@ void drive(){
       pos[k] = posi[k];
     }
   }
-  leftEncoderChange = pos[0] - posP[0];
-  rightEncoderChange = pos[1] - posP[1];
-  posP[0] = pos[0];
-  posP[1] = pos[1];
+  // leftEncoderChange = pos[0] - posP[0];
+  // rightEncoderChange = pos[1] - posP[1];
+  // posP[0] = pos[0];
+  // posP[1] = pos[1];
   // DEBUG += "PWM LEFT: " + String(lpwm[0]) + " " + String(lpwm[1]) + " PWM RIGHT: " + String(rpwm[0]) + " " + String(rpwm[1]);
-  updatePosition(leftEncoderChange, rightEncoderChange);
+  updatePosition();
 
   if (freePath) {
     // loop through the motors
@@ -353,4 +359,5 @@ void setup() {
 
 void loop() {  
   getData();
+  updatePosition();
 }
