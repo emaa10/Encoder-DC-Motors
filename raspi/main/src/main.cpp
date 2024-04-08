@@ -110,10 +110,13 @@ void driveTo(int to_x, int to_y) {
     float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
     float angle = theta*180/M_PI;
 
+    std::cout << "Angle davor: " << angle << std::endl;
     angle = atan2(deltaY,deltaX) * 180/PI - angle;
     // std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
     std::cout << "Angle: " << angle << std::endl;
     std::cout << "Distance: " << distance << std::endl;
+    std::cout << "X: " << x << endl;
+    cout << "Y: " << y << endl;
 
     turn(angle);
     // delay(2000);
@@ -151,9 +154,9 @@ void getData() {
         ss >> tempchar;
         ss >> theta;
 
-        std::cout << "X: " << x << std::endl;
-        std::cout << "Y: " << y << std::endl;
-        std::cout << "Angle: " << theta*180/M_PI << std::endl;
+        // std::cout << "X: " << x << std::endl;
+        // std::cout << "Y: " << y << std::endl;
+        // std::cout << "Angle: " << theta*180/M_PI << std::endl;
         std::cout << "Line: " << line << std::endl;
         line = "";
     }
@@ -195,14 +198,14 @@ void setup() {
     driveTo(500, 200);
     delay(5000);
 
-    driveTo(200, 200);
-    delay(5000);
+    // driveTo(200, 200);
+    // delay(5000);
 
-    driveTo(0, 500);
-    delay(5000);
+    // driveTo(0, 500);
+    // delay(5000);
 
-    driveTo(500,500);
-    delay(5000);
+    // driveTo(500,500);
+    // delay(5000);
 }
 
 void loop() {
