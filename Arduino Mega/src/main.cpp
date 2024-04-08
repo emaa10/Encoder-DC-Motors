@@ -198,8 +198,8 @@ void drive(){
       // evaluate the control signal
       pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
 
-      if(pwr < 16){
-        pwr = 16;
+      if(pwr < 25){
+        pwr = 25;
       }
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
