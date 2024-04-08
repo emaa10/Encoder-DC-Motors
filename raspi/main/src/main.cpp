@@ -119,6 +119,10 @@ void driveTo(int to_x, int to_y) {
     driveDistance(distance);
 }
 
+void turnTo(int degree) {
+    float angle = theta*180/M_PI;
+}
+
 void getDataThread() {
     while(true) {
         getData();
