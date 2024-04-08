@@ -15,6 +15,9 @@ const float wheelDistance = 128; //abstand der encoderräder in mm, muss vllt ge
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
+unsigned long previousMillis = 0;
+const long updatePosInterval = 100;
+
 
 // How many motors
 const int NMOTORS = 2;
@@ -31,8 +34,8 @@ const int rpwm[] = {8,10};
 
 bool freePath = true;
 bool reachedGoal = false;
-float x = 225;
-float y = 225;
+float x = 0;
+float y = 0;
 float theta = 0;
 float leftEncoderChange=0;
 float rightEncoderChange=0;
@@ -95,6 +98,7 @@ int posP[] = {0, 0};
 SimplePID pid[NMOTORS];
 
 void setMotor(int dir, int pwmVal, int lpwm, int rpwm){
+  // Serial.println("pwmVal: " + pwmVal);
   if(dir == 1){
     analogWrite(lpwm,pwmVal);
   }
@@ -147,19 +151,24 @@ void sendData() {
 }
 
 void updatePosition(float leftEncChange, float rightEncChange) {
+  unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis >= updatePosInterval) {
+    previousMillis = currentMillis;
+    float leftDistance = leftEncChange / pulsesPerMM;
+    float rightDistance = rightEncChange / pulsesPerMM;
+    float distance = (leftDistance + rightDistance) / 2;
+    float dTheta = (rightDistance - leftDistance) / wheelDistance;
+    x += distance * cos(theta + dTheta / 2);
+    y += distance * sin(theta + dTheta / 2);
+    theta += dTheta;
+    theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+  }
+  // hier millis, nur alle 100ms
   // posi[0] = 0;
   // posi[1] = 0;
   // target[0] = 0;
   // target[1] = 0;
 
-  float leftDistance = leftEncChange / pulsesPerMM;
-  float rightDistance = rightEncChange / pulsesPerMM;
-  float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (rightDistance - leftDistance) / wheelDistance;
-  x += distance * cos(theta + dTheta / 2);
-  y += distance * sin(theta + dTheta / 2);
-  theta += dTheta;
-  theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
   sendData();
 }
 
@@ -214,6 +223,12 @@ void drive(){
     // reachedGoal = true; // needs testing
   }
 
+  if(pos[0] > target[0]) {
+    pos[0] = target[0];
+  } else if(pos[1] > target[1]) {
+    pos[1] = target[1];
+  }
+
   if(abs(pos[0] - target[0]) < 9 && abs(pos[1] - target[1]) < 9) {
     reachedGoal = true;
   } else {
@@ -244,6 +259,7 @@ void driveUntilSwitch() {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
+  sendData();
 }
 
 void driveDistance(int distance) {

@@ -10,8 +10,8 @@ std::ifstream serial(serialMega.c_str());
 Pathplanner p(-20, 0, 10, 200, yellow);
 
 //odom
-float x=225; // curent bot x
-float y=225; // current bot y
+float x=0; // curent bot x
+float y=0; // current bot y
 float theta=0; // current bot theta
 
 bool driving = false;
