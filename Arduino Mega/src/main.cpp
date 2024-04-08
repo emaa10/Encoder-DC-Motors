@@ -142,7 +142,7 @@ void sendData() {
   data += "x";
   data += String(x);
   data += "y";
-  data += String(y);
+  data += String(y*(-1)); // Minus eins weil umgedreht idk
   data += "t";
   data += String(theta);
   data += " ";
