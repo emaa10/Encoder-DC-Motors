@@ -87,6 +87,8 @@ void driveDistance(int distance) {
     }
     while(driving == true) {
         delay(5);
+        // hier lidar check
+        // wenn enemy detected, interruptDriving() ausführen
     }
 }
 
