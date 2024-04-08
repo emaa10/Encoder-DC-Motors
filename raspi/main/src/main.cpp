@@ -121,6 +121,8 @@ void driveTo(int to_x, int to_y) {
 
 void turnTo(int degree) {
     float angle = theta*180/M_PI;
+    float toTurn = degree - angle;
+    turn(toTurn);
 }
 
 void getDataThread() {
@@ -185,7 +187,8 @@ void setup() {
 
     // driveDistance(500);
     // turn(90);
-    driveTo(500, 500);
+    // driveTo(500, 500);
+    turnTo(-90);
     // nächste aktion wird ausgeführt, wenn gegner erkannt wird oder er am ziel ist - fixen noch
 }
 
