@@ -211,6 +211,31 @@ void drive(){
   }
 }
 
+void driveUntilSwitch() {
+  posi[0] = 0;
+  posi[1] = 0;
+
+  target[0] = 10000000000; // random high value
+  target[1] = 10000000000; // random high value
+
+  reachedGoal = false;
+
+  while(bool LIMITSWTRIGGERED=1){ // HIER ODER STATEMENT FÜR LIMIT SW
+    // getData();
+    drive();
+  }
+
+  reachedGoal = true;
+  // HIER SET POS
+  // x = ;
+  // y = ;
+
+  setMotor(0,0,lpwm[0], rpwm[0]);
+  setMotor(0,0,lpwm[1], rpwm[1]);
+
+  delay(250);
+}
+
 void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
@@ -264,6 +289,8 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2); 
       int distance = valueStr.toInt();
       driveDistance(distance); 
+    } else if (command == 'w') {
+      driveUntilSwitch();
     } else if (command == 't') {
       String valueStr = input.substring(2); 
       float angle = valueStr.toFloat(); 

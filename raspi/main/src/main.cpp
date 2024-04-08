@@ -79,6 +79,19 @@ void turn(float degrees) {
     }
 }
 
+void driveUntilSwitch() {
+    std::string message = "w";
+    std::cout << "drive until switch triggered" << std::endl;
+    serialPrintf(sPort, "%s\n", message.c_str()); 
+    while(driving == false) {
+        delay(5);
+    }
+    while(driving == true) {
+        delay(5);
+        // hier lidar check
+    }
+}
+
 void driveDistance(int distance) {
     std::string message = "d," + std::to_string(distance);
     serialPrintf(sPort, "%s\n", message.c_str());
@@ -175,6 +188,7 @@ void setup() {
     delay(2000);
 
     driveDistance(500);
+    // nächste aktion wird ausgeführt, wenn gegner erkannt wird oder er am ziel ist - fixen noch
 }
 
 void loop() {
