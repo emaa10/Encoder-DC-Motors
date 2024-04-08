@@ -216,8 +216,6 @@ void drive(){
 
   if(abs(pos[0] - target[0]) < 9 && abs(pos[1] - target[1]) < 9) {
     reachedGoal = true;
-    // Serial.println(pos[0]);
-    // Serial.println(target[0]);
   } else {
     reachedGoal = false;
   }
