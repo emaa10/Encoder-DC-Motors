@@ -189,20 +189,19 @@ void setup() {
 
     // turn(90)
 
-    driveTo(500, -500);
-    std::cout << "500, 500" << endl;
+    driveTo(500, 500);
     delay(5000);
+
     driveTo(500, 200);
-    std::cout << "500, 200" << endl;
     delay(5000);
+
     driveTo(200, 200);
-    std::cout << "200, 200" << endl;
     delay(5000);
+
     driveTo(0, 500);
-    std::cout << "0, 500" << endl;
     delay(5000);
+
     driveTo(500,500);
-    std::cout << "500, 500" << endl;
     delay(5000);
 }
 
