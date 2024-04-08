@@ -120,15 +120,15 @@ void getData() {
     while (std::getline(serial, line)) { // Lese eine Zeile vom seriellen Port
         std::stringstream ss(line);
 
-        char bullshit;
-        ss >> bullshit;
-        driving = (bullshit == 'd');
+        char tempchar;
+        ss >> tempchar;
+        driving = (tempchar == 'd');
         
-        ss >> bullshit;
+        ss >> tempchar;
         ss >> x; // Lese den Wert
-        ss >> bullshit;
+        ss >> tempchar;
         ss >> y;
-        ss >> bullshit;
+        ss >> tempchar;
         ss >> theta;
 
         std::cout << line << std::endl;
