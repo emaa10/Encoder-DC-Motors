@@ -17,6 +17,8 @@ extern float x;
 extern float y;
 extern float theta;
 
+extern bool driving;
+
 template<typename T>
 void print(const T& input);
 
@@ -31,7 +33,11 @@ extern bool pullCordConnected();
 
 void stopMotor();
 
+void interruptDriving();
+
 void turn(float degrees);
+
+void driveUntilSwitch();
 
 /**
 * @description: Drive a specific distance in MM while syncing with encoders
@@ -39,15 +45,11 @@ void turn(float degrees);
 */
 void driveDistance(int distance);
 
-extern float getCurrentX();
-
-extern float getCurrentY();
+void driveTo(int to_x, int to_y);
 
 void getDataThread();
 
 void getData();
-
-void sendData();
 
 void setup();
 

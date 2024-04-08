@@ -1,5 +1,4 @@
 #include "./main.h"
-// 
 
 using namespace std;
 
@@ -14,8 +13,6 @@ Pathplanner p(-20, 0, 10, 200, yellow);
 float x=225; // curent bot x
 float y=225; // current bot y
 float theta=0; // current bot theta
-
-char serial_data;
 
 bool driving = false;
 
@@ -120,14 +117,6 @@ void driveTo(int to_x, int to_y) {
 
     turn(angle);
     driveDistance(distance);
-}
-
-float getCurrentX() {
-    //
-}
-
-float getCurrentY() {
-    //
 }
 
 void getDataThread() {
