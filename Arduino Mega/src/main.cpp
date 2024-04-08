@@ -245,6 +245,8 @@ void drive(){
 void driveUntilSwitch() {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
   target[0] = 1000000; // random high value
   target[1] = 1000000; // random high value
@@ -271,6 +273,8 @@ void driveUntilSwitch() {
 void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
   target[0] = 7.639437 * distance;
   target[1] = 7.639437 * distance;
@@ -292,6 +296,8 @@ void driveDistance(int distance) {
 void turnAngle(int degree) {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
   int distance = 128*3.1415926/360*degree;
   target[0] = 7.639437 * distance;

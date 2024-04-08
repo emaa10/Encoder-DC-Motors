@@ -116,6 +116,8 @@ void driveTo(int to_x, int to_y) {
     std::cout << "Distance: " << distance << std::endl;
 
     turn(angle);
+    delay(2000);
+    cout << " TURN DONE " << endl;
     driveDistance(distance);
 }
 
@@ -185,10 +187,8 @@ void setup() {
 
     delay(2000);
 
-    // driveDistance(500);
-    // turn(90);
-    // driveTo(500, 500);
-    // turnTo(-90);
+    // turn(90)
+
     driveTo(500, 500);
     std::cout << "500, 500" << endl;
     delay(5000);
@@ -204,7 +204,6 @@ void setup() {
     driveTo(500,500);
     std::cout << "500, 500" << endl;
     delay(5000);
-    // nächste aktion wird ausgeführt, wenn gegner erkannt wird oder er am ziel ist - fixen noch
 }
 
 void loop() {
