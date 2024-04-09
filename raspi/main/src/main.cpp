@@ -11,8 +11,8 @@ std::ifstream serial(serialMega.c_str());
 LIDAR ldr;
 
 //odom
-float x=2000; // curent bot x
-float y=1000; // current bot y
+float x=0; // curent bot x
+float y=0; // current bot y
 float theta=0; // current bot theta
 const bool gegi = false;
 
@@ -132,10 +132,10 @@ void driveTo(int to_x, int to_y) {
     std::cout << "X: " << x << endl;
     cout << "Y: " << y << endl;
 
-    turn(angle);
+    if(angle != 0) turn(angle);
     // delay(2000);
     // cout << " TURN DONE " << endl;
-    driveDistance(distance);
+    if(distance != 0) driveDistance(distance);
 }
 
 void turnTo(int degree) {
@@ -171,7 +171,7 @@ void getData() {
         // std::cout << "X: " << x << std::endl;
         // std::cout << "Y: " << y << std::endl;
         // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-        // std::cout << "Line: " << line << std::endl;
+        std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
@@ -209,11 +209,10 @@ void setup() {
 
     // driveTo(0, 500);
 
-    driveTo(500, 500);
-    driveTo(200, 500);
-    driveTo(200, 200);
     driveTo(500, 0);
-    driveTo(500,500);
+    driveTo(500, 500);
+    driveTo(0, 500);
+    driveTo(0, 0);
 }
 
 void loop() {
