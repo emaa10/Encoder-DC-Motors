@@ -8,7 +8,6 @@ int sPort = serialOpen(serialMega.c_str(), 115200);
 const char* command1 = "screen -XS platformio quit";
 const char* command = "screen -d -m platformio /home/bot/.local/bin/pio device monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
-// Pathplanner p(-20, 0, 10, 200, yellow);
 LIDAR ldr;
 
 //odom
@@ -204,8 +203,8 @@ void setup() {
 
 void loop() {
     std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0}) << std::endl;
-    // std::cout << "Freeback: " << ldr.freeBack({{500, 500}, 0}) << std::endl;
-    // std::cout << "Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+    std::cout << "Freeback: " << ldr.freeBack({{500, 500}, 0}) << std::endl;
+    std::cout << "Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
     delay(5);
 }
 

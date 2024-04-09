@@ -2,8 +2,7 @@
 #define MAIN_H
 
 #include "./globals.h"
-// #include "./pathplanning.h"
-// #include "./structs.h"
+#include "./structs.h"
 
 /* some constants */
 
