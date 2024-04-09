@@ -98,7 +98,13 @@ void driveDistance(int distance) {
     while(driving == true) {
         delay(5);
         // hier lidar check
-        // wenn enemy detected, interruptDriving() ausführen
+        if(distance > 0 && !ldr.freeFront({{x, y}, theta*180/M_PI})) { // wenn vorne blockiert
+            interruptDriving();
+            return;
+        } else if(distance < 0 && !ldr.freeBack({{x, y}, theta*180/M_PI})) {
+            interruptDriving();
+            return;
+        }
     }
 }
 
@@ -157,7 +163,7 @@ void getData() {
         // std::cout << "X: " << x << std::endl;
         // std::cout << "Y: " << y << std::endl;
         // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-        // std::cout << "Line: " << line << std::endl;
+        std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
