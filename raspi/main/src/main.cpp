@@ -8,6 +8,7 @@ const char* command1 = "screen -XS platformio quit";
 const char* command = "screen -d -m platformio /home/bot/.local/bin/pio device monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
 Pathplanner p(-20, 0, 10, 200, yellow);
+LIDAR ldr;
 
 //odom
 float x=0; // curent bot x
@@ -157,7 +158,7 @@ void getData() {
         // std::cout << "X: " << x << std::endl;
         // std::cout << "Y: " << y << std::endl;
         // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-        std::cout << "Line: " << line << std::endl;
+        // std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
@@ -189,7 +190,7 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveDistance(500);
+    // driveDistance(500);
 
     // driveTo(0, 500);
 
@@ -201,7 +202,9 @@ void setup() {
 }
 
 void loop() {
-    // println(x);
+    std::cout << "Freefront: " << ldr.freeFront({{0, 0}, 0}) << std::endl;
+    std::cout << "Freeback: " << ldr.freeBack({{0, 0}, 0}) << std::endl;
+    std::cout << "Freeturn: " << ldr.freeTurn({{0, 0}, 0}) << std::endl;
     delay(5);
 }
 

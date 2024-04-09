@@ -5,6 +5,7 @@
 #include "structs.h"
 #include <cmath>
 #include <cstring>
+#include <iostream>
 
 using namespace sl;
 
