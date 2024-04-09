@@ -190,7 +190,7 @@ void setup() {
 
     delay(2000);
 
-    turn(90);
+    turn(-90);
 
     // driveTo(500, 500);
     // delay(5000);
