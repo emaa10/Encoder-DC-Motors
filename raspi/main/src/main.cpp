@@ -98,13 +98,13 @@ void driveDistance(int distance) {
     while(driving == true) {
         delay(5);
         // hier lidar check
-        // if(distance > 0 && !ldr.freeFront({{x, y}, theta*180/M_PI})) { // wenn vorne blockiert
-        //     interruptDriving();
-        //     return;
-        // } else if(distance < 0 && !ldr.freeBack({{x, y}, theta*180/M_PI})) {
-        //     interruptDriving();
-        //     return;
-        // }
+        if(distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
+            interruptDriving();
+            return;
+        } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
+            interruptDriving();
+            return;
+        }
     }
 }
 
@@ -163,7 +163,7 @@ void getData() {
         // std::cout << "X: " << x << std::endl;
         // std::cout << "Y: " << y << std::endl;
         // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-        // std::cout << "Line: " << line << std::endl;
+        std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
@@ -196,7 +196,7 @@ void setup() {
     system(command);
 
     delay(2000);
-    // driveDistance(500);
+    driveDistance(500);
 
     // driveTo(0, 500);
 
@@ -208,9 +208,9 @@ void setup() {
 }
 
 void loop() {
-    std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
-    std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
-    std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+    // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
+    // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
+    // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
     delay(5);
 }
 
