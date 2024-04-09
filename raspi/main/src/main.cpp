@@ -196,7 +196,7 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveDistance(500);
+    // driveDistance(500);
 
     // driveTo(0, 500);
 
@@ -208,9 +208,9 @@ void setup() {
 }
 
 void loop() {
-    // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
-    // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
-    // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+    std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
+    std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
+    std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
     delay(5);
 }
 
