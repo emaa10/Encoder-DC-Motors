@@ -121,6 +121,7 @@ public:
                 Vector point;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
+                // std::cout << "ANGLE: " << angle << std::endl;
                 int distance = nodes[pos].dist_mm_q2/4.0f;
                 
                 double angle_rad = angle * M_PI / 180.0;
@@ -132,7 +133,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 400 && (angle > 300 || angle < 60)) return false;
+                if (distance < 400 && (abs(angle) > 300 || abs(angle) < 60)) return false;
             }
         }
         return true;
