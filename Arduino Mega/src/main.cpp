@@ -302,8 +302,8 @@ void turnAngle(int degree) {
   posP[1] = 0;
 
   int distance = 128*3.1415926/360*degree;
-  target[0] = 7.639437 * distance;
-  target[1] = -7.639437 * distance;
+  target[0] = -7.639437 * distance;
+  target[1] = 7.639437 * distance;
 
   reachedGoal = false;
 
