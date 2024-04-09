@@ -193,19 +193,10 @@ void setup() {
     // driveTo(0, 500);
 
     driveTo(500, 500);
-    delay(5000);
-
     driveTo(200, 500);
-    delay(5000);
-
     driveTo(200, 200);
-    delay(5000);
-
     driveTo(500, 0);
-    delay(5000);
-
     driveTo(500,500);
-    delay(5000);
 }
 
 void loop() {
