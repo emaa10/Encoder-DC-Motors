@@ -1,5 +1,4 @@
 #include "./main.h"
-// 
 
 using namespace std;
 
@@ -11,11 +10,9 @@ std::ifstream serial(serialMega.c_str());
 Pathplanner p(-20, 0, 10, 200, yellow);
 
 //odom
-float x=225; // curent bot x
-float y=225; // current bot y
+float x=0; // curent bot x
+float y=0; // current bot y
 float theta=0; // current bot theta
-
-char serial_data;
 
 bool driving = false;
 
@@ -64,7 +61,7 @@ void turn(float degrees) {
         degrees -= 180;
     }
     while(degrees <= -180) {
-        degrees += 180;
+        degrees += 360;
     }
     std::string message = "t," + std::to_string(degrees);
     std::cout << "degrees: " << degrees << std::endl;
@@ -112,22 +109,25 @@ void driveTo(int to_x, int to_y) {
     float deltaY = to_y - y;
     float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
     float angle = theta*180/M_PI;
-    std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
-    std::cout << "Distance: " << distance << std::endl;
 
+    std::cout << "Angle davor: " << angle << std::endl;
     angle = atan2(deltaY,deltaX) * 180/PI - angle;
+    // std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
     std::cout << "Angle: " << angle << std::endl;
+    std::cout << "Distance: " << distance << std::endl;
+    std::cout << "X: " << x << endl;
+    cout << "Y: " << y << endl;
 
     turn(angle);
+    // delay(2000);
+    // cout << " TURN DONE " << endl;
     driveDistance(distance);
 }
 
-float getCurrentX() {
-    //
-}
-
-float getCurrentY() {
-    //
+void turnTo(int degree) {
+    float angle = theta*180/M_PI;
+    float toTurn = degree - angle;
+    turn(toTurn);
 }
 
 void getDataThread() {
@@ -154,7 +154,10 @@ void getData() {
         ss >> tempchar;
         ss >> theta;
 
-        std::cout << line << std::endl;
+        // std::cout << "X: " << x << std::endl;
+        // std::cout << "Y: " << y << std::endl;
+        // std::cout << "Angle: " << theta*180/M_PI << std::endl;
+        std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
@@ -187,8 +190,22 @@ void setup() {
 
     delay(2000);
 
-    driveDistance(500);
-    // nächste aktion wird ausgeführt, wenn gegner erkannt wird oder er am ziel ist - fixen noch
+    // driveTo(0, 500);
+
+    driveTo(500, 500);
+    delay(5000);
+
+    driveTo(200, 500);
+    delay(5000);
+
+    driveTo(200, 200);
+    delay(5000);
+
+    driveTo(500, 0);
+    delay(5000);
+
+    driveTo(500,500);
+    delay(5000);
 }
 
 void loop() {

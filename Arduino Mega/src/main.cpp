@@ -15,6 +15,9 @@ const float wheelDistance = 128; //abstand der encoderräder in mm, muss vllt ge
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
+unsigned long previousMillis = 0;
+const long updatePosInterval = 500;
+
 
 // How many motors
 const int NMOTORS = 2;
@@ -31,11 +34,13 @@ const int rpwm[] = {8,10};
 
 bool freePath = true;
 bool reachedGoal = false;
-float x = 225;
-float y = 225;
+float x = 0;
+float y = 0;
 float theta = 0;
 float leftEncoderChange=0;
 float rightEncoderChange=0;
+
+String DEBUG = "";
 
 //Class
 class SimplePID{
@@ -93,6 +98,7 @@ int posP[] = {0, 0};
 SimplePID pid[NMOTORS];
 
 void setMotor(int dir, int pwmVal, int lpwm, int rpwm){
+  // Serial.println("pwmVal: " + pwmVal);
   if(dir == 1){
     analogWrite(lpwm,pwmVal);
   }
@@ -136,38 +142,52 @@ void sendData() {
   data += "x";
   data += String(x);
   data += "y";
-  data += String(y);
+  data += String(y); // Minus eins weil umgedreht idk
   data += "t";
   data += String(theta);
+  data += " ";
+  data += DEBUG;
   Serial.println(data);
 }
 
-void updatePosition(float leftEncChange, float rightEncChange) {
+void updatePosition() {
+  unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis >= updatePosInterval) {
+    previousMillis = currentMillis;
+    
+      float leftEncChange = posi[0] - posP[0];
+      float rightEncChange = posi[1] - posP[1];
+      posP[0] = posi[0];
+      posP[1] = posi[1];
+
+    float leftDistance = leftEncChange / pulsesPerMM;
+    float rightDistance = rightEncChange / pulsesPerMM;
+    float distance = (leftDistance + rightDistance) / 2;
+    float dTheta = (rightDistance - leftDistance) / wheelDistance;
+    x += distance * cos(theta + dTheta / 2);
+    y += distance * sin(theta + dTheta / 2);
+    theta += dTheta;
+    theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+  }
+  // hier millis, nur alle 100ms
   // posi[0] = 0;
   // posi[1] = 0;
   // target[0] = 0;
   // target[1] = 0;
 
-  float leftDistance = leftEncChange / pulsesPerMM;
-  float rightDistance = rightEncChange / pulsesPerMM;
-  float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (rightDistance - leftDistance) / wheelDistance;
-  x += distance * cos(theta + dTheta / 2);
-  y += distance * sin(theta + dTheta / 2);
-  theta += dTheta;
-  theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
   sendData();
 }
 
 void drive(){
-  Serial.print("posi 0: ");
-  Serial.println(posi[0]);
-  Serial.print("posi 1: ");
-  Serial.println(posi[1]);
-  Serial.print("target 0: ");
-  Serial.println(target[0]);
-  Serial.print("target 1: ");
-  Serial.println(target[1]);
+  DEBUG = "";
+  DEBUG += "posi 0: ";
+  DEBUG +=  posi[0];
+  DEBUG +=  " posi 1: ";
+  DEBUG += posi[1];
+  DEBUG += " target 0: ";
+  DEBUG += target[0];
+  DEBUG += " target 1: ";
+  DEBUG += target[1];
   long currT = micros();
   float deltaT = ((float) (currT - prevT))/( 1.0e6 );
   prevT = currT;
@@ -179,11 +199,12 @@ void drive(){
       pos[k] = posi[k];
     }
   }
-  leftEncoderChange = pos[0] - posP[0];
-  rightEncoderChange = pos[1] - posP[1];
-  posP[0] = pos[0];
-  posP[1] = pos[1];
-  updatePosition(leftEncoderChange, rightEncoderChange);
+  // leftEncoderChange = pos[0] - posP[0];
+  // rightEncoderChange = pos[1] - posP[1];
+  // posP[0] = pos[0];
+  // posP[1] = pos[1];
+  // DEBUG += "PWM LEFT: " + String(lpwm[0]) + " " + String(lpwm[1]) + " PWM RIGHT: " + String(rpwm[0]) + " " + String(rpwm[1]);
+  updatePosition();
 
   if (freePath) {
     // loop through the motors
@@ -192,20 +213,30 @@ void drive(){
       // evaluate the control signal
       pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
 
-      if(pwr < 15){
-        pwr = 15;
+      if(pwr < 25){
+        pwr = 25;
       }
       // signal the motor
       setMotor(dir,pwr,lpwm[k], rpwm[k]);
+      // DEBUG += " ";
+      // DEBUG += "lpwm von " + k;
+      // DEBUG += " " + lpwm[k];
+      // DEBUG += " rpwm von " + k;
+      // DEBUG += " " + rpwm[k];
     }
 
-    reachedGoal = true; // needs testing
+
+    // reachedGoal = true; // needs testing
   }
 
-  if(abs(pos[0] - target[0]) < 8 && abs(pos[1] - target[1]) < 8) {
+  if(pos[0] > target[0]) {
+    pos[0] = target[0];
+  } else if(pos[1] > target[1]) {
+    pos[1] = target[1];
+  }
+
+  if(abs(pos[0] - target[0]) < 9 && abs(pos[1] - target[1]) < 9) {
     reachedGoal = true;
-    Serial.println(pos[0]);
-    Serial.println(target[0]);
   } else {
     reachedGoal = false;
   }
@@ -214,9 +245,11 @@ void drive(){
 void driveUntilSwitch() {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
-  target[0] = 10000000000; // random high value
-  target[1] = 10000000000; // random high value
+  target[0] = 1000000; // random high value
+  target[1] = 1000000; // random high value
 
   reachedGoal = false;
 
@@ -234,11 +267,15 @@ void driveUntilSwitch() {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void driveDistance(int distance) {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
   target[0] = 7.639437 * distance;
   target[1] = 7.639437 * distance;
@@ -254,15 +291,19 @@ void driveDistance(int distance) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void turnAngle(int degree) {
   posi[0] = 0;
   posi[1] = 0;
+  posP[0] = 0;
+  posP[1] = 0;
 
   int distance = 128*3.1415926/360*degree;
-  target[0] = 7.639437 * distance;
-  target[1] = -7.639437 * distance;
+  target[0] = -7.639437 * distance;
+  target[1] = 7.639437 * distance;
 
   reachedGoal = false;
 
@@ -275,7 +316,8 @@ void turnAngle(int degree) {
   setMotor(0,0,lpwm[1], rpwm[1]);
 
   delay(250);
-  sendData();
+  previousMillis -= 500;
+  updatePosition();
 }
 
 void getData() { // get the data and run the actions
@@ -326,4 +368,5 @@ void setup() {
 
 void loop() {  
   getData();
+  updatePosition();
 }
