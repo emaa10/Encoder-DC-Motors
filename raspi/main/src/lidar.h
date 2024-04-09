@@ -27,11 +27,37 @@ public:
         sl_lidar_response_device_info_t devinfo;
         result = drv->getDeviceInfo(devinfo);
         if (!SL_IS_OK(result)) {
+            std::cout << SL_IS_OK(result) << std::endl;
             return;
         }
 
+        // checkSLAMTECLIDARHealth(drv);
         drv->setMotorSpeed();
         result = drv->startScan(0,1);
+    }
+
+    
+    bool checkSLAMTECLIDARHealth(ILidarDriver * drv)
+    {
+        sl_result op_result;
+        sl_lidar_response_device_health_t healthinfo;
+
+        op_result = drv->getHealth(healthinfo);
+        if (SL_IS_OK(op_result)) { // the macro IS_OK is the preperred way to judge whether the operation is succeed.
+            std::cout << "SLAMTEC Lidar health status : " << healthinfo.status << std::endl;
+            if (healthinfo.status == SL_LIDAR_STATUS_ERROR) {
+                std::cout << "some error on lidar" << std::endl;
+                // enable the following code if you want slamtec lidar to be reboot by software
+                drv->reset();
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            std::cout << "Error, cannot retrieve the lidar health code: " << op_result << std::endl;
+            return false;
+        }
     }
 
     Vector getEnemyPos(RobotPose current_pos) {
@@ -92,6 +118,7 @@ public:
         if (SL_IS_OK(result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
+                std::cout << "getting data" << std::endl;
                 Vector point;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
@@ -106,7 +133,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 40 && (angle > 300 || angle < 60)) return false;
+                if (distance < 400 && (angle > 300 || angle < 60)) return false;
             }
         }
         return true;
@@ -133,7 +160,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 40) return false;
+                if (distance < 400) return false;
             }
         }
         return true;
@@ -160,7 +187,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 40 && (angle > 120 && angle < 240)) return false;
+                if (distance < 400 && (angle > 120 && angle < 240)) return false;
             }
         }
         return true;
@@ -171,6 +198,8 @@ public:
         drv->disconnect();
         delete drv;
     }
+
+
 private:
     ILidarDriver * drv;
 };

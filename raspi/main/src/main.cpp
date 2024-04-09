@@ -1,4 +1,5 @@
 #include "./main.h"
+#include "lidar.h"
 
 using namespace std;
 
