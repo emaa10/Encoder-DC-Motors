@@ -189,14 +189,15 @@ void setup() {
     system(command);
 
     delay(2000);
+    driveDistance(500);
 
     // driveTo(0, 500);
 
-    driveTo(500, 500);
-    driveTo(200, 500);
-    driveTo(200, 200);
-    driveTo(500, 0);
-    driveTo(500,500);
+    // driveTo(500, 500);
+    // driveTo(200, 500);
+    // driveTo(200, 200);
+    // driveTo(500, 0);
+    // driveTo(500,500);
 }
 
 void loop() {
