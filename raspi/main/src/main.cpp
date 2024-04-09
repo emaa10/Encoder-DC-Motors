@@ -61,7 +61,7 @@ void turn(float degrees) {
         degrees -= 180;
     }
     while(degrees <= -180) {
-        degrees += 180;
+        degrees += 360;
     }
     std::string message = "t," + std::to_string(degrees);
     std::cout << "degrees: " << degrees << std::endl;
@@ -190,22 +190,22 @@ void setup() {
 
     delay(2000);
 
-    turn(-90);
-
-    // driveTo(500, 500);
-    // delay(5000);
-
-    // driveTo(500, 200);
-    // delay(5000);
-
-    // driveTo(200, 200);
-    // delay(5000);
-
     // driveTo(0, 500);
-    // delay(5000);
 
-    // driveTo(500,500);
-    // delay(5000);
+    driveTo(500, 500);
+    delay(5000);
+
+    driveTo(200, 500);
+    delay(5000);
+
+    driveTo(200, 200);
+    delay(5000);
+
+    driveTo(500, 0);
+    delay(5000);
+
+    driveTo(500,500);
+    delay(5000);
 }
 
 void loop() {
