@@ -11,11 +11,12 @@
 
 const int lpwm[] = {9, 11};
 const int rpwm[] = {8, 10};
+String DEBUG = "";
 
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 15 // Set minimum drivable pwm value
+#define pwmCutoff 17 // Set minimum drivable pwm value
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -26,19 +27,15 @@ const float pulsesPerEncRev = 1200;
 const float encWheelDiameterCM = 5;
 const float motorWheelDiameterCM = 7;
 const float encWheelScope = encWheelDiameterCM * M_PI;
-const float motorWheelScope =
-    motorWheelDiameterCM * M_PI; // distance travelled per rev
+const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled per rev
 const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; // default pwm speed
-const float pulsesPerSec =
-    pulsesPerRev; // goal pulses per sec 1680, 1 round per second
-const float wheelDistance =
-    128; // abstand der encoderräder in mm, muss vllt geändert werden
+const float pulsesPerSec = pulsesPerRev; // goal pulses per sec 1680, 1 round per second
+const float wheelDistance = 128; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
-const float turnValue =
-    wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
+const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
 float x = 0;
 float y = 0;
@@ -47,35 +44,19 @@ bool isDriving = false;
 // Encoder read functions
 
 void ai0() {
-  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) {
-    posi[1]++;
-  } else {
-    posi[1]--;
-  }
+  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { posi[1]++; } else { posi[1]--; }
 }
 
 void ai1() {
-  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) {
-    posi[1]--;
-  } else {
-    posi[1]++;
-  }
+  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) { posi[1]--; } else { posi[1]++; }
 }
 
 void bi0() {
-  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) {
-    posi[0]++;
-  } else {
-    posi[0]--;
-  }
+  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) { posi[0]++; } else { posi[0]--; }
 }
 
 void bi1() {
-  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) {
-    posi[0]--;
-  } else {
-    posi[0]++;
-  }
+  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) { posi[0]--; } else { posi[0]++; }
 }
 
 // PID program functions
@@ -124,8 +105,8 @@ void turnAngle(int degree) {
   resetPosition();
 
   int distance = 128 * 3.1415926 / 360 * degree;
-  target[0] = 7.639437 * distance;
   target[0] = -7.639437 * distance;
+  target[1] = 7.639437 * distance;
 }
 
 // Serial Communication
@@ -160,6 +141,8 @@ void sendData() {
   data += String(y);
   data += "t";
   data += String(theta);
+  data += " ";
+  data += DEBUG;
   Serial.println(data);
 }
 
@@ -203,6 +186,15 @@ void setup() {
 
 void loop() {
   getData();
+  DEBUG = "";
+  DEBUG += "posi 0: ";
+  DEBUG +=  posi[0];
+  DEBUG +=  " posi 1: ";
+  DEBUG += posi[1];
+  DEBUG += " target 0: ";
+  DEBUG += target[0];
+  DEBUG += " target 1: ";
+  DEBUG += target[1];
 
   // time difference
   long currT = micros();
