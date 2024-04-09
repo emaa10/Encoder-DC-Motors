@@ -14,6 +14,7 @@ LIDAR ldr;
 float x=2000; // curent bot x
 float y=1000; // current bot y
 float theta=0; // current bot theta
+const bool gegi = false;
 
 bool driving = false;
 
@@ -72,7 +73,12 @@ void turn(float degrees) {
     while(driving == true) {
         delay(5);
         // hier lidar check
-        // wenn enemy detected, interruptDriving() ausführen
+        if(gegi) {
+            if(!ldr.freeTurn({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
+                interruptDriving();
+                return;
+            } 
+        }
     }
 }
 
@@ -98,12 +104,14 @@ void driveDistance(int distance) {
     while(driving == true) {
         delay(5);
         // hier lidar check
-        if(distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
-            interruptDriving();
-            return;
-        } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
-            interruptDriving();
-            return;
+        if(gegi) {
+            if(distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
+                interruptDriving();
+                return;
+            } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
+                interruptDriving();
+                return;
+            }
         }
     }
 }
@@ -197,15 +205,15 @@ void setup() {
 
     delay(2000);
     // driveDistance(-1000);
-    driveDistance(1000);
+    // driveDistance(-1000);
 
     // driveTo(0, 500);
 
-    // driveTo(500, 500);
-    // driveTo(200, 500);
-    // driveTo(200, 200);
-    // driveTo(500, 0);
-    // driveTo(500,500);
+    driveTo(500, 500);
+    driveTo(200, 500);
+    driveTo(200, 200);
+    driveTo(500, 0);
+    driveTo(500,500);
 }
 
 void loop() {
