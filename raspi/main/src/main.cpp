@@ -14,7 +14,11 @@ LIDAR ldr;
 float x=0; // curent bot x
 float y=0; // current bot y
 float theta=0; // current bot theta
+float tox=0; // for COA
+float toy=0;
 const bool gegi = false;
+const bool teamYellow = false;
+bool gegiTriggered = false;
 
 bool driving = false;
 
@@ -55,6 +59,7 @@ void interruptDriving() {
 }
 
 void turn(float degrees) {
+    degrees = teamYellow?degrees:-degrees;
     while(degrees >= 360) {
         degrees -= 360;
     }
@@ -76,6 +81,7 @@ void turn(float degrees) {
         if(gegi) {
             if(!ldr.freeTurn({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
                 interruptDriving();
+                gegiTriggered = true;
                 return;
             } 
         }
@@ -107,9 +113,11 @@ void driveDistance(int distance) {
         if(gegi) {
             if(distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
                 interruptDriving();
+                gegiTriggered = true;
                 return;
             } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
                 interruptDriving();
+                gegiTriggered = true;
                 return;
             }
         }
@@ -117,6 +125,8 @@ void driveDistance(int distance) {
 }
 
 void driveTo(int to_x, int to_y) {
+    tox = to_x;
+    toy = to_y;
     std::cout << "To X: " << to_x << ", To Y: " << to_y << std::endl;
     std::cout << "X: " << x << ", Y: " << y << std::endl;
     float deltaX = to_x - x;
@@ -133,9 +143,23 @@ void driveTo(int to_x, int to_y) {
     cout << "Y: " << y << endl;
 
     if(angle != 0) turn(angle);
-    // delay(2000);
-    // cout << " TURN DONE " << endl;
+    if(gegiTriggered) {
+        gegiTriggered = false;
+        float angle = theta*180/M_PI;
+        float deltaX = to_x - x;
+        float deltaY = to_y - y;
+        float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
+        angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
+    }
     if(distance != 0) driveDistance(distance);
+    if(gegiTriggered) {
+        gegiTriggered = false;
+        float angle = theta*180/M_PI;
+        float deltaX = to_x - x;
+        float deltaY = to_y - y;
+        float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
+        angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
+    }
 }
 
 void turnTo(int degree) {
@@ -163,8 +187,10 @@ void getData() {
         
         ss >> tempchar;
         ss >> x; // Lese den Wert
+        x = teamYellow?x:-x;
         ss >> tempchar;
         ss >> y;
+        y = teamYellow?y:-y;
         ss >> tempchar;
         ss >> theta;
 
@@ -209,10 +235,10 @@ void setup() {
 
     // driveTo(0, 500);
 
-    driveTo(500, 0);
+    // driveTo(500, 0);
     driveTo(500, 500);
-    driveTo(0, 500);
-    driveTo(0, 0);
+    // driveTo(0, 500);
+    // driveTo(0, 0);
 }
 
 void loop() {
