@@ -120,7 +120,7 @@ public:
             for (int pos = 0; pos < (int)count ; ++pos) {
                 Vector point;
                 //Calculate point
-                double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
+                double angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
                 angle = fmod(angle + 360.0, 360.0);
                 // std::cout << "ANGLE: " << angle << std::endl;
                 int distance = nodes[pos].dist_mm_q2/4.0f;
@@ -151,7 +151,7 @@ public:
             for (int pos = 0; pos < (int)count ; ++pos) {
                 Vector point;
                 //Calculate point
-                double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
+                double angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
                 angle = fmod(angle + 360.0, 360.0);
                 int distance = nodes[pos].dist_mm_q2/4.0f;
                 
@@ -179,7 +179,7 @@ public:
             for (int pos = 0; pos < (int)count ; ++pos) {
                 Vector point;
                 //Calculate point
-                double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
+                double angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
                 angle = fmod(angle + 360.0, 360.0);
                 // std::cout << "ANGLE: " << angle << std::endl;
                 int distance = nodes[pos].dist_mm_q2/4.0f;

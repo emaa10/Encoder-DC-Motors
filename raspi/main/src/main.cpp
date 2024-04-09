@@ -197,7 +197,7 @@ void setup() {
 
     delay(2000);
     // driveDistance(-1000);
-    driveDistance(-1000);
+    driveDistance(1000);
 
     // driveTo(0, 500);
 
