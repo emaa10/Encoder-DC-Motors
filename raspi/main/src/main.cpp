@@ -11,8 +11,8 @@ std::ifstream serial(serialMega.c_str());
 LIDAR ldr;
 
 //odom
-float x=0; // curent bot x
-float y=0; // current bot y
+float x=225; // curent bot x
+float y=225; // current bot y
 float theta=0; // current bot theta
 
 bool driving = false;
@@ -102,6 +102,7 @@ void driveDistance(int distance) {
             interruptDriving();
             return;
         } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
+            std::cout << "sus" << std::endl;
             interruptDriving();
             return;
         }
@@ -163,7 +164,7 @@ void getData() {
         // std::cout << "X: " << x << std::endl;
         // std::cout << "Y: " << y << std::endl;
         // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-        std::cout << "Line: " << line << std::endl;
+        // std::cout << "Line: " << line << std::endl;
         line = "";
     }
 
@@ -196,7 +197,8 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveDistance(-1000);
+    // driveDistance(-1000);
+    // driveDistance(-1000);
 
     // driveTo(0, 500);
 
@@ -208,9 +210,9 @@ void setup() {
 }
 
 void loop() {
-    // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
-    // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
-    // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+    std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
+    std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
+    std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
     delay(5);
 }
 

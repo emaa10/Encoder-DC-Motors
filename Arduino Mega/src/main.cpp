@@ -16,7 +16,7 @@ String DEBUG = "";
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 17 // Set minimum drivable pwm value
+#define pwmCutoff 12 // Set minimum drivable pwm value
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -41,8 +41,8 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue =
     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-float x = 0;
-float y = 0;
+float x = 225;
+float y = 225;
 float theta = 0;
 bool isDriving = false;
 
@@ -160,7 +160,7 @@ void getData() { // get the data and run the actions
 
 void sendData() {
   String data;
-  data += isDriving ? "s" : "d";
+  data += isDriving ? "d" : "s";
   data += "x";
   data += String(x);
   data += "y";
@@ -260,12 +260,17 @@ void loop() {
     int pwr, dir;
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwr, dir);
+    if(pwr == 0) {
+      dir=0;
+    }
     // signal the motor
     setMotor(dir, pwr, lpwm[k], rpwm[k]);
     // Check if the motor is driving
     // isDriving = isDriving || abs(abs(pos[k]) - abs(target[k])) <= 20;
     isDriving = isDriving || pwr > pwmCutoff;
   }
+
+
 
   if (!isDriving) {
     resetPosition();
