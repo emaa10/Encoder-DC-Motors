@@ -196,7 +196,7 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveDistance(500);
+    driveDistance(1000);
 
     // driveTo(0, 500);
 
