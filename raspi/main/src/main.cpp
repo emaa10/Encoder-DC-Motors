@@ -8,7 +8,7 @@ int sPort = serialOpen(serialMega.c_str(), 115200);
 const char* command1 = "screen -XS platformio quit";
 const char* command = "screen -d -m platformio /home/bot/.local/bin/pio device monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
-Pathplanner p(-20, 0, 10, 200, yellow);
+// Pathplanner p(-20, 0, 10, 200, yellow);
 LIDAR ldr;
 
 //odom
@@ -17,7 +17,6 @@ float y=0; // current bot y
 float theta=0; // current bot theta
 
 bool driving = false;
-
 
 template<typename T>
 void print(const T& input) {
@@ -113,7 +112,7 @@ void driveTo(int to_x, int to_y) {
     float angle = theta*180/M_PI;
 
     std::cout << "Angle davor: " << angle << std::endl;
-    angle = atan2(deltaY,deltaX) * 180/PI - angle;
+    angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
     // std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
     std::cout << "Angle: " << angle << std::endl;
     std::cout << "Distance: " << distance << std::endl;
@@ -181,6 +180,7 @@ void setup() {
         std::cerr << "Fehler beim Öffnen des seriellen Ports." << std::endl;
     }
 
+
     std::signal(SIGINT, signalHandler); // control c stops motors
     pinMode(8, INPUT);
     std::thread t(getDataThread); // get current pos from arduino
@@ -203,9 +203,9 @@ void setup() {
 }
 
 void loop() {
-    std::cout << "Freefront: " << ldr.freeFront({{0, 0}, 0}) << std::endl;
-    std::cout << "Freeback: " << ldr.freeBack({{0, 0}, 0}) << std::endl;
-    std::cout << "Freeturn: " << ldr.freeTurn({{0, 0}, 0}) << std::endl;
+    std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0}) << std::endl;
+    // std::cout << "Freeback: " << ldr.freeBack({{500, 500}, 0}) << std::endl;
+    // std::cout << "Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
     delay(5);
 }
 

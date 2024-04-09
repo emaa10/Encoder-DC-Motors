@@ -1,6 +1,5 @@
 #pragma once
 
-#include "lidar.h"
 #include "structs.h"
 #include <vector>
 
@@ -28,7 +27,7 @@ enum DropOffAreas {
 
 class Pathplanner {
     private:
-        LIDAR ldr;
+        // LIDAR ldr;
         bool isLegalPos(Vector pos);
         bool findIntersection(VectorFunction& vector1, VectorFunction& vector2, Vector& intersectionPoint);
         bool findIntersectionWithCircle(VectorFunction& vector1, const Vector& circleCenter, double circleRadius, Vector& intersection);
