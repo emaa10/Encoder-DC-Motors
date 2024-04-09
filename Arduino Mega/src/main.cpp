@@ -27,36 +27,60 @@ const float pulsesPerEncRev = 1200;
 const float encWheelDiameterCM = 5;
 const float motorWheelDiameterCM = 7;
 const float encWheelScope = encWheelDiameterCM * M_PI;
-const float motorWheelScope = motorWheelDiameterCM * M_PI; // distance travelled per rev
+const float motorWheelScope =
+    motorWheelDiameterCM * M_PI; // distance travelled per rev
 const float pulsesPerRev = pulsesPerEncRev * (motorWheelScope / encWheelScope);
 const float pulsesPerMM = pulsesPerRev / motorWheelScope / 10;
 const float pulsesPerCM = pulsesPerRev / motorWheelScope;
 const float pwmSpeed = 100; // default pwm speed
-const float pulsesPerSec = pulsesPerRev; // goal pulses per sec 1680, 1 round per second
-const float wheelDistance = 128; // abstand der encoderräder in mm, muss vllt geändert werden
+const float pulsesPerSec =
+    pulsesPerRev; // goal pulses per sec 1680, 1 round per second
+const float wheelDistance =
+    128; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
-const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
+const float turnValue =
+    wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
 float x = 0;
 float y = 0;
 float theta = 0;
 bool isDriving = false;
+
+long lastPosUpdate;
+bool leftTriggered = true;
+bool rightTriggered = true;
 // Encoder read functions
 
 void ai0() {
-  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { posi[1]++; } else { posi[1]--; }
+  if (digitalRead(LEFT_ENC_A_PHASE) == LOW) {
+    posi[1]++;
+  } else {
+    posi[1]--;
+  }
 }
 
 void ai1() {
-  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) { posi[1]--; } else { posi[1]++; }
+  if (digitalRead(LEFT_ENC_B_PHASE) == LOW) {
+    posi[1]--;
+  } else {
+    posi[1]++;
+  }
 }
 
 void bi0() {
-  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) { posi[0]++; } else { posi[0]--; }
+  if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) {
+    posi[0]++;
+  } else {
+    posi[0]--;
+  }
 }
 
 void bi1() {
-  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) { posi[0]--; } else { posi[0]++; }
+  if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) {
+    posi[0]--;
+  } else {
+    posi[0]++;
+  }
 }
 
 // PID program functions
@@ -123,7 +147,9 @@ void getData() { // get the data and run the actions
       int distance = valueStr.toInt();
       driveDistance(distance);
     } else if (command == 'w') {
-      // driveUntilSwitch();
+      leftTriggered = false;
+      rightTriggered = false;
+      driveDistance(3000);
     } else if (command == 't') {
       String valueStr = input.substring(2);
       float angle = valueStr.toFloat();
@@ -180,6 +206,8 @@ void setup() {
   for (int k = 0; k < NMOTORS; k++) {
     pid[k].setParams(1, 0, 0, 100);
   }
+
+  lastPosUpdate = micros();
 }
 
 // Loop function
@@ -188,8 +216,8 @@ void loop() {
   getData();
   DEBUG = "";
   DEBUG += "posi 0: ";
-  DEBUG +=  posi[0];
-  DEBUG +=  " posi 1: ";
+  DEBUG += posi[0];
+  DEBUG += " posi 1: ";
   DEBUG += posi[1];
   DEBUG += " target 0: ";
   DEBUG += target[0];
@@ -210,10 +238,21 @@ void loop() {
   }
 
   // Update Changed Position
-  // alle 50ms 
-  updatePosition(pos[0] - lastPos[0], pos[1] - lastPos[1]);
-  lastPos[0] = pos[0];
-  lastPos[1] = pos[1];
+  // alle 50ms
+  if (currT - lastPosUpdate >= 50000) {
+    updatePosition(pos[0] - lastPos[0], pos[1] - lastPos[1]);
+    lastPos[0] = pos[0];
+    lastPos[1] = pos[1];
+    lastPosUpdate = currT;
+  }
+
+  if (!leftTriggered && true) { // && limit switch triggered
+    target[1] = pos[1];
+  }
+
+  if (!rightTriggered && true) { // && limit switch triggered
+    target[0] = pos[0];
+  }
 
   isDriving = false;
   // loop through the motors
