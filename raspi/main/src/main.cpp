@@ -11,13 +11,13 @@ std::ifstream serial(serialMega.c_str());
 LIDAR ldr;
 
 //odom
-float x=0; // curent bot x
-float y=0; // current bot y
+float x=225; // curent bot x
+float y=225; // current bot y
 float theta=0; // current bot theta
 float tox=0; // for COA
 float toy=0;
-const bool gegi = false;
-const bool teamYellow = false;
+const bool gegi = true;
+const bool teamYellow = true;
 bool gegiTriggered = false;
 
 bool driving = false;
@@ -236,7 +236,7 @@ void setup() {
     // driveTo(0, 500);
 
     // driveTo(500, 0);
-    driveTo(500, 500);
+    driveTo(1000, 1000);
     // driveTo(0, 500);
     // driveTo(0, 0);
 }
