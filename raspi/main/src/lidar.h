@@ -118,7 +118,6 @@ public:
         if (SL_IS_OK(result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
-                std::cout << "getting data" << std::endl;
                 Vector point;
                 //Calculate point
                 double angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f - current_pos.angle;
