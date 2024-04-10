@@ -230,17 +230,17 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveTo(225, 800);
-    driveTo(1000, 800);
-    std::cout << "turn" << std::endl;
+    // driveTo(225, 800);
+    // driveTo(1000, 800);
+    // std::cout << "turn" << std::endl;
 
-    turn(180);
-    driveTo(200, 800);
-    driveDistance(-200);
+    // turn(180);
+    // driveTo(200, 800);
+    // driveDistance(-200);
 
-    // driveTo(2000, 800);
-    driveTo(2800, 800);
-    // driveDistance(1000);
+    // // driveTo(2000, 800);
+    // driveTo(2800, 800);
+    driveDistance(1000);
     // driveDistance(-1000);
     // driveDistance(-1000);
 
