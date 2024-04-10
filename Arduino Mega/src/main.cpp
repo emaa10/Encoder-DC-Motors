@@ -189,7 +189,10 @@ void updatePosition() {
   theta += dTheta;
   theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
 
-  if (leftEncChange < pulsesCutoff && rightEncChange < pulsesCutoff) {
+  int maxD = fabs(target[0] - pos[0]);
+  maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
+  if (leftEncChange < pulsesCutoff && rightEncChange < pulsesCutoff &&
+      maxD < 10) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];
