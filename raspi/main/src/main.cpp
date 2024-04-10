@@ -16,7 +16,7 @@ float y=225; // current bot y
 float theta=0; // current bot theta
 float tox=0; // for COA
 float toy=0;
-const bool gegi = true;
+const bool gegi = false;
 const bool teamYellow = true;
 bool gegiTriggered = false;
 
@@ -63,7 +63,7 @@ void turn(float degrees) {
     while(degrees >= 360) {
         degrees -= 360;
     }
-    while(degrees >= 180) {
+    while(degrees > 180) {
         degrees -= 180;
     }
     while(degrees <= -180) {
@@ -82,7 +82,7 @@ void turn(float degrees) {
             if(!ldr.freeTurn({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
                 interruptDriving();
                 gegiTriggered = true;
-                return;
+                while(1) {}
             } 
         }
     }
@@ -114,11 +114,11 @@ void driveDistance(int distance) {
             if(distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta*180/M_PI})) { // wenn vorne blockiert
                 interruptDriving();
                 gegiTriggered = true;
-                return;
+                while(1) {}
             } else if(distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta*180/M_PI})) {
                 interruptDriving();
                 gegiTriggered = true;
-                return;
+                while(1) {}
             }
         }
     }
@@ -142,24 +142,24 @@ void driveTo(int to_x, int to_y) {
     std::cout << "X: " << x << endl;
     cout << "Y: " << y << endl;
 
-    if(angle != 0) turn(angle);
-    if(gegiTriggered) {
-        gegiTriggered = false;
-        float angle = theta*180/M_PI;
-        float deltaX = to_x - x;
-        float deltaY = to_y - y;
-        float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
-        angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
-    }
+    if(!(angle <= 3 && angle >= -3)) turn(angle);
+    // if(gegiTriggered) {
+    //     gegiTriggered = false;
+    //     float angle = theta*180/M_PI;
+    //     float deltaX = to_x - x;
+    //     float deltaY = to_y - y;
+    //     float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
+    //     angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
+    // }
     if(distance != 0) driveDistance(distance);
-    if(gegiTriggered) {
-        gegiTriggered = false;
-        float angle = theta*180/M_PI;
-        float deltaX = to_x - x;
-        float deltaY = to_y - y;
-        float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
-        angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
-    }
+    // if(gegiTriggered) {
+    //     gegiTriggered = false;
+    //     float angle = theta*180/M_PI;
+    //     float deltaX = to_x - x;
+    //     float deltaY = to_y - y;
+    //     float distance = sqrt((deltaX*deltaX) + (deltaY*deltaY));
+    //     angle = atan2(deltaY,deltaX) * 180/M_PI - angle;
+    // }
 }
 
 void turnTo(int degree) {
@@ -230,8 +230,17 @@ void setup() {
     system(command);
 
     delay(2000);
-    driveTo(225, 650);
-    driveTo(1000, 650);
+    driveTo(225, 800);
+    driveTo(1000, 800);
+    std::cout << "turn" << std::endl;
+
+    turn(180);
+    driveTo(200, 800);
+    driveDistance(-200);
+
+    // driveTo(2000, 800);
+    driveTo(2800, 800);
+    // driveDistance(1000);
     // driveDistance(-1000);
     // driveDistance(-1000);
 

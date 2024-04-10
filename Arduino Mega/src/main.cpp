@@ -204,7 +204,7 @@ void setup() {
   target[1] = 0;
 
   for (int k = 0; k < NMOTORS; k++) {
-    pid[k].setParams(1, 0, 0, 70);
+    pid[k].setParams(1, 0, 0, 100);
   }
 
   lastPosUpdate = micros();
