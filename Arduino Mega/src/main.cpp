@@ -46,6 +46,11 @@ const float turnValue =
 float x = 225;
 float y = 225;
 float theta = 0;
+
+float extrax = 0;
+float extray = 0;
+float extraTheta = 0;
+
 bool isDriving = false;
 
 long lastPosUpdate;
@@ -102,6 +107,11 @@ void updatePosition();
 void resetPosition() {
   updatePosition();
 
+  x += extrax;
+  y += extray;
+  extrax = 0;
+  extray = 0;
+
   lastPos[0] = 0;
   lastPos[1] = 0;
   posi[0] = 0;
@@ -156,9 +166,9 @@ void sendData() {
   String data;
   data += isDriving ? "d" : "s";
   data += "x";
-  data += String(x);
+  data += String(x + extrax);
   data += "y";
-  data += String(y);
+  data += String(y + extray);
   data += "t";
   data += String(theta);
   data += " ";
@@ -175,18 +185,19 @@ void updatePosition() {
       pos[k] = posi[k];
     }
   }
-  float leftEncChange = pos[0] - lastPos[0];
-  float rightEncChange = pos[1] - lastPos[1];
+
+  float leftEncChange = pos[1] - lastPos[1];
+  float rightEncChange = pos[0] - lastPos[0];
   lastPos[0] = pos[0];
   lastPos[1] = pos[1];
 
-  float leftDistance = leftEncChange / pulsesPerMM;
-  float rightDistance = rightEncChange / pulsesPerMM;
+  float leftDistance = pos[1] / pulsesPerMM;
+  float rightDistance = pos[0] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
   float dTheta = (rightDistance - leftDistance) / wheelDistance;
-  x += distance * cos(theta + dTheta / 2);
-  y += distance * sin(theta + dTheta / 2);
-  theta += dTheta;
+  extrax = distance * cos(theta + dTheta / 2);
+  extray = distance * sin(theta + dTheta / 2);
+  extraTheta = dTheta;
   theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
 
   int maxD = fabs(target[0] - pos[0]);
@@ -277,8 +288,6 @@ void loop() {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
     scaledFactor[k] = (float)pwm[k] / pwmMax;
-    // signal the motor
-    // setMotor(dir, pwr, lpwm[k], rpwm[k]);
   }
   float maxFactor =
       scaledFactor[0] < scaledFactor[1] ? scaledFactor[1] : scaledFactor[0];
