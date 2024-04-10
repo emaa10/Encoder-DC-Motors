@@ -230,13 +230,15 @@ void setup() {
     system(command);
 
     delay(2000);
+    driveTo(225, 650);
+    driveTo(1000, 650);
     // driveDistance(-1000);
     // driveDistance(-1000);
 
     // driveTo(0, 500);
 
     // driveTo(500, 0);
-    driveTo(1000, 1000);
+    // driveTo(1000, 1000);
     // driveTo(0, 500);
     // driveTo(0, 0);
 }
