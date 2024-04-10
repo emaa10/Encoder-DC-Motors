@@ -79,7 +79,6 @@ void turn(float degrees) {
       }
     }
   }
-  stopMotor();
 }
 
 void driveUntilSwitch() {
@@ -93,7 +92,6 @@ void driveUntilSwitch() {
     delay(5);
     // hier lidar check
   }
-  stopMotor();
 }
 
 void driveDistance(int distance) {
@@ -122,7 +120,6 @@ void driveDistance(int distance) {
       }
     }
   }
-  stopMotor();
 }
 
 void driveTo(int to_x, int to_y) {
