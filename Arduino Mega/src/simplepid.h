@@ -37,16 +37,9 @@ public:
 
     // motor power
     pwr = (int)fabs(u);
-    if (pwr > umax) {
-      pwr = umax;
-    }
 
     // motor direction
-    dir = 1;
-    if (u < 0) {
-      dir = -1;
-    }
-
+    dir = u > 0 ? 1 : u < 0 ? -1 : 0;
     // store previous error
     eprev = e;
   }

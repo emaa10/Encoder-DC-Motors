@@ -17,6 +17,8 @@ String DEBUG = "";
 
 #define NMOTORS 2
 #define pwmCutoff 12 // Set minimum drivable pwm value
+#define pulsesCutoff 10
+#define pwmMax 100
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -96,17 +98,9 @@ void setMotor(int dir, int pwmVal, int lpwm, int rpwm) {
   }
 }
 
-void updatePosition(float leftEncChange, float rightEncChange);
+void updatePosition();
 void resetPosition() {
-  // Read the position in an atomic block to avoid a potential misread
-  int pos[NMOTORS];
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    for (int k = 0; k < NMOTORS; k++) {
-      pos[k] = posi[k];
-    }
-  }
-  // Update Changed Position
-  updatePosition(pos[0] - lastPos[0], pos[1] - lastPos[1]);
+  updatePosition();
 
   lastPos[0] = 0;
   lastPos[1] = 0;
@@ -174,7 +168,18 @@ void sendData() {
 
 // Position update function
 
-void updatePosition(float leftEncChange, float rightEncChange) {
+void updatePosition() {
+  int pos[NMOTORS];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    for (int k = 0; k < NMOTORS; k++) {
+      pos[k] = posi[k];
+    }
+  }
+  float leftEncChange = pos[0] - lastPos[0];
+  float rightEncChange = pos[1] - lastPos[1];
+  lastPos[0] = pos[0];
+  lastPos[1] = pos[1];
+
   float leftDistance = leftEncChange / pulsesPerMM;
   float rightDistance = rightEncChange / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
@@ -183,6 +188,15 @@ void updatePosition(float leftEncChange, float rightEncChange) {
   y += distance * sin(theta + dTheta / 2);
   theta += dTheta;
   theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+
+  if (leftEncChange < pulsesCutoff && rightEncChange < pulsesCutoff) {
+    isDriving = false;
+    target[0] = pos[0];
+    target[1] = pos[1];
+  } else {
+    isDriving = true;
+  }
+
   sendData();
 }
 
@@ -240,9 +254,7 @@ void loop() {
   // Update Changed Position
   // alle 50ms
   if (currT - lastPosUpdate >= 50000) {
-    updatePosition(pos[0] - lastPos[0], pos[1] - lastPos[1]);
-    lastPos[0] = pos[0];
-    lastPos[1] = pos[1];
+    updatePosition();
     lastPosUpdate = currT;
   }
 
@@ -254,25 +266,25 @@ void loop() {
     target[0] = pos[0];
   }
 
-  isDriving = false;
+  int pwm[NMOTORS];
+  int dir[NMOTORS];
+  float scaledFactor[NMOTORS];
   // loop through the motors
   for (int k = 0; k < NMOTORS; k++) {
-    int pwr, dir;
     // evaluate the control signal
-    pid[k].evalu(pos[k], target[k], deltaT, pwr, dir);
-    if(pwr == 0) {
-      dir=0;
-    }
+    pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
+    scaledFactor[k] = (float)pwm[k] / pwmMax;
     // signal the motor
-    setMotor(dir, pwr, lpwm[k], rpwm[k]);
-    // Check if the motor is driving
-    // isDriving = isDriving || abs(abs(pos[k]) - abs(target[k])) <= 20;
-    isDriving = isDriving || pwr > pwmCutoff;
+    // setMotor(dir, pwr, lpwm[k], rpwm[k]);
+  }
+  float maxFactor =
+      scaledFactor[0] < scaledFactor[1] ? scaledFactor[1] : scaledFactor[0];
+  if (maxFactor > 1) {
+    pwm[0] /= maxFactor;
+    pwm[1] /= maxFactor;
   }
 
-
-
-  if (!isDriving) {
-    resetPosition();
+  for (int k = 0; k < NMOTORS; k++) {
+    setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
   }
 }
