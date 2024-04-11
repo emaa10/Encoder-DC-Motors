@@ -16,8 +16,8 @@ String DEBUG = "";
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 12 // Set minimum drivable pwm value
-#define pulsesCutoff 3
+#define pwmCutoff 17 // Set minimum drivable pwm value
+#define pulsesCutoff 5
 #define pwmMax 100
 long prevT = 0;
 volatile int posi[] = {0, 0};
