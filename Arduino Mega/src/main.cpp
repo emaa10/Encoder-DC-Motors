@@ -16,8 +16,8 @@ String DEBUG = "";
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 18 // Set minimum drivable pwm value
-#define pulsesCutoff 5
+#define pwmCutoff 20 // Set minimum drivable pwm value
+#define pulsesCutoff 3
 #define pwmMax 100
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -43,7 +43,7 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float turnValue = 7.7;
+const float turnValue = 7.79;
 const float driveValue = 7.639437;
 
 float x = 0;
