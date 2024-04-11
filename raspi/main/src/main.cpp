@@ -250,9 +250,7 @@ void setup() {
   // driveDistance(-1000);
 
   // driveDistance(1000);
-  turn(180);
-  // driveDistance(1000);
-  turn(-180);
+  driveTo(1000,0);
   // turn(180);
   // turn(180);
 
