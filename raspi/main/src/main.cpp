@@ -196,7 +196,7 @@ void getData() {
     // std::cout << "X: " << x << std::endl;
     // std::cout << "Y: " << y << std::endl;
     // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-    std::cout << "Line: " << line << std::endl;
+    // std::cout << "Line: " << line << std::endl;
     line = "";
   }
 }
@@ -226,7 +226,6 @@ void setup() {
   delay(100);
   system(command);
 
-  delay(2000);
   // driveTo(225, 800);
   // driveTo(1000, 800);
   // std::cout << "turn" << std::endl;
@@ -249,11 +248,12 @@ void setup() {
 
   // driveDistance(-1000);
   // driveDistance(-1000);
-  driveTo(500, 500);
-  driveTo(200, 500);
-  driveTo(200, 200);
-  driveTo(500, 0);
-  driveTo(500,500);
+
+  // driveTo(500, 500);
+  // driveTo(200, 500);
+  // driveTo(200, 200);
+  // driveTo(500, 0);
+  // driveTo(500,500);
 
 }
 
@@ -261,6 +261,7 @@ void loop() {
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+  std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
 }
 
