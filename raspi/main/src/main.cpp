@@ -249,7 +249,7 @@ void setup() {
   // driveDistance(-1000);
   // driveDistance(-1000);
 
-  // driveTo(500, 500);
+  driveTo(500, 500);
   // driveTo(200, 500);
   // driveTo(200, 200);
   // driveTo(500, 0);

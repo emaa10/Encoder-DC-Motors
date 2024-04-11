@@ -198,7 +198,7 @@ void updatePosition() {
   float distance = (leftDistance + rightDistance) / 2;
   float dTheta = (rightDistance - leftDistance) / wheelDistance;
   extrax = distance * cos(theta + dTheta / 2);
-  extray = distance * sin(theta + dTheta / 2);
+  extray = distance * sin(theta + dTheta / 2) *(-1);
   extraTheta = dTheta;
   extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
 
