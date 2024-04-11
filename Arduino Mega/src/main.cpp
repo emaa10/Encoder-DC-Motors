@@ -198,7 +198,7 @@ void updatePosition() {
   extrax = distance * cos(theta + dTheta / 2);
   extray = distance * sin(theta + dTheta / 2);
   extraTheta = dTheta;
-  theta = fmod((theta + 2 * M_PI), (2 * M_PI)); // test in radian
+  extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
 
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
