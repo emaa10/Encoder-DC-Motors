@@ -112,7 +112,7 @@ void resetPosition() {
   extrax = 0;
   extray = 0;
   theta += extraTheta;
-  extraTheta=0;
+  extraTheta = 0;
 
   lastPos[0] = 0;
   lastPos[1] = 0;
@@ -172,9 +172,9 @@ void sendData() {
   data += "y";
   data += String(y + extray);
   data += "t";
-  data += String(theta+extraTheta);
-  DEBUG += "Theta: " + String(theta*180/PI);
-  DEBUG += " ExtraTheta: " + String(extraTheta*180/PI);
+  data += String(theta + extraTheta);
+  DEBUG += "Theta: " + String(theta * 180 / PI);
+  DEBUG += " ExtraTheta: " + String(extraTheta * 180 / PI);
   data += " ";
   data += DEBUG;
   Serial.println(data);
@@ -206,8 +206,8 @@ void updatePosition() {
 
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
-  if (leftEncChange < pulsesCutoff && rightEncChange < pulsesCutoff &&
-      maxD < 10) {
+  if (fabs(leftEncChange) < pulsesCutoff &&
+      fabs(rightEncChange) < pulsesCutoff && maxD < 10) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];
