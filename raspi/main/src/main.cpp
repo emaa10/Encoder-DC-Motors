@@ -12,8 +12,8 @@ std::ifstream serial(serialMega.c_str());
 LIDAR ldr;
 
 // odom
-float x = 225;   // curent bot x
-float y = 225;   // current bot y
+float x = 0;   // curent bot x
+float y = 0;   // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
@@ -232,7 +232,7 @@ void setup() {
   // std::cout << "turn" << std::endl;
 
   delay(2000);
-  driveDistance(1000);
+  // driveDistance(1000);
   // driveTo(225, 800);
   // driveTo(1000, 800);
   // std::cout << "turn" << std::endl;
@@ -242,12 +242,18 @@ void setup() {
   // // driveDistance(-200);
 
   // // driveTo(2000, 800);
-  // driveTo(2800, 800);
+  // driveTo(2000, 800);
+  // driveTo(225, 225);
   // driveDistance(1000);
   // turn(180);
 
   // driveDistance(-1000);
   // driveDistance(-1000);
+  driveTo(500, 500);
+  driveTo(200, 500);
+  driveTo(200, 200);
+  driveTo(500, 0);
+  driveTo(500,500);
 
 }
 
