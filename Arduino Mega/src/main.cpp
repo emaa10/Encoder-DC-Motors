@@ -112,6 +112,12 @@ void resetPosition() {
   extrax = 0;
   extray = 0;
   theta += extraTheta;
+  while(theta > 2 * M_PI) {
+    theta -= 2*M_PI;
+  }
+  while(theta < -2*M_PI) {
+    theta += 2*M_PI;
+  }
   extraTheta = 0;
 
   lastPos[0] = 0;
@@ -202,7 +208,13 @@ void updatePosition() {
   extrax = distance * cos(theta + dTheta / 2);
   extray = distance * sin(theta + dTheta / 2);
   extraTheta = dTheta;
-  extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
+  // extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
+  while(extraTheta > 2 * M_PI) {
+    extraTheta -= 2*M_PI;
+  }
+  while(extraTheta < -2*M_PI) {
+    extraTheta += 2*M_PI;
+  }
 
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
