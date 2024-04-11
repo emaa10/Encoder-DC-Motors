@@ -17,7 +17,7 @@ float y = 0;   // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
-const bool gegi = false;
+const bool gegi = true;
 const bool teamYellow = true;
 bool gegiTriggered = false;
 
@@ -246,9 +246,9 @@ void setup() {
   // driveDistance(1000);
   // turn(180);
   // driveDistance(1000);
-  turn(180);
+  // turn(180);
   // driveDistance(1000);
-  turn(180);
+  // turn(180);
   // driveDistance(1000);
   // turn(180);
   // driveDistance(1000);
