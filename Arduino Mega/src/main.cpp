@@ -172,9 +172,9 @@ void sendData() {
   data += "y";
   data += String(y + extray);
   data += "t";
-  data += String(theta + extraTheta);
-  DEBUG += "Theta: " + String(theta);
-  DEBUG += " ExtraTheta: " + String(extraTheta);
+  data += String(theta+extraTheta);
+  DEBUG += "Theta: " + String(theta*180/PI);
+  DEBUG += " ExtraTheta: " + String(extraTheta*180/PI);
   data += " ";
   data += DEBUG;
   Serial.println(data);
@@ -195,12 +195,12 @@ void updatePosition() {
   lastPos[0] = pos[0];
   lastPos[1] = pos[1];
 
-  float leftDistance = pos[1] / pulsesPerMM;
-  float rightDistance = pos[0] / pulsesPerMM;
+  float leftDistance = pos[0] / pulsesPerMM;
+  float rightDistance = pos[1] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
   float dTheta = (rightDistance - leftDistance) / wheelDistance;
   extrax = distance * cos(theta + dTheta / 2);
-  extray = distance * sin(theta + dTheta / 2) *(-1); //-1 because it was incorrect
+  extray = distance * sin(theta + dTheta / 2);
   extraTheta = dTheta;
   extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
 
