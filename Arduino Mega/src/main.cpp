@@ -111,6 +111,8 @@ void resetPosition() {
   y += extray;
   extrax = 0;
   extray = 0;
+  theta += extraTheta;
+  extraTheta=0;
 
   lastPos[0] = 0;
   lastPos[1] = 0;
