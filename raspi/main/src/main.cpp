@@ -245,14 +245,14 @@ void setup() {
   // driveTo(225, 225);
   // driveDistance(1000);
   // turn(180);
-  driveDistance(1000);
+  // driveDistance(1000);
   turn(180);
-  driveDistance(1000);
+  // driveDistance(1000);
   turn(180);
-  driveDistance(1000);
-  turn(180);
-  driveDistance(1000);
-  turn(180);
+  // driveDistance(1000);
+  // turn(180);
+  // driveDistance(1000);
+  // turn(180);
 
   // driveDistance(-1000);
   // driveDistance(-1000);
@@ -262,11 +262,11 @@ void setup() {
   // turn(180);
   // turn(180);
 
-  // driveTo(500, 500);
-  // driveTo(200, 500);
-  // driveTo(200, 200);
-  // driveTo(500, 0);
-  // driveTo(500,500);
+  driveTo(500, 500);
+  driveTo(200, 500);
+  driveTo(200, 200);
+  driveTo(500, 0);
+  driveTo(500,500);
 
 }
 

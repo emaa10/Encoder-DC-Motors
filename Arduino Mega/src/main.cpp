@@ -43,7 +43,7 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float turnValue = 7.79;
+const float turnValue = 7.78;
 const float driveValue = 7.639437;
 
 float x = 0;
