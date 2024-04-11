@@ -40,8 +40,10 @@ const float pulsesPerSec =
 const float wheelDistance =
     128; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
-const float turnValue =
-    wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
+// const float turnValue =
+//     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
+
+const float turnValue = 
 
 float x = 0;
 float y = 0;
