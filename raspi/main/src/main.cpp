@@ -250,6 +250,12 @@ void setup() {
   // driveDistance(-1000);
 
   // driveDistance(1000);
+  turn(180);
+  // driveDistance(1000);
+  turn(-180);
+  // turn(180);
+  // turn(180);
+
   // driveTo(500, 500);
   // driveTo(200, 500);
   // driveTo(200, 200);
@@ -262,7 +268,7 @@ void loop() {
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
-  std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
+  // std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
 }
 

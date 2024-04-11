@@ -133,8 +133,8 @@ void resetPosition() {
 void driveDistance(int distance) {
   resetPosition();
 
-  target[0] = 7.639437 * distance;
-  target[1] = 7.639437 * distance;
+  target[0] = 7.7 * distance;
+  target[1] = 7.7 * distance;
 }
 
 void turnAngle(int degree) {
