@@ -170,7 +170,7 @@ void sendData() {
   data += "y";
   data += String(y + extray);
   data += "t";
-  data += String(theta);
+  data += String(theta + extraTheta);
   data += " ";
   data += DEBUG;
   Serial.println(data);
