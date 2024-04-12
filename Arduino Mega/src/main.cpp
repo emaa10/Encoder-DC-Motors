@@ -19,6 +19,7 @@ String DEBUG = "";
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 3
 #define pwmMax 100
+int currentPwm = pwmMax;
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -115,11 +116,11 @@ void resetPosition() {
   extrax = 0;
   extray = 0;
   theta += extraTheta;
-  while(theta > 2 * M_PI) {
-    theta -= 2*M_PI;
+  while (theta > 2 * M_PI) {
+    theta -= 2 * M_PI;
   }
-  while(theta < -2*M_PI) {
-    theta += 2*M_PI;
+  while (theta < -2 *M_PI) {
+    theta += 2 * M_PI;
   }
   extraTheta = 0;
 
@@ -169,6 +170,10 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       float angle = valueStr.toFloat();
       turnAngle(angle);
+    } else if (command == 'g') {
+      String valueStr = input.substring(2);
+      int speed = valueStr.toInt();
+      currentPwm = speed < pwmMax ? speed : pwmMax;
     }
   }
 }
@@ -212,11 +217,11 @@ void updatePosition() {
   extray = distance * sin(theta + dTheta / 2);
   extraTheta = dTheta;
   // extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
-  while(extraTheta > 2 * M_PI) {
-    extraTheta -= 2*M_PI;
+  while (extraTheta > 2 * M_PI) {
+    extraTheta -= 2 * M_PI;
   }
-  while(extraTheta < -2*M_PI) {
-    extraTheta += 2*M_PI;
+  while (extraTheta < -2 * M_PI) {
+    extraTheta += 2 * M_PI;
   }
 
   int maxD = fabs(target[0] - pos[0]);
@@ -306,7 +311,7 @@ void loop() {
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
-    scaledFactor[k] = (float)pwm[k] / pwmMax;
+    scaledFactor[k] = (float)pwm[k] / currentPwm;
   }
   float maxFactor =
       scaledFactor[0] < scaledFactor[1] ? scaledFactor[1] : scaledFactor[0];
