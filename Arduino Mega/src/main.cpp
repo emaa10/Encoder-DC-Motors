@@ -39,13 +39,12 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    128; // abstand der encoderräder in mm, muss vllt geändert werden
+    130.3551558; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float turnValue = 7.78;
-const float driveValue = 7.639437;
+const float pulsesValue = 7.639437;
 
 float x = 0;
 float y = 0;
@@ -137,16 +136,16 @@ void resetPosition() {
 void driveDistance(int distance) {
   resetPosition();
 
-  target[0] = driveValue * distance;
-  target[1] = driveValue * distance;
+  target[0] = pulsesValue * distance;
+  target[1] = pulsesValue * distance;
 }
 
 void turnAngle(int degree) {
   resetPosition();
 
-  int distance = 128 * 3.1415926 / 360 * degree;
-  target[0] = -turnValue * distance;
-  target[1] = turnValue * distance;
+  int distance = wheelDistance * M_PI / 360 * degree;
+  target[0] = -pulsesValue * distance;
+  target[1] = pulsesValue * distance;
 }
 
 // Serial Communication
