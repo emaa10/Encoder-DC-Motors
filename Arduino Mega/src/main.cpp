@@ -44,7 +44,7 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float pulsesValue = 7.639437;
+const float pulsesValue = pulsesPerMM;
 
 float x = 0;
 float y = 0;
@@ -211,9 +211,9 @@ void updatePosition() {
   float leftDistance = pos[1] / pulsesPerMM;
   float rightDistance = pos[0] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (rightDistance - leftDistance) / wheelDistance;
-  extrax = distance * cos(theta + dTheta / 2);
-  extray = distance * sin(theta + dTheta / 2);
+  float dTheta = (leftDistance - rightDistance) / wheelDistance;
+  extrax = distance * cos(theta + dTheta);
+  extray = distance * sin(theta + dTheta);
   extraTheta = dTheta;
   // extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
   while (extraTheta > 2 * M_PI) {
