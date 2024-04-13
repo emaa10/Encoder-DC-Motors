@@ -218,6 +218,8 @@ void driveDistance(int distance) {
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = currentPwmLeft * currentPIDright / currentPIDleft * currentPIDright / currentPIDleft;
                 float newPwmRight = currentPwmRight * currentPIDleft / currentPIDright * currentPIDleft / currentPIDright;
+                newPwmLeft = (currentPwmLeft + newPwmLeft)/2;
+                newPwmRight = (currentPwmRight + newPwmRight)/2;
                 debug += "new pwm left: " + String(newPwmLeft);
                 debug += " new pwm right: " + String(newPwmRight); 
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
