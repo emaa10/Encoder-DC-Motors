@@ -215,23 +215,11 @@ void driveDistance(int distance) {
         counter++;
         if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
             // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
-            float windowL[3] = {pwmSpeed}; // moving avarage array
-            float windowR[3] = {pwmSpeed}; // moving avarage array
-            for(int i = 0; i<3; i++) {
-              windowL[i] = pwmSpeed;
-              windowR[i] = pwmSpeed;
-            }
-            int index = 0;
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
                 float newPwmLeft = currentPwmLeft * currentPIDright / currentPIDleft * currentPIDright / currentPIDleft;
                 float newPwmRight = currentPwmRight * currentPIDleft / currentPIDright * currentPIDleft / currentPIDright;
-                // newPwmLeft = (currentPwmLeft + newPwmLeft)/2;
-                // newPwmRight = (currentPwmRight + newPwmRight)/2;
-                windowL[index] = newPwmLeft;
-                windowR[index] = newPwmRight;
-                index = (index+1)%3;
-                newPwmLeft = (windowL[0]+windowL[1]+windowL[2])/3.0;
-                newPwmRight = (windowR[0]+windowR[1]+windowR[2])/3.0;
+                newPwmLeft = (currentPwmLeft + newPwmLeft)/2;
+                newPwmRight = (currentPwmRight + newPwmRight)/2;
                 debug += "new pwm left: " + String(newPwmLeft);
                 debug += " new pwm right: " + String(newPwmRight); 
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
