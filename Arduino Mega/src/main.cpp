@@ -1,10 +1,6 @@
-/**
-* Slave: PID Tuning, Odometry, driving -> return enc data for position calculation on raspberry pi
-* Baudrate: 115200
-*/
-
 #include <Arduino.h>
 #include "./main.h"
+// Define pins
 
 String debug = "";
 
@@ -12,24 +8,15 @@ float currentPwmLeft;
 float currentPwmRight;
 
 bool driving = false;
-bool pullCordState=true;
 
-float x=225; //muss mittelpunkt sein
-float y=225;
-float theta=0;
+float x = 0;
+float y = 0;
+float theta = 0;
 long int lastEncLeft=0; // maybe not needed
 long int lastEncRight=0;
 
 volatile long int encoderLeft=0;
 volatile long int encoderRight=0;
-
-long int leftEncoderChange;
-long int rightEncoderChange;
-// odometry
-float leftEnc1 = 0;
-float rightEnc1 = 0;
-float leftEnc2 = 0;
-float rightEnc2 = 0;
 
 int counter=0;
 unsigned long previousMillis = 0;
@@ -38,23 +25,15 @@ const long updatePosInterval = 1000;
 long int oldEncoderLeft;
 long int oldEncoderRight;
 
+long int leftEncoderChange;
+long int rightEncoderChange;
 
-template<typename T>
-void print(const T& input) {
-  Serial.print(input);
-}
-void print(const char* input) {
-  Serial.print(input);
-}
-template<typename T>
-void println(const T& input) {
-  Serial.println(input);
-}
-void println(const char* input) {
-  Serial.println(input);
-}
+float leftEnc1 = 0;
+float rightEnc1 = 0;
+float leftEnc2 = 0;
+float rightEnc2 = 0;
 
-// encoder functions: LEFT 1, left 2, right 1, right 2
+
 void ai0() {
   if (digitalRead(LEFT_ENC_A_PHASE) == LOW) { encoderLeft++; }
   else { encoderLeft--; }
@@ -75,10 +54,6 @@ void bi1() {
   else { encoderRight++; }
 }
 
-bool pullCordConnected() {
-  // getData();
-  return pullCordState;
-}
 
 long int getEncoderLeft() {
   return encoderLeft;
@@ -241,8 +216,12 @@ void driveDistance(int distance) {
         if(counter >= syncCounter) { //wenn bestimmte zeit vergangen
             // neue pwm werte basierend auf encoder daten berechnen und positionsbestimmung
             if(currentEncoderLeft != 0 && currentEncoderRight != 0) {
-                float newPwmLeft = pulsesPerSec / abs(currentPIDleft) * currentPwmLeft;
-                float newPwmRight = pulsesPerSec / abs(currentPIDright) * currentPwmRight;
+                float newPwmLeft = currentPwmLeft * currentPIDright / currentPIDleft * currentPIDright / currentPIDleft;
+                float newPwmRight = currentPwmRight * currentPIDleft / currentPIDright * currentPIDleft / currentPIDright;
+                newPwmLeft = (currentPwmLeft + newPwmLeft)/2;
+                newPwmRight = (currentPwmRight + newPwmRight)/2;
+                debug += "new pwm left: " + String(newPwmLeft);
+                debug += " new pwm right: " + String(newPwmRight); 
                 // std::cout << "before drive func: " << pulsesPerSec / abs(currentEncoderLeft) * currentPwmLeft << ", " << pulsesPerSec << ", " << abs(currentEncoderLeft) << ", " << currentPwmLeft << std::endl;
                 drive(newPwmLeft, newPwmRight);
                 lastEncLeft = getEncoderLeft();
@@ -261,25 +240,37 @@ void driveDistance(int distance) {
     // updatePosition(currentPIDleft, currentPIDright);
 }
 
-void getData() { // get the data and run the actions
-  if (Serial.available() > 0) { // hier kommt err rein
-    String input = Serial.readStringUntil('\n'); 
-    char command = input.charAt(0);
 
-    if (command == 'p') {
-      String valueStr = input.substring(2); 
-      int value = valueStr.toInt();
-      pullCordState = (value == 0);
-    } else if (command == 's') {
+
+
+
+
+
+
+
+
+void getData() { // get the data and run the actions
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n');
+    char command = input.charAt(0);
+    if (command == 's') {
       stopMotor();
     } else if (command == 'd') {
-      String valueStr = input.substring(2); 
+      String valueStr = input.substring(2);
       int distance = valueStr.toInt();
-      driveDistance(distance); 
+      driveDistance(distance);
+    } else if (command == 'w') {
+      // leftTriggered = false;
+      // rightTriggered = false;
+      driveDistance(3000);
     } else if (command == 't') {
-      String valueStr = input.substring(2); 
-      float angle = valueStr.toFloat(); 
+      String valueStr = input.substring(2);
+      float angle = valueStr.toFloat();
       turn(angle);
+    } else if (command == 'g') {
+      // String valueStr = input.substring(2);
+      // int speed = valueStr.toInt();
+      // currentPwm = speed < pwmMax ? speed : pwmMax;
     }
   }
 }
@@ -295,11 +286,11 @@ void sendData() {
   data += String(theta);
   data += " DEBUG ";
   data += debug;
+  debug = "";
   Serial.println(data);
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
   // encoder
   pinMode(LEFT_ENC_A_PHASE, INPUT_PULLUP);
@@ -316,37 +307,12 @@ void setup()
   pinMode(LEFT_RPWM, OUTPUT);
   pinMode(RIGHT_LPWM, OUTPUT);
   pinMode(RIGHT_RPWM, OUTPUT);
-
-  // while(pullCordConnected()) {delay(5); } // solange pullcord connected is
-  // delay(500);
-  // setEncoderZero();
-  // delay(1000);
-
-  // println("START");
-
-  // driveDistance(1000);
-  // driveDistance(500);
-  // turn(360);
-  // drive(50, 0);
-  // delay(10000);
-  // drive(0,0);
-
-
-
 }
 
-void loop()
-{
+// Loop function
+
+void loop() {
   updatePositionThread(); // NEEDS TO RUN AS OFTEN AS POSSIBLE
   getData(); // get all data and process stuff
   sendData(); 
-
-  // setPwmValues(50,50);
-  // analogWrite(LEFT_LPWM, 100);
-  // analogWrite(RIGHT_RPWM, 100);
-  // print("Encoder left: ");
-  // print(getEncoderLeft());
-  // print(", Encoder right: ");
-  // println(getEncoderRight());
-  delay(5);
 }
