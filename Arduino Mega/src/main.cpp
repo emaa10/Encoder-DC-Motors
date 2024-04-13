@@ -39,12 +39,13 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    130.3551558; // abstand der encoderräder in mm, muss vllt geändert werden
+    128; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float pulsesValue = pulsesPerMM;
+const float turnValue = 7.78;
+const float driveValue = 7.639437;
 
 float x = 0;
 float y = 0;
@@ -118,7 +119,7 @@ void resetPosition() {
   while (theta > 2 * M_PI) {
     theta -= 2 * M_PI;
   }
-  while (theta < -2 *M_PI) {
+  while (theta < -2 * M_PI) {
     theta += 2 * M_PI;
   }
   extraTheta = 0;
@@ -136,16 +137,16 @@ void resetPosition() {
 void driveDistance(int distance) {
   resetPosition();
 
-  target[0] = pulsesValue * distance;
-  target[1] = pulsesValue * distance;
+  target[0] = driveValue * distance;
+  target[1] = driveValue * distance;
 }
 
 void turnAngle(int degree) {
   resetPosition();
 
-  int distance = wheelDistance * M_PI / 360 * degree;
-  target[0] = -pulsesValue * distance;
-  target[1] = pulsesValue * distance;
+  int distance = 128 * 3.1415926 / 360 * degree;
+  target[0] = -turnValue * distance;
+  target[1] = turnValue * distance;
 }
 
 // Serial Communication
@@ -208,12 +209,12 @@ void updatePosition() {
   lastPos[0] = pos[0];
   lastPos[1] = pos[1];
 
-  float leftDistance = pos[1] / pulsesPerMM;
-  float rightDistance = pos[0] / pulsesPerMM;
+  float leftDistance = pos[0] / pulsesPerMM;
+  float rightDistance = pos[1] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (leftDistance - rightDistance) / wheelDistance;
-  extrax = distance * cos(theta + dTheta);
-  extray = distance * sin(theta + dTheta);
+  float dTheta = (rightDistance - leftDistance) / wheelDistance;
+  extrax = distance * cos(theta + dTheta / 2);
+  extray = distance * sin(theta + dTheta / 2);
   extraTheta = dTheta;
   // extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
   while (extraTheta > 2 * M_PI) {
