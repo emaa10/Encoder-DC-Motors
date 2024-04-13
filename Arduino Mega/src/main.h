@@ -20,7 +20,7 @@ const float wheelDistance = 128; //abstand der encoderräder in mm, muss vllt ge
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 const float turnValue = wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const int syncCounter = 50;
+const int syncCounter = 20;
 const int syncCounterTurn = 50; // check alle 200ms, wenn ich das änder auch das /5 beim turn ändern!
 
 extern float currentPwmLeft;
