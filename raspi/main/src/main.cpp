@@ -228,11 +228,12 @@ void setup() {
   delay(100);
   system(command);
 
+  delay(2000);
+  while(pullCordConnected()) { delay(5); }
   // driveTo(225, 800);
   // driveTo(1000, 800);
   // std::cout << "turn" << std::endl;
 
-  delay(2000);
   // driveDistance(1000);
   // driveTo(225, 800);
   // driveTo(1000, 800);
@@ -260,11 +261,11 @@ void setup() {
   // driveDistance(-1000);
   // driveDistance(-1000);
 
-  // driveDistance(1000);
+  driveDistance(1000);
   // changeSpeed(150);
   // driveTo(1000,0);
-  turn(180);
-  turn(180);
+  // turn(180);
+  // turn(180);
 
 
   // driveTo(500, 500);
@@ -280,6 +281,12 @@ void loop() {
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
   // std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
+  if(pullCordConnected()) { // wenn pullcord nochmal eingesteckt wird, arduino reset
+    system(command);
+    delay(200);
+    system(command1);
+    std::exit(0); // brauche nen while loop vom betriebssystem her
+  }
 }
 
 int main() {

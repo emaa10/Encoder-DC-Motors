@@ -317,7 +317,7 @@ void loop() {
   if (maxFactor > 1) {
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
-    // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
+    Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
   for (int k = 0; k < NMOTORS; k++) {
