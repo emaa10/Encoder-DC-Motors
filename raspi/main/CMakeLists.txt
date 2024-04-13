@@ -14,7 +14,6 @@ FILE(GLOB SDKUNPACKER ${SDK_DIR}/sdk/src/dataunpacker/unpacker/*.cpp)
 
 set(SOURCEFILES
     src/main.cpp
-    src/pathplanning.cpp
 )
 
 add_executable(main ${SOURCEFILES} ${SDKARCH} ${SDKSRC} ${SDKHAL} ${SDKUNPACKER} ${SDKDATAUNPACKER})
