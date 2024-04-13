@@ -12,12 +12,12 @@ std::ifstream serial(serialMega.c_str());
 LIDAR ldr;
 
 // odom
-float x = 0;   // curent bot x
-float y = 0;   // current bot y
+float x = 0;     // curent bot x
+float y = 0;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
-const bool gegi = true;
+const bool gegi = false;
 const bool teamYellow = true;
 bool gegiTriggered = false;
 
@@ -48,6 +48,8 @@ void interruptDriving() {
   std::cout << "interrupted driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
 }
+
+void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed); }
 
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
@@ -196,7 +198,7 @@ void getData() {
     // std::cout << "X: " << x << std::endl;
     // std::cout << "Y: " << y << std::endl;
     // std::cout << "Angle: " << theta*180/M_PI << std::endl;
-    std::cout << "Line: " << line << std::endl;
+    // std::cout << "Line: " << line << std::endl;
     line = "";
   }
 }
@@ -238,6 +240,7 @@ void setup() {
 
   // turn(180);
   // driveTo(200, 800);
+  // driveDistance(1000);
   // // driveDistance(-200);
 
   // // driveTo(2000, 800);
@@ -257,24 +260,24 @@ void setup() {
   // driveDistance(-1000);
   // driveDistance(-1000);
 
-  // driveDistance(1000);
+  driveDistance(1000);
   // driveTo(1000,0);
   // turn(180);
   // turn(180);
 
-  driveTo(500, 500);
-  driveTo(200, 500);
-  driveTo(200, 200);
-  driveTo(500, 0);
-  driveTo(500,500);
 
+  // driveTo(500, 500);
+  // driveTo(200, 500);
+  // driveTo(200, 200);
+  // driveTo(500, 0);
+  // driveTo(500, 500);
 }
 
 void loop() {
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
-  // std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
+  std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
 }
 

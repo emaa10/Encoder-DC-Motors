@@ -19,6 +19,7 @@ String DEBUG = "";
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 3
 #define pwmMax 100
+int currentPwm = pwmMax;
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -38,13 +39,12 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    128; // abstand der encoderräder in mm, muss vllt geändert werden
+    130.3551558; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
 
-const float turnValue = 7.78;
-const float driveValue = 7.639437;
+const float pulsesValue = pulsesPerMM;
 
 float x = 0;
 float y = 0;
@@ -115,11 +115,11 @@ void resetPosition() {
   extrax = 0;
   extray = 0;
   theta += extraTheta;
-  while(theta > 2 * M_PI) {
-    theta -= 2*M_PI;
+  while (theta > 2 * M_PI) {
+    theta -= 2 * M_PI;
   }
-  while(theta < -2*M_PI) {
-    theta += 2*M_PI;
+  while (theta < -2 *M_PI) {
+    theta += 2 * M_PI;
   }
   extraTheta = 0;
 
@@ -136,16 +136,16 @@ void resetPosition() {
 void driveDistance(int distance) {
   resetPosition();
 
-  target[0] = driveValue * distance;
-  target[1] = driveValue * distance;
+  target[0] = pulsesValue * distance;
+  target[1] = pulsesValue * distance;
 }
 
 void turnAngle(int degree) {
   resetPosition();
 
-  int distance = 128 * 3.1415926 / 360 * degree;
-  target[0] = -turnValue * distance;
-  target[1] = turnValue * distance;
+  int distance = wheelDistance * M_PI / 360 * degree;
+  target[0] = -pulsesValue * distance;
+  target[1] = pulsesValue * distance;
 }
 
 // Serial Communication
@@ -169,6 +169,10 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       float angle = valueStr.toFloat();
       turnAngle(angle);
+    } else if (command == 'g') {
+      String valueStr = input.substring(2);
+      int speed = valueStr.toInt();
+      currentPwm = speed < pwmMax ? speed : pwmMax;
     }
   }
 }
@@ -204,19 +208,19 @@ void updatePosition() {
   lastPos[0] = pos[0];
   lastPos[1] = pos[1];
 
-  float leftDistance = pos[0] / pulsesPerMM;
-  float rightDistance = pos[1] / pulsesPerMM;
+  float leftDistance = pos[1] / pulsesPerMM;
+  float rightDistance = pos[0] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (rightDistance - leftDistance) / wheelDistance;
-  extrax = distance * cos(theta + dTheta / 2);
-  extray = distance * sin(theta + dTheta / 2);
+  float dTheta = (leftDistance - rightDistance) / wheelDistance;
+  extrax = distance * cos(theta + dTheta);
+  extray = distance * sin(theta + dTheta);
   extraTheta = dTheta;
   // extraTheta = fmod((extraTheta + 2 * M_PI), (2 * M_PI)); // test in radian
-  while(extraTheta > 2 * M_PI) {
-    extraTheta -= 2*M_PI;
+  while (extraTheta > 2 * M_PI) {
+    extraTheta -= 2 * M_PI;
   }
-  while(extraTheta < -2*M_PI) {
-    extraTheta += 2*M_PI;
+  while (extraTheta < -2 * M_PI) {
+    extraTheta += 2 * M_PI;
   }
 
   int maxD = fabs(target[0] - pos[0]);
@@ -306,7 +310,7 @@ void loop() {
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
-    scaledFactor[k] = (float)pwm[k] / pwmMax;
+    scaledFactor[k] = (float)pwm[k] / currentPwm;
   }
   float maxFactor =
       scaledFactor[0] < scaledFactor[1] ? scaledFactor[1] : scaledFactor[0];
