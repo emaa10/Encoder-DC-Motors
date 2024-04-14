@@ -9,6 +9,7 @@ float currentPwmRight;
 
 bool driving = false;
 
+float pwmSpeed = 100; //default pwm speed
 float x = 0;
 float y = 0;
 float theta = 0;
@@ -268,9 +269,10 @@ void getData() { // get the data and run the actions
       float angle = valueStr.toFloat();
       turn(angle);
     } else if (command == 'g') {
-      // String valueStr = input.substring(2);
-      // int speed = valueStr.toInt();
+      String valueStr = input.substring(2);
+      int speed = valueStr.toInt();
       // currentPwm = speed < pwmMax ? speed : pwmMax;
+      pwmSpeed = speed;
     }
   }
 }

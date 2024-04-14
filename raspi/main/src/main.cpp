@@ -49,7 +49,7 @@ void interruptDriving() {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
-void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed); }
+void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d" + std::to_string(newSpeed)); }
 
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
