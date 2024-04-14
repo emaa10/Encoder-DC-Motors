@@ -21,7 +21,7 @@ float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
 const bool gegi = false;
-const bool teamYellow = true;
+bool teamYellow = true;
 bool gegiTriggered = false;
 
 bool driving = false;
