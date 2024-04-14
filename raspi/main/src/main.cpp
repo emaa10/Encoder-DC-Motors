@@ -32,7 +32,6 @@ template <typename T> void println(const T &input) { std::cout << input << std::
 void println(const char *input) { std::cout << input << std::endl; }
 
 void signalHandler(int signal) {
-  // run code on ctrl c
   stopMotor();
   exit(signal);
 }
@@ -147,7 +146,6 @@ void driveTo(int to_x, int to_y) {
 
   std::cout << "Angle davor: " << angle << std::endl;
   angle = atan2(deltaY, deltaX) * 180 / M_PI - angle;
-  // std::cout << "Delta X: " << deltaX << ", Delta Y: " << deltaY << std::endl;
   std::cout << "Angle: " << angle << std::endl;
   std::cout << "Distance: " << distance << std::endl;
   std::cout << "X: " << x << endl;
@@ -219,22 +217,12 @@ void getData() {
     ss >> tempchar;
     ss >> theta;
 
-    // std::cout << "X: " << x << std::endl;
-    // std::cout << "Y: " << y << std::endl;
-    // std::cout << "Angle: " << theta*180/M_PI << std::endl;
     std::cout << "Line: " << line << std::endl;
     line = "";
   }
 }
 
 void setup() {
-  // initialize stream
-  // if (!serial.is_open()) {
-  //     std::cerr << "Port error on Mega A Encoder, Port" << serialMega <<
-  //     std::endl;
-  // }
-
-  // initialize wiringpi
   if (wiringPiSetup() == -1) {
     std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
   }
@@ -256,56 +244,12 @@ void setup() {
 
   delay(2000);
 
-  // id, path, pwmoffset, turnOffsetL, turnOffsetR, color (bool teamYellow)
-
   while(pullCordConnected()) { delay(5); }
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
-  // driveTo(225, 800);
-  // driveTo(1000, 800);
-  // std::cout << "turn" << std::endl;
 
-  // driveDistance(1000);
-  // driveTo(225, 800);
-  // driveTo(1000, 800);
-  // std::cout << "turn" << std::endl;
-
-  // turn(180);
-  // driveTo(200, 800);
-  // driveDistance(1000);
-  // // driveDistance(-200);
-
-  // // driveTo(2000, 800);
-  // driveTo(2000, 800);
-  // driveTo(225, 225);
-  // driveDistance(1000);
-  // turn(180);
-  // driveDistance(1000);
-  // turn(180);
-  // driveDistance(1000);
-  // turn(180);
-  // driveDistance(1000);
-  // turn(180);
-  // driveDistance(1000);
-  // turn(180);
-
-  // driveDistance(-1000);
-  // driveDistance(-1000);
-
-  // changeSpeed(70);
-  // delay(100);
   driveDistance(2000);
-  // changeSpeed(150);
-  // driveTo(1000,0);
-  // turn(180);
-  // turn(180);
 
-
-  // driveTo(500, 500);
-  // driveTo(200, 500);
-  // driveTo(200, 200);
-  // driveTo(500, 0);
-  // driveTo(500, 500);
 }
 
 void loop() {
