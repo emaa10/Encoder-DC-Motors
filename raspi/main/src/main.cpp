@@ -4,11 +4,14 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
+const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
+int sPortE = serialOpen(serialESP.c_str(), 115200);
 const char *command1 = "screen -XS platformio quit";
 const char *command = "screen -d -m platformio /home/bot/.local/bin/pio device "
                       "monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
+std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
@@ -25,9 +28,7 @@ bool driving = false;
 
 template <typename T> void print(const T &input) { std::cout << input; }
 void print(const char *input) { std::cout << input; }
-template <typename T> void println(const T &input) {
-  std::cout << input << std::endl;
-}
+template <typename T> void println(const T &input) { std::cout << input << std::endl; }
 void println(const char *input) { std::cout << input << std::endl; }
 
 void signalHandler(int signal) {
@@ -37,6 +38,11 @@ void signalHandler(int signal) {
 }
 
 bool pullCordConnected() { return (digitalRead(pullCord) == 0); }
+
+void setSIMA(int ID, int path, int pwmOffset, int turnOffsetL, int turnOffsetR, bool teamYellowN = teamYellow) {
+  std::string message = "i," + std::to_string(ID) + "p," + std::to_string(path) + "w," + std::to_string(pwmOffset) + "l," + std::to_string(turnOffsetL) + "r," + std::to_string(turnOffsetR) + "c," + std::to_string(teamYellowN);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
 
 void stopMotor() { //
   std::string message = "s";
@@ -170,6 +176,19 @@ void turnTo(int degree) {
   turn(toTurn);
 }
 
+void timingsThread() {
+  // delay(80000);
+  // // start sima
+  // delay(5000);
+  // // drive home
+  // delay(10000);
+  // stopMotor();
+  // delay(50);
+  // system(command);
+  // delay(100);
+  // system(command1);
+}
+
 void getDataThread() {
   while (true) {
     getData();
@@ -216,9 +235,11 @@ void setup() {
   }
 
   if (sPort < 0) {
-    std::cerr << "Fehler beim Öffnen des seriellen Ports." << std::endl;
+    std::cerr << "Fehler beim Öffnen des seriellen Ports. (Arduino)" << std::endl;
   }
-
+  if (sPortE < 0) {
+    std::cerr << "Fehler beim Öffnen des seriellen Ports. (ESP)" << std::endl;
+  }
   std::signal(SIGINT, signalHandler); // control c stops motors
   pinMode(8, INPUT);
   std::thread t(getDataThread); // get current pos from arduino
@@ -229,7 +250,18 @@ void setup() {
   system(command);
 
   delay(2000);
+
+  // id, path, pwmoffset, turnOffsetL, turnOffsetR, color (bool teamYellow)
+  setSIMA(1, 1, -8, -30, -72);
+  setSIMA(2, 3, -4, 40, 0);
+  setSIMA(3, 2, -3, -25, 0);
+  setSIMA(4, 11, 0, 245, 225);
+  setSIMA(5, 11, -1, 200, 135);
+  setSIMA(6, 11, -1, 190, 145);
+
   while(pullCordConnected()) { delay(5); }
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
   // driveTo(225, 800);
   // driveTo(1000, 800);
   // std::cout << "turn" << std::endl;
@@ -262,8 +294,8 @@ void setup() {
   // driveDistance(-1000);
 
   // changeSpeed(70);
-  delay(100);
-  driveDistance(1000);
+  // delay(100);
+  driveDistance(2000);
   // changeSpeed(150);
   // driveTo(1000,0);
   // turn(180);
