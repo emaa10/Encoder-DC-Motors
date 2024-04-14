@@ -50,6 +50,8 @@ float x = 0;
 float y = 0;
 float theta = 0;
 
+bool teamYellow = false;
+
 float extrax = 0;
 float extray = 0;
 float extraTheta = 0;
@@ -173,6 +175,14 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       int speed = valueStr.toInt();
       currentPwm = speed < pwmMax ? speed : pwmMax;
+    } else if(command == 'x') {
+      String valueStr = input.substring(2);
+      int displayCounter = valueStr.toInt();
+      // hier set display code
+    } else if(command = 't') { // set team
+      String valueStr = input.substring(2);
+      int value = valueStr.toInt();
+      teamYellow = (value=1)?true:false;
     }
   }
 }
