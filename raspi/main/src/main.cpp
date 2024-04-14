@@ -15,12 +15,12 @@ std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
-float x = 0;     // curent bot x
-float y = 0;     // current bot y
+float x = 500;     // curent bot x
+float y = 500;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
-const bool gegi = false;
+const bool gegi = true;
 bool teamYellow = true;
 bool gegiTriggered = false;
 
@@ -127,15 +127,12 @@ void driveDistance(int distance) {
     delay(5);
     // hier lidar check
     if (gegi) {
-      if (distance > 0 &&
-          !ldr.freeFront(
-              {{int(x), int(y)}, theta * 180 / M_PI})) { // wenn vorne blockiert
+      if (distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta * 180 / M_PI})) { // wenn vorne blockiert
         interruptDriving();
         gegiTriggered = true;
         while (1) {
         }
-      } else if (distance < 0 &&
-                 !ldr.freeBack({{int(x), int(y)}, theta * 180 / M_PI})) {
+      } else if (distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta * 180 / M_PI})) {
         interruptDriving();
         gegiTriggered = true;
         while (1) {
@@ -258,7 +255,8 @@ void setup() {
   while(pullCordConnected()) { delay(5); }
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
-
+  
+  // start
   driveDistance(2000);
 
 }

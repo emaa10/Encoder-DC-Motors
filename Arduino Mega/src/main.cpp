@@ -46,8 +46,8 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 
 const float pulsesValue = pulsesPerMM;
 
-float x = 0;
-float y = 0;
+float x = 500;
+float y = 500;
 float theta = 0;
 
 bool teamYellow = false;
@@ -179,7 +179,7 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       int displayCounter = valueStr.toInt();
       // hier set display code
-    } else if(command = 't') { // set team
+    } else if(command == 't') { // set team
       String valueStr = input.substring(2);
       int value = valueStr.toInt();
       teamYellow = (value=1)?true:false;
@@ -327,7 +327,7 @@ void loop() {
   if (maxFactor > 1) {
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
-    Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
+    // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
   for (int k = 0; k < NMOTORS; k++) {
