@@ -15,8 +15,8 @@ std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
-float x = 500;     // curent bot x
-float y = 500;     // current bot y
+float x = 225;     // curent bot x
+float y = 225;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;

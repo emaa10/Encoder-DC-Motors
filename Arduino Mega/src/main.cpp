@@ -46,8 +46,8 @@ const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 
 const float pulsesValue = pulsesPerMM;
 
-float x = 500;
-float y = 500;
+float x = 225;
+float y = 225;
 float theta = 0;
 
 bool teamYellow = false;
