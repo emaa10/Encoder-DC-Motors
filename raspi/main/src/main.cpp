@@ -39,8 +39,13 @@ void signalHandler(int signal) {
 
 bool pullCordConnected() { return (digitalRead(pullCord) == 0); }
 
-void setSIMA(int ID, int path, int pwmOffset, int turnOffsetL, int turnOffsetR, bool teamYellowN = teamYellow) {
-  std::string message = "i," + std::to_string(ID) + "p," + std::to_string(path) + "w," + std::to_string(pwmOffset) + "l," + std::to_string(turnOffsetL) + "r," + std::to_string(turnOffsetR) + "c," + std::to_string(teamYellowN);
+void startSIMAs(bool teamBlue = !teamYellow) {
+  std::string message = "s," + std::to_string(teamBlue);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+void setSolar(bool status = true) {
+  std::string message = "f," + std::to_string(status);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
@@ -177,16 +182,16 @@ void turnTo(int degree) {
 }
 
 void timingsThread() {
-  // delay(80000);
-  // // start sima
-  // delay(5000);
-  // // drive home
-  // delay(10000);
-  // stopMotor();
-  // delay(50);
-  // system(command);
-  // delay(100);
-  // system(command1);
+  delay(80000);
+  startSIMAs();
+  delay(5000);
+  // drive home
+  delay(10000);
+  stopMotor();
+  delay(50);
+  system(command);
+  delay(100);
+  system(command1);
 }
 
 void getDataThread() {
@@ -252,12 +257,6 @@ void setup() {
   delay(2000);
 
   // id, path, pwmoffset, turnOffsetL, turnOffsetR, color (bool teamYellow)
-  setSIMA(1, 1, -8, -30, -72);
-  setSIMA(2, 3, -4, 40, 0);
-  setSIMA(3, 2, -3, -25, 0);
-  setSIMA(4, 11, 0, 245, 225);
-  setSIMA(5, 11, -1, 200, 135);
-  setSIMA(6, 11, -1, 190, 145);
 
   while(pullCordConnected()) { delay(5); }
   std::thread u(timingsThread); // check if simas, drive home, etc.
