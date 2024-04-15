@@ -50,7 +50,7 @@ void setSolar(bool status = true) {
 
 void setDisplay(int number) { //
   std::string message = "x," + std::to_string(number);
-  serialPrintf(sPort, "%s\n", message.c_str());
+  serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 void setTeam(bool teamYellowN) { //
