@@ -55,5 +55,6 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "workbench.iconTheme": "Monokai Pro (Filter Octagon) Icons"
 }
