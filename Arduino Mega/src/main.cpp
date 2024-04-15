@@ -175,10 +175,6 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       int speed = valueStr.toInt();
       currentPwm = speed < pwmMax ? speed : pwmMax;
-    } else if(command == 'x') {
-      String valueStr = input.substring(2);
-      int displayCounter = valueStr.toInt();
-      // hier set display code
     } else if(command == 't') { // set team
       String valueStr = input.substring(2);
       int value = valueStr.toInt();
