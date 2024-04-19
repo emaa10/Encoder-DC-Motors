@@ -260,7 +260,8 @@ void setup() {
   u.detach();
   
   // start
-  driveDistance(2000);
+  std::string message = "t,360";
+  serialPrintf(sPort, "%s\n", message.c_str());
 
 }
 

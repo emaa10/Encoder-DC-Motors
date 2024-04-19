@@ -95,7 +95,7 @@ void sendSimas(){
   message.colourBlue = teamBlue;
   message.path = 1;
   message.pwmOffset = -7;
-  message.turnOffsetL = -100;
+  message.turnOffsetL = 0;
   message.turnOffsetR = -72;
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
@@ -104,7 +104,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 3;
-  message.pwmOffset = -4;
+  message.pwmOffset = -3;
   message.turnOffsetL = 30;
   message.turnOffsetR = 0;
 

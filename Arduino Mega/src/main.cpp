@@ -18,7 +18,7 @@ String DEBUG = "";
 #define NMOTORS 2
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 3
-#define pwmMax 100
+#define pwmMax 150
 int currentPwm = pwmMax;
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -39,7 +39,7 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    130.3551558; // abstand der encoderräder in mm, muss vllt geändert werden
+    128.5; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
@@ -261,10 +261,11 @@ void setup() {
   target[1] = 0;
 
   for (int k = 0; k < NMOTORS; k++) {
-    pid[k].setParams(4, 0.25, 0, 100);
+    pid[k].setParams(1, 0, 0, 100);
   }
 
   lastPosUpdate = micros();
+
 }
 
 // Loop function
@@ -328,6 +329,8 @@ void loop() {
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
+
+  pwm[0] *= 1.05;
 
   for (int k = 0; k < NMOTORS; k++) {
     setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
