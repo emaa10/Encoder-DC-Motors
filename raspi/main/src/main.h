@@ -7,7 +7,8 @@
 /* some constants */
 
 // encoder stuff
-const int pullCord = 8;
+const int teamSwitch = 9;
+const int pullCord = 7;
 
 const bool yellow = true;
 
