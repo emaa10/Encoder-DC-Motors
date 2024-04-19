@@ -7,6 +7,7 @@
 #define limitSwitch 26
 
 #define beltLimit 705
+#define beltMiddlePos 400
 
 int beltPos = beltLimit;
 int beltState = 0;
@@ -55,5 +56,25 @@ void beltDown() {
     digitalWrite(beltStepperSTEP,LOW);
     delayMicroseconds(750);
     beltPos++;
+  }
+}
+
+void beltMiddle() {
+  if(beltPos > beltMiddlePos) {
+    digitalWrite(beltStepperDIR, HIGH);
+    digitalWrite(beltStepperSTEP,HIGH);
+    delayMicroseconds(750);
+    digitalWrite(beltStepperSTEP,LOW);
+    delayMicroseconds(750);
+    beltPos --;    
+  } else if(beltPos < beltMiddlePos) {
+    digitalWrite(beltStepperDIR, LOW);
+    digitalWrite(beltStepperSTEP,HIGH);
+    delayMicroseconds(750);
+    digitalWrite(beltStepperSTEP,LOW);
+    delayMicroseconds(750);
+    beltPos++;
+  } else if(beltPos == beltMiddlePos) {
+    beltState = 0;
   }
 }

@@ -4,15 +4,15 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-// const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
+const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
-int sPortE = 0;
-// int sPortE = serialOpen(serialESP.c_str(), 115200);
+// int sPortE = 0;
+int sPortE = serialOpen(serialESP.c_str(), 115200);
 const char *command1 = "screen -XS platformio quit";
 const char *command = "screen -d -m platformio /home/bot/.local/bin/pio device "
                       "monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
-// std::ifstream serialE(serialESP.c_str());
+std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
@@ -44,13 +44,26 @@ void startSIMAs(bool teamBlue = !teamYellow) {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void setSolar(bool status = true) {
-  std::string message = "c" + std::to_string(status);
+// 0: aus, 1 und 2 an
+void setSolar(int mode = 1) {
+  std::string message = "c" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 void setDisplay(int number) { //
   std::string message = "x" + std::to_string(number);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+// 0 oben, 1, 2, 3 ganz ausgeklappt
+void setGripperAngle(int mode = 3) {
+  std::string message = "u" + std::to_string(mode);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+// 1 unten, 2 mitte, 3 oben
+void setGripperHeight(int mode = 1) {
+  std::string message = "b" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
@@ -261,12 +274,22 @@ void setup() {
   // std::string message = "t,360";
   // serialPrintf(sPort, "%s\n", message.c_str());
   // setSolar(true);
-  driveDistance(-1000);
+  // driveDistance(-1000);
   // setSolar(false);
 
 }
 
 void loop() {
+  setGripperHeight(1);
+  delay(1000);
+  setGripperHeight(2);
+  delay(1000);
+  setGripperHeight(3);
+  delay(1000);
+  setSolar(1);
+  delay(1000);
+  setSolar(2);
+  delay(1000);
   // std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});

@@ -90,10 +90,12 @@ void loop()
   getData();
   
   if(beltState == 1){
-    beltUp();
-  } else if(beltState == 2) {
     beltDown();
-  } 
+  } else if(beltState == 2) {
+    beltMiddle();
+  } else if(beltState == 3) {
+    beltUp();
+  }
 
   if(spinnerState == 1){
     spinnerTurnLeft();
