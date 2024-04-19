@@ -261,7 +261,7 @@ void setup() {
   target[1] = 0;
 
   for (int k = 0; k < NMOTORS; k++) {
-    pid[k].setParams(1, 0, 0, 100);
+    pid[k].setParams(4, 0.25, 0, 100);
   }
 
   lastPosUpdate = micros();
@@ -309,7 +309,7 @@ void loop() {
     target[0] = pos[0];
   }
 
-  int pwm[NMOTORS];
+  long pwm[NMOTORS];
   int dir[NMOTORS];
   float scaledFactor[NMOTORS];
   // loop through the motors
@@ -321,14 +321,13 @@ void loop() {
     // }
     scaledFactor[k] = (float)pwm[k] / currentPwm;
   }
-  Serial.println("pwmleft: " + String(pwm[1]) + " pwmright: " + String(pwm[0]));
+   Serial.println("pwmleft: " + String(pwm[1]) + " pwmright: " + String(pwm[0]));
   float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
-
 
   for (int k = 0; k < NMOTORS; k++) {
     setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);

@@ -22,7 +22,7 @@ public:
   }
 
   // A function to compute the control signal
-  void evalu(int value, int target, float deltaT, int &pwr, int &dir) {
+  void evalu(int value, int target, float deltaT, long &pwr, int &dir) {
     // error
     int e = target - value;
 
@@ -36,7 +36,7 @@ public:
     float u = kp * e + kd * dedt + ki * eintegral;
 
     // motor power
-    pwr = (int)fabs(u);
+    pwr = (long)fabs(u);
 
     // motor direction
     dir = u > 0 ? 1 : u < 0 ? -1 : 0;
