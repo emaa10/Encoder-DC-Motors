@@ -21,7 +21,7 @@ public:
             return;
         }
 
-        IChannel* _channel = (*createSerialPortChannel("/dev/ttyUSB0", 115200));
+        IChannel* _channel = (*createSerialPortChannel("/dev/ttyUSB1", 115200));
         sl_result result = (drv)->connect(_channel);
 
         sl_lidar_response_device_info_t devinfo;

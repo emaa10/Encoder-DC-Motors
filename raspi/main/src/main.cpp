@@ -128,12 +128,12 @@ void driveDistance(int distance) {
     delay(5);
     // hier lidar check
     if (gegi) {
-      if (distance > 0 && !ldr.freeFront({{int(x), int(y)}, theta * 180 / M_PI})) { // wenn vorne blockiert
+      if (distance > 0 && !ldr.freeBack({{1500, 1000}, theta * 180 / M_PI})) { // wenn vorne blockiert
         interruptDriving();
         gegiTriggered = true;
         while (1) {
         }
-      } else if (distance < 0 && !ldr.freeBack({{int(x), int(y)}, theta * 180 / M_PI})) {
+      } else if (distance < 0 && !ldr.freeFront({{1500, 1000}, theta * 180 / M_PI})) {
         interruptDriving();
         gegiTriggered = true;
         while (1) {
@@ -260,8 +260,9 @@ void setup() {
   u.detach();
   
   // start
-  std::string message = "t,360";
-  serialPrintf(sPort, "%s\n", message.c_str());
+  // std::string message = "t,360";
+  // serialPrintf(sPort, "%s\n", message.c_str());
+  driveDistance(2000);
 
 }
 
