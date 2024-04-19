@@ -253,6 +253,12 @@ void setup() {
   delay(2000);
 
   while(pullCordConnected()) { delay(5); }
+  while(digitalRead(teamSwitch) == LOW) {
+    std::cout << "low" << std::endl;
+  }
+  while(digitalRead(teamSwitch) == HIGH) {
+    std::cout << "high" << std::endl;
+  }
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
