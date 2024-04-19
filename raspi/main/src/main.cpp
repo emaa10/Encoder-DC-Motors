@@ -263,7 +263,7 @@ void setup() {
   u.detach();
   
   // start
-  driveDistance(2000);
+  // driveDistance(2000);
 
 }
 
