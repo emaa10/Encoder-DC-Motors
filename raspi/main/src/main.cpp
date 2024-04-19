@@ -253,18 +253,18 @@ void setup() {
 
   delay(2000);
 
-  while(pullCordConnected()) { delay(5); }
-  teamYellow = (digitalRead(pullCord) == 1);
+  // while(pullCordConnected()) { delay(5); }
+  teamYellow = (digitalRead(teamSwitch) == 1);
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
   // start
-  // driveDistance(2000);
+  driveDistance(2000);
 
 }
 
 void loop() {
-  std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
+  // std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;

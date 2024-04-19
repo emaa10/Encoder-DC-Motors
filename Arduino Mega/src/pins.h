@@ -9,8 +9,8 @@
 
 // dc pins
 // left dc motor pins
-#define LEFT_LPWM 11 //44
-#define LEFT_RPWM 10 //45
+#define LEFT_LPWM 10 //44
+#define LEFT_RPWM 11 //45
 
 // right dc motor pins
 #define RIGHT_LPWM 9//41

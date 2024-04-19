@@ -4,13 +4,13 @@
 
 // Define pins
 
-#define LEFT_ENC_A_PHASE 18
-#define LEFT_ENC_B_PHASE 19
-#define RIGHT_ENC_A_PHASE 2
-#define RIGHT_ENC_B_PHASE 3
+#define LEFT_ENC_A_PHASE 2
+#define LEFT_ENC_B_PHASE 3
+#define RIGHT_ENC_A_PHASE 18
+#define RIGHT_ENC_B_PHASE 19
 
-const int lpwm[] = {9, 11};
-const int rpwm[] = {8, 10};
+const int lpwm[] = {8, 11};
+const int rpwm[] = {9, 10};
 String DEBUG = "";
 
 // Define Globals
@@ -65,33 +65,33 @@ bool rightTriggered = true;
 
 void ai0() {
   if (digitalRead(LEFT_ENC_A_PHASE) == LOW) {
-    posi[1]++;
-  } else {
     posi[1]--;
+  } else {
+    posi[1]++;
   }
 }
 
 void ai1() {
   if (digitalRead(LEFT_ENC_B_PHASE) == LOW) {
-    posi[1]--;
-  } else {
     posi[1]++;
+  } else {
+    posi[1]--;
   }
 }
 
 void bi0() {
   if (digitalRead(RIGHT_ENC_A_PHASE) == LOW) {
-    posi[0]++;
-  } else {
     posi[0]--;
+  } else {
+    posi[0]++;
   }
 }
 
 void bi1() {
   if (digitalRead(RIGHT_ENC_B_PHASE) == LOW) {
-    posi[0]--;
-  } else {
     posi[0]++;
+  } else {
+    posi[0]--;
   }
 }
 
@@ -316,17 +316,21 @@ void loop() {
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
+    // if (pwm[k] > currentPwm) {
+    //   pwm[k] = currentPwm;
+    // }
     scaledFactor[k] = (float)pwm[k] / currentPwm;
   }
-  float maxFactor =
-      scaledFactor[0] < scaledFactor[1] ? scaledFactor[1] : scaledFactor[0];
+  Serial.println("pwmleft: " + String(pwm[1]) + " pwmright: " + String(pwm[0]));
+  float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
+
   for (int k = 0; k < NMOTORS; k++) {
-    setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
+    setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
   }
 }
