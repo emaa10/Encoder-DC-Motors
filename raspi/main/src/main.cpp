@@ -4,7 +4,7 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
+// const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
 int sPortE = 0;
 // int sPortE = serialOpen(serialESP.c_str(), 115200);
@@ -40,24 +40,18 @@ void signalHandler(int signal) {
 bool pullCordConnected() { return (digitalRead(pullCord) == 0); }
 
 void startSIMAs(bool teamBlue = !teamYellow) {
-  std::string message = "s," + std::to_string(teamBlue);
+  std::string message = "s" + std::to_string(teamBlue);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 void setSolar(bool status = true) {
-  std::string message = "f," + std::to_string(status);
+  std::string message = "c" + std::to_string(status);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 void setDisplay(int number) { //
-  std::string message = "x," + std::to_string(number);
+  std::string message = "x" + std::to_string(number);
   serialPrintf(sPortE, "%s\n", message.c_str());
-}
-
-void setTeam(bool teamYellowN) { //
-  teamYellow = teamYellowN;
-  std::string message = "t," + std::to_string(teamYellow);
-  serialPrintf(sPort, "%s\n", message.c_str());
 }
 
 void stopMotor() { //
@@ -67,6 +61,11 @@ void stopMotor() { //
 
 void interruptDriving() {
   std::string message = "s";
+  std::cout << "interrupted driving" << std::endl;
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+void continueDriving() {
+  std::string message = "c";
   std::cout << "interrupted driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
 }
@@ -131,16 +130,15 @@ void driveDistance(int distance) {
       if (distance > 0 && !ldr.freeBack({{1500, 1000}, theta * 180 / M_PI})) { // wenn vorne blockiert
         interruptDriving();
         gegiTriggered = true;
-        while (1) {
-        }
       } else if (distance < 0 && !ldr.freeFront({{1500, 1000}, theta * 180 / M_PI})) {
         interruptDriving();
         gegiTriggered = true;
-        while (1) {
-        }
+      } else {
+        continueDriving();
       }
     }
   }
+
 }
 
 void driveTo(int to_x, int to_y) {
@@ -262,7 +260,9 @@ void setup() {
   // start
   // std::string message = "t,360";
   // serialPrintf(sPort, "%s\n", message.c_str());
-  driveDistance(2000);
+  // setSolar(true);
+  driveDistance(-1000);
+  // setSolar(false);
 
 }
 

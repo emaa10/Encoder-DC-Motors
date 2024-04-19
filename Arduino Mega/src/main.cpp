@@ -18,7 +18,7 @@ String DEBUG = "";
 #define NMOTORS 2
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 3
-#define pwmMax 150
+#define pwmMax 100
 int currentPwm = pwmMax;
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -57,6 +57,7 @@ float extray = 0;
 float extraTheta = 0;
 
 bool isDriving = false;
+bool stopped = false;
 
 long lastPosUpdate;
 bool leftTriggered = true;
@@ -156,9 +157,10 @@ void getData() { // get the data and run the actions
   if (Serial.available() > 0) {
     String input = Serial.readStringUntil('\n');
     char command = input.charAt(0);
-
     if (command == 's') {
-      resetPosition();
+      stopped = true;
+    } else if (command == 'c') {
+      stopped = false;
     } else if (command == 'd') {
       String valueStr = input.substring(2);
       int distance = valueStr.toInt();
@@ -333,6 +335,10 @@ void loop() {
   pwm[0] *= 1.05;
 
   for (int k = 0; k < NMOTORS; k++) {
-    setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
+    if (stopped) {
+      setMotor(0, 0, lpwm[k], rpwm[k]); 
+    } else {
+      setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
+    }
   }
 }
