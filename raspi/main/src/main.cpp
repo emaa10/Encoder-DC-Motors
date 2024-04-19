@@ -4,7 +4,7 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-const std::string serialESP = "/dev/ttyACM1"; // sima and fahne
+const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
 // int sPortE = 0;
 int sPortE = serialOpen(serialESP.c_str(), 115200);
@@ -273,23 +273,18 @@ void setup() {
   // start
   // std::string message = "t,360";
   // serialPrintf(sPort, "%s\n", message.c_str());
-  // setSolar(true);
   // driveDistance(-1000);
-  // setSolar(false);
-
+  setGripperHeight(1);
+  setGripperAngle(3);
+  delay(1000);
+  driveDistance(1000);
+  setGripperAngle(2);
+  setGripperHeight(3);
+  delay(1000);
+  driveDistance(1000);
 }
 
 void loop() {
-  setGripperHeight(1);
-  delay(1000);
-  setGripperHeight(2);
-  delay(1000);
-  setGripperHeight(3);
-  delay(1000);
-  setSolar(1);
-  delay(1000);
-  setSolar(2);
-  delay(1000);
   // std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
