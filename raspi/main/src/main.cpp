@@ -21,7 +21,7 @@ float y = 225;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
-const bool gegi = true;
+bool gegi = true;
 bool teamYellow = true;
 bool gegiTriggered = false;
 
@@ -122,8 +122,8 @@ void turn(float degrees) {
   }
 }
 
-void driveUntilSwitch() {
-  std::string message = "w";
+void driveUntilSwitch(bool dir = false) {
+  std::string message = "w," + std::to_string(dir);
   // std::cout << "drive until switch triggered" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
   while (driving == false) {
@@ -291,8 +291,13 @@ void setup() {
   // driveDistance(1000);
   // setGripperAngle(2);
   // setGripperHeight(2);
-  driveUntilSwitch();
-  
+  gegi = false;
+  driveUntilSwitch(false);
+  driveDistance(120);
+  turn(90);
+  driveUntilSwitch(false);
+  driveDistance(210);
+  gegi = true;
 }
 
 void loop() {

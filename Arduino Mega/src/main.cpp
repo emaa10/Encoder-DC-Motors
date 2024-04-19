@@ -39,7 +39,7 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    126.2; // abstand der encoderräder in mm, muss vllt geändert werden
+    127; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
@@ -166,7 +166,9 @@ void getData() { // get the data and run the actions
       int distance = valueStr.toInt();
       driveDistance(distance);
     } else if (command == 'w') {
-      driveDistance(-300);
+      String valueStr = input.substring(2);
+      bool dir = valueStr.toInt();
+      driveDistance(dir?300:-300);
       limitSwitchDrive = true;
     } else if (command == 't') {
       String valueStr = input.substring(2);
