@@ -233,7 +233,7 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-      fabs(rightEncChange) < pulsesCutoff && maxD < 10) || (limitSwitchDrive && fabs(leftEncChange) < pulsesCutoff && fabs(rightEncChange) < pulsesCutoff)) {
+      fabs(rightEncChange) < pulsesCutoff && maxD < 10) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10)) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];
