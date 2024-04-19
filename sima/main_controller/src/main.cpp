@@ -32,6 +32,9 @@ void getData() {
       
       beltState = value;
     }
+    if(command == 'r') {
+      beltPos = beltLimit;
+    }
     //display: 0-999
     if(command == 'x') {
       String valueStr = input.substring(1);

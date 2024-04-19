@@ -4,15 +4,15 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
+// const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
-// int sPortE = 0;
-int sPortE = serialOpen(serialESP.c_str(), 115200);
+int sPortE = 0;
+// int sPortE = serialOpen(serialESP.c_str(), 115200);
 const char *command1 = "screen -XS platformio quit";
 const char *command = "screen -d -m platformio /home/bot/.local/bin/pio device "
                       "monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
-std::ifstream serialE(serialESP.c_str());
+// std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
@@ -67,6 +67,11 @@ void setGripperHeight(int mode = 1) {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
+void resetBelt() {
+  std::string message = "r";
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
 void stopMotor() { //
   std::string message = "s";
   serialPrintf(sPort, "%s\n", message.c_str());
@@ -107,11 +112,11 @@ void turn(float degrees) {
     // hier lidar check
     if (gegi) {
       if (!ldr.freeTurn(
-              {{int(x), int(y)}, theta * 180 / M_PI})) { // wenn vorne blockiert
+              {{1500, 1000}, theta * 180 / M_PI})) { // wenn vorne blockiert
         interruptDriving();
         gegiTriggered = true;
-        while (1) {
-        }
+      } else {
+        continueDriving();
       }
     }
   }
@@ -119,7 +124,7 @@ void turn(float degrees) {
 
 void driveUntilSwitch() {
   std::string message = "w";
-  std::cout << "drive until switch triggered" << std::endl;
+  // std::cout << "drive until switch triggered" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
   while (driving == false) {
     delay(5);
@@ -263,7 +268,9 @@ void setup() {
   delay(100);
   system(command);
 
-  delay(2000);
+  delay(1000);
+  resetBelt();
+  delay(1000);
 
   // while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
@@ -282,8 +289,10 @@ void setup() {
   // setGripperHeight(3);
   // delay(1000);
   // driveDistance(1000);
-  setGripperAngle(2);
-  setGripperHeight(3);
+  // setGripperAngle(2);
+  // setGripperHeight(2);
+  driveUntilSwitch();
+  
 }
 
 void loop() {

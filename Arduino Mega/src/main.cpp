@@ -60,8 +60,8 @@ bool isDriving = false;
 bool stopped = false;
 
 long lastPosUpdate;
-bool leftTriggered = true;
-bool rightTriggered = true;
+bool limitSwitchDrive;
+
 // Encoder read functions
 
 void ai0() {
@@ -166,9 +166,8 @@ void getData() { // get the data and run the actions
       int distance = valueStr.toInt();
       driveDistance(distance);
     } else if (command == 'w') {
-      leftTriggered = false;
-      rightTriggered = false;
-      driveDistance(3000);
+      limitSwitchDrive = true;
+      driveDistance(-300);
     } else if (command == 't') {
       String valueStr = input.substring(2);
       float angle = valueStr.toFloat();
@@ -233,11 +232,12 @@ void updatePosition() {
 
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
-  if (fabs(leftEncChange) < pulsesCutoff &&
-      fabs(rightEncChange) < pulsesCutoff && maxD < 10) {
+  if ((fabs(leftEncChange) < pulsesCutoff &&
+      fabs(rightEncChange) < pulsesCutoff && maxD < 10) || (limitSwitchDrive && fabs(leftEncChange) < pulsesCutoff && fabs(rightEncChange) < pulsesCutoff)) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];
+    limitSwitchDrive = false;
   } else {
     isDriving = true;
   }
@@ -302,14 +302,6 @@ void loop() {
   if (currT - lastPosUpdate >= 50000) {
     updatePosition();
     lastPosUpdate = currT;
-  }
-
-  if (!leftTriggered && true) { // && limit switch triggered
-    target[1] = pos[1];
-  }
-
-  if (!rightTriggered && true) { // && limit switch triggered
-    target[0] = pos[0];
   }
 
   long pwm[NMOTORS];
