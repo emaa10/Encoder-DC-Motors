@@ -7,7 +7,7 @@
 #define limitSwitch 26
 
 #define beltLimit 705
-#define beltMiddlePos 400
+#define beltMiddlePos 500
 
 int beltPos = beltLimit;
 int beltState = 0;

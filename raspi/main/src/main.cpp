@@ -274,14 +274,16 @@ void setup() {
   // std::string message = "t,360";
   // serialPrintf(sPort, "%s\n", message.c_str());
   // driveDistance(-1000);
-  setGripperHeight(1);
-  setGripperAngle(3);
-  delay(1000);
-  driveDistance(1000);
+  // setGripperHeight(1);
+  // setGripperAngle(3);
+  // delay(1000);
+  // driveDistance(1000);
+  // setGripperAngle(2);
+  // setGripperHeight(3);
+  // delay(1000);
+  // driveDistance(1000);
   setGripperAngle(2);
   setGripperHeight(3);
-  delay(1000);
-  driveDistance(1000);
 }
 
 void loop() {

@@ -18,8 +18,7 @@ typedef struct struct_message
   bool gegi;
   bool colourBlue;
   int path;
-  int pwmOffsetL;
-  int pwmOffsetR;
+  int pwmOffset;
   int turnOffsetL;
   int turnOffsetR;
 } struct_message;
@@ -95,7 +94,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 1;
-  message.pwmOffset = -7;
+  message.pwmOffset = teamBlue? +3 : -17;
   message.turnOffsetL = 0;
   message.turnOffsetR = -100;
 
@@ -105,7 +104,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 3;
-  message.pwmOffset = -3;
+  message.pwmOffset = teamBlue? -3 : -3;
   message.turnOffsetL = 30;
   message.turnOffsetR = 0;
 
@@ -115,7 +114,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 2;
-  message.pwmOffset = -3;
+  message.pwmOffset = teamBlue? -3 : -3;
   message.turnOffsetL = -50;
   message.turnOffsetR = -25;
 
@@ -125,7 +124,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 11;
-  message.pwmOffset = 0;
+  message.pwmOffset = teamBlue? 0 : 0;
   message.turnOffsetL = 245;
   message.turnOffsetR = 225;
 
@@ -135,7 +134,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 2;
-  message.pwmOffset = -1;
+  message.pwmOffset = teamBlue? -1 : -1;
   message.turnOffsetL = 200;
   message.turnOffsetR = 135;
 
@@ -145,7 +144,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 11;
-  message.pwmOffset = -1;
+  message.pwmOffset = teamBlue? -1 : -1;
   message.turnOffsetL = 290;
   message.turnOffsetR = 145;
 
