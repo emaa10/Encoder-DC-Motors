@@ -166,8 +166,8 @@ void getData() { // get the data and run the actions
       int distance = valueStr.toInt();
       driveDistance(distance);
     } else if (command == 'w') {
-      limitSwitchDrive = true;
       driveDistance(-300);
+      limitSwitchDrive = true;
     } else if (command == 't') {
       String valueStr = input.substring(2);
       float angle = valueStr.toFloat();
@@ -233,7 +233,7 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-      fabs(rightEncChange) < pulsesCutoff && maxD < 10) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10)) {
+      fabs(rightEncChange) < pulsesCutoff && maxD < 10) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];

@@ -1,7 +1,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-bool gegi = false;
+bool gegi = true;
 bool teamBlue = false;
 
 // REPLACE WITH YOUR ESP RECEIVER'S MAC ADDRESS
