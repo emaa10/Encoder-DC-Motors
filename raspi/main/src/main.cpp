@@ -242,7 +242,8 @@ void setup() {
     std::cerr << "Fehler beim Öffnen des seriellen Ports. (ESP)" << std::endl;
   }
   std::signal(SIGINT, signalHandler); // control c stops motors
-  pinMode(8, INPUT);
+  pinMode(pullCord, INPUT);
+  pinMode(teamSwitch, INPUT);
   std::thread t(getDataThread); // get current pos from arduino
   t.detach();
 
@@ -253,12 +254,7 @@ void setup() {
   delay(2000);
 
   while(pullCordConnected()) { delay(5); }
-  while(digitalRead(teamSwitch) == LOW) {
-    std::cout << "low" << std::endl;
-  }
-  while(digitalRead(teamSwitch) == HIGH) {
-    std::cout << "high" << std::endl;
-  }
+  teamYellow = (digitalRead(pullCord) == 1);
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
@@ -268,6 +264,7 @@ void setup() {
 }
 
 void loop() {
+  std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
   // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
   // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;

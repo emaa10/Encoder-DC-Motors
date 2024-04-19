@@ -8,7 +8,7 @@
 
 // encoder stuff
 const int teamSwitch = 9;
-const int pullCord = 7;
+const int pullCord = 8;
 
 const bool yellow = true;
 
