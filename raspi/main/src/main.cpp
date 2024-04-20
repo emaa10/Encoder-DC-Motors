@@ -215,11 +215,11 @@ void homing() {
 }
 
 void timingsThread() {
-  delay(80000);
+  delay(90000);
   startSIMAs();
-  delay(5000);
+  delay(1000);
   // drive home
-  delay(10000);
+  delay(90000);
   stopMotor();
   delay(50);
   system(command);
