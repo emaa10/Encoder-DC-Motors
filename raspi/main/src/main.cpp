@@ -285,11 +285,21 @@ void setup() {
   delay(500);
   setGripperHeight(1);
   delay(500);
+  teamYellow = false;
   homing(true);
   setDisplay(15);
 
   while(pullCordConnected()) { delay(5); }
-  teamYellow = (digitalRead(teamSwitch) == 1);
+  // teamYellow = (digitalRead(teamSwitch) == 0);
+  // if(digitalRead(teamSwitch) == 0) {
+  //   teamYellow = true;
+  // } else {
+  //   teamYellow = false;
+  // }
+  // while(true) {
+  // std::cout << teamYellow << std::endl;
+  // delay(50);
+  // }
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
@@ -342,7 +352,8 @@ void setup() {
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
-  turn(90);
+  turn(175);
+  driveDistance(1100);
   gegi = true;
 
 }
