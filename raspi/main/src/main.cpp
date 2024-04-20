@@ -204,14 +204,24 @@ void turnTo(int degree) {
   turn(toTurn);
 }
 
-void homing() {
-  gegi = false;
-  driveUntilSwitch(false);
-  driveDistance(160);
-  turn(-90);
-  driveUntilSwitch(false);
-  driveDistance(210);
-  gegi = true;
+void homing(bool teamYellowN) {
+  if(teamYellowN) {
+    gegi = false;
+    driveUntilSwitch(false);
+    driveDistance(160);
+    turn(-90);
+    driveUntilSwitch(false);
+    driveDistance(210);
+    gegi = true;
+  } else {
+    gegi = false;
+    driveUntilSwitch(false);
+    driveDistance(160);
+    turn(90);
+    driveUntilSwitch(false);
+    driveDistance(210);
+    gegi = true;
+  }
 }
 
 void timingsThread() {
@@ -282,6 +292,7 @@ void setup() {
   delay(1000);
 
   homing();
+  setDisplay(15);
 
   while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
@@ -289,10 +300,12 @@ void setup() {
   u.detach();
   
   // start
-  // gegi = false;
+  gegi = false;
   // delay(10000);
   // startSIMAs();
-  driveDistance(2000);
+  // driveDistance(400);
+  // turn(90);
+  driveDistance(1400);
   gegi = true;
 
 }
