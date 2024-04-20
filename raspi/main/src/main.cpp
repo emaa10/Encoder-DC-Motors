@@ -88,7 +88,7 @@ void continueDriving() {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
-void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed); }
+void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed);  delay(1500);}
 
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
@@ -310,53 +310,62 @@ void setup() {
   // delay(10000);
   // startSIMAs();
 
-
   driveDistance(500);
-  driveDistance(-75);
+  driveDistance(teamYellow? -75 : -85);
   turn(90);
   delay(500);
-  setGripperHeight(1);
-  delay(2000);
+  // setGripperHeight(1);
+  // delay(2000);
   setGripperAngle(3);
   delay(1500);
+  //Fahre zu den ersten Pflanzen
+  gegi = true;
   driveDistance(900);
   setGripperAngle(2);
   delay(2000);
+  //Sammle erste Pflanzen auf
   setGripperHeight(4);
   delay(2000);
   turn(178);
   driveDistance(900);
   // abladen
+  gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
   setGripperAngle(2);
   delay(1000);
-  driveDistance(-400);
+  changeSpeed(175);
   gegi = true;
+  driveDistance(-400);
+  changeSpeed(100);
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
   turn(90);
-  driveDistance(650);
+  driveDistance(teamYellow ? 590 : 630);
   turn(90);
   setGripperAngle(3);
   delay(2000);
-  driveDistance(400);
+  driveDistance(450);
   setGripperAngle(2);
   delay(2000);
   setGripperHeight(4);
   delay(2000);
-  driveDistance(-300);
-  turn(88);
+  driveDistance(-350);
+  turn(86);
   driveDistance(1000);
   // abladen
+  gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
   setGripperAngle(2);
   delay(1000);
+  changeSpeed(175);
+  gegi = true;
   driveDistance(-500);
+  changeSpeed(100);
   //driveDistance(1400);
   setGripperAngle(0);
   delay(2000);
@@ -366,23 +375,44 @@ void setup() {
 
 
   setGripperHeight(3);
+  gegi = false;
   driveUntilSwitch(true);
+  gegi = true;
   // while(true) delay(5);
 
   // drehding
-  driveDistance(-80);
-  turn(90);
-  driveDistance(1400);
-  delay(1000);
-  turn(5);
-  setSolar(1);
-  driveDistance(-100);
-  turn(-2);
-  driveDistance(-600);
-  turn(-2);
-  driveDistance(-800);
-  setSolar(0);
-  gegi = true;
+  if (teamYellow) {
+    driveDistance(-80);
+    turn(89);
+    driveDistance(1400);
+    delay(1000);
+    turn(3);
+    setSolar(1);
+    driveDistance(-100);
+    turn(2);
+    driveDistance(-600);
+    turn(3);
+    driveDistance(-800);
+    setSolar(0);
+    gegi = false;
+    driveUntilSwitch(false);
+  } else {
+    driveDistance(-80);
+    turn(-93);
+    driveDistance(-1400);
+    delay(1000);
+    turn(-3);
+    setSolar(1);
+    driveDistance(100);
+    turn(-2);
+    driveDistance(600);
+    turn(-2);
+    driveDistance(800);
+    setSolar(0);
+    gegi = false;
+    driveUntilSwitch(true);
+  }
+
 
 }
 

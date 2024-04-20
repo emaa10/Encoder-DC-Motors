@@ -94,7 +94,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 1;
-  message.pwmOffset = teamBlue? -9 : -11;
+  message.pwmOffset = teamBlue? -5 : -11;
   message.turnOffsetL = 0;
   message.turnOffsetR = -100; 
 
@@ -134,7 +134,7 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 11;
-  message.pwmOffset = teamBlue? -1 : -1;
+  message.pwmOffset = teamBlue? -1 : +1;
   message.turnOffsetL = 290;
   message.turnOffsetR = 145;
 

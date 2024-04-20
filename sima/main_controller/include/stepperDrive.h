@@ -7,7 +7,7 @@
 #define limitSwitch 26
 
 #define beltLimit 705
-#define beltDroppingPos 425
+#define beltDroppingPos 440
 #define beltMiddlePos 200
 
 
@@ -26,17 +26,17 @@ void initialiseStepper(){
 void spinnerTurnLeft() {
   digitalWrite(spinnerStepperDIR, HIGH);
   digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(500);
+  delayMicroseconds(750);
   digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(500);
+  delayMicroseconds(750);
 }
 
 void spinnerTurnRight() {
   digitalWrite(spinnerStepperDIR, LOW);
   digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(500);
+  delayMicroseconds(750);
   digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(500);
+  delayMicroseconds(750);
 }
 
 void beltUp() {
