@@ -219,7 +219,7 @@ void timingsThread() {
   startSIMAs();
   delay(1000);
   // drive home
-  delay(90000);
+  delay(5000);
   stopMotor();
   delay(50);
   system(command);
@@ -291,8 +291,8 @@ void setup() {
   
   // start
   // gegi = false;
-  // delay(10000);
-  // startSIMAs();
+  delay(10000);
+  startSIMAs();
   // driveDistance(2000);
   gegi = true;
 
