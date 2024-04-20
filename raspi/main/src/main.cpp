@@ -4,15 +4,15 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-// const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
+const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
-int sPortE = 0;
-// int sPortE = serialOpen(serialESP.c_str(), 115200);
+// int sPortE = 0;
+int sPortE = serialOpen(serialESP.c_str(), 115200);
 const char *command1 = "screen -XS platformio quit";
 const char *command = "screen -d -m platformio /home/bot/.local/bin/pio device "
                       "monitor -p /dev/ttyACM0 -b 115200";
 std::ifstream serial(serialMega.c_str());
-// std::ifstream serialE(serialESP.c_str());
+std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
@@ -282,7 +282,7 @@ void setup() {
   resetBelt();
   delay(1000);
 
-  homing();
+  // homing();
 
   while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
@@ -291,7 +291,9 @@ void setup() {
   
   // start
   // gegi = false;
-  driveDistance(1400);
+  // delay(10000);
+  // startSIMAs();
+  // driveDistance(2000);
   gegi = true;
 
 }
