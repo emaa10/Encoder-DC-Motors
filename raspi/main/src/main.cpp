@@ -335,7 +335,7 @@ void setup() {
   delay(2000);
   setGripperAngle(2);
   delay(1000);
-  changeSpeed(175);
+  changeSpeed(150);
   gegi = true;
   driveDistance(-400);
   changeSpeed(100);
@@ -362,7 +362,7 @@ void setup() {
   delay(2000);
   setGripperAngle(2);
   delay(1000);
-  changeSpeed(175);
+  changeSpeed(150);
   gegi = true;
   driveDistance(-500);
   changeSpeed(100);
@@ -398,15 +398,15 @@ void setup() {
     driveUntilSwitch(false);
   } else {
     driveDistance(-80);
-    turn(-93);
+    turn(-91);
     driveDistance(-1400);
     delay(1000);
-    turn(-3);
+    turn(3);
     setSolar(1);
     driveDistance(100);
-    turn(-2);
+    turn(3);
     driveDistance(600);
-    turn(-2);
+    turn(3);
     driveDistance(800);
     setSolar(0);
     gegi = false;
