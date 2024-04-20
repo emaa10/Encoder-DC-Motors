@@ -290,8 +290,8 @@ void setup() {
   u.detach();
   
   // start
-  gegi = false;
-  driveUntilSwitch(true);
+  // gegi = false;
+  driveDistance(1400);
   gegi = true;
 
 }
