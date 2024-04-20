@@ -208,7 +208,7 @@ void homing() {
   gegi = false;
   driveUntilSwitch(false);
   driveDistance(160);
-  turn(90);
+  turn(-90);
   driveUntilSwitch(false);
   driveDistance(210);
   gegi = true;
@@ -282,15 +282,17 @@ void setup() {
   resetBelt();
   delay(1000);
 
-  // homing();
+  homing();
 
-  // while(pullCordConnected()) { delay(5); }
+  while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
   // start
-
+  gegi = false;
+  driveUntilSwitch(true);
+  gegi = true;
 
 }
 
