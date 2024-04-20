@@ -210,7 +210,7 @@ void homing(bool teamYellowN) {
   driveDistance(170);
   turn(-90);
   driveUntilSwitch(false);
-  driveDistance(210);
+  driveDistance(205);
   gegi = true;
 }
 
@@ -326,9 +326,12 @@ void setup() {
   delay(2000);
   turn(178);
   driveDistance(900);
+  // abladen
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
+  setGripperAngle(2);
+  delay(1000);
   driveDistance(-400);
   gegi = true;
   setGripperAngle(0);
@@ -345,8 +348,9 @@ void setup() {
   setGripperHeight(4);
   delay(2000);
   driveDistance(-300);
-  turn(90);
+  turn(88);
   driveDistance(1000);
+  // abladen
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
@@ -367,11 +371,11 @@ void setup() {
 
   // drehding
   driveDistance(-80);
-  turn(82);
-  setSolar(1);
-  driveDistance(1300);
+  turn(90);
+  driveDistance(1400);
   delay(1000);
-  turn(10);
+  turn(5);
+  setSolar(1);
   driveDistance(-100);
   turn(-2);
   driveDistance(-600);
