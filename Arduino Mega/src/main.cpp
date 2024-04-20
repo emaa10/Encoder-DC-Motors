@@ -326,7 +326,7 @@ void loop() {
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
-  pwm[0] *= 1.05;
+  pwm[0] *= 1;
 
   for (int k = 0; k < NMOTORS; k++) {
     if (stopped) {
