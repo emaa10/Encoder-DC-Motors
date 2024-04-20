@@ -19,7 +19,7 @@ String DEBUG = "";
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 6
 #define pwmMax 175
-int currentPwm = 100;
+int currentPwm = 110;
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};

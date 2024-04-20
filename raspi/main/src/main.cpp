@@ -85,7 +85,7 @@ void interruptDriving() {
 }
 void continueDriving() {
   std::string message = "c";
-  std::cout << "interrupted driving" << std::endl;
+  // std::cout << "interrupted driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
@@ -142,17 +142,19 @@ void driveDistance(int distance) {
   while (driving == false) {
     delay(5);
   }
+  bool sentGegi = false;
   while (driving == true) {
     delay(5);
     // hier lidar check
     if (gegi) {
-      if (distance > 0 && !ldr.freeBack({{1500, 1000}, theta * 180 / M_PI})) { // wenn vorne blockiert
+      bool freeFront = distance > 0 && !ldr.freeBack({{1500, 1000}, theta * 180 / M_PI});
+      bool freeBack = distance < 0 && !ldr.freeFront({{1500, 1000}, theta * 180 / M_PI});
+      if ((freeFront || freeBack) && sentGegi == false) { // wenn vorne blockiert
         interruptDriving();
+        sentGegi = true;
         gegiTriggered = true;
-      } else if (distance < 0 && !ldr.freeFront({{1500, 1000}, theta * 180 / M_PI})) {
-        interruptDriving();
-        gegiTriggered = true;
-      } else {
+      } else if(!freeFront && !freeBack && sentGegi == false) {
+        sentGegi = false;
         continueDriving();
       }
     }
@@ -222,6 +224,7 @@ void timingsThread() {
   // std::cout << "Sima action" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(9));
   stopMotor();
+  setSolar(0);
   delay(50);
   std::cout << "Stop monitor";
   system(command);
@@ -300,11 +303,7 @@ void setup() {
   setDisplay(50);
 
   while(pullCordConnected()) { delay(5); }
-  // teamYellow = (digitalRead(teamSwitch) == 0);
-  // while(true) {
-  // std::cout << teamYellow << std::endl;
-  // delay(50);
-  // }
+
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
@@ -339,9 +338,9 @@ void setup() {
   setGripperAngle(2);
   delay(1000);
   changeSpeed(150);
-  gegi = true;
   driveDistance(-400);
-  changeSpeed(100);
+  gegi = true;
+  changeSpeed(110);
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
@@ -366,9 +365,9 @@ void setup() {
   setGripperAngle(2);
   delay(1000);
   changeSpeed(150);
-  gegi = true;
   driveDistance(-500);
-  changeSpeed(100);
+  gegi = true;
+  changeSpeed(110);
   //driveDistance(1400);
   setGripperAngle(0);
   delay(2000);
