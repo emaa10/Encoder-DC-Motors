@@ -205,23 +205,13 @@ void turnTo(int degree) {
 }
 
 void homing(bool teamYellowN) {
-  if(teamYellowN) {
-    gegi = false;
-    driveUntilSwitch(false);
-    driveDistance(160);
-    turn(-90);
-    driveUntilSwitch(false);
-    driveDistance(210);
-    gegi = true;
-  } else {
-    gegi = false;
-    driveUntilSwitch(false);
-    driveDistance(160);
-    turn(90);
-    driveUntilSwitch(false);
-    driveDistance(210);
-    gegi = true;
-  }
+  gegi = false;
+  driveUntilSwitch(false);
+  driveDistance(160);
+  turn(-90);
+  driveUntilSwitch(false);
+  driveDistance(210);
+  gegi = true;
 }
 
 void timingsThread() {
