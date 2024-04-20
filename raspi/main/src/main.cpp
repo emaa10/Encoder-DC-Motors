@@ -217,9 +217,8 @@ void homing() {
 void timingsThread() {
   delay(90000);
   startSIMAs();
-  delay(1000);
   // drive home
-  delay(5000);
+  delay(9000);
   stopMotor();
   delay(50);
   system(command);
