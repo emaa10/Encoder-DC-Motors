@@ -207,7 +207,7 @@ void turnTo(int degree) {
 void homing(bool teamYellowN) {
   gegi = false;
   driveUntilSwitch(false);
-  driveDistance(160);
+  driveDistance(170);
   turn(-90);
   driveUntilSwitch(false);
   driveDistance(210);
@@ -312,7 +312,7 @@ void setup() {
 
 
   driveDistance(500);
-  driveDistance(-100);
+  driveDistance(-75);
   turn(90);
   delay(500);
   setGripperHeight(1);
@@ -365,15 +365,17 @@ void setup() {
   driveUntilSwitch(true);
   // while(true) delay(5);
 
-  driveDistance(-80);
   // drehding
-  turn(88);
+  driveDistance(-80);
+  turn(82);
   setSolar(1);
-  driveDistance(1200);
+  driveDistance(1300);
   delay(1000);
-  turn(8);
+  turn(10);
+  driveDistance(-100);
+  turn(-2);
   driveDistance(-600);
-  turn(-3);
+  turn(-2);
   driveDistance(-800);
   setSolar(0);
   gegi = true;
