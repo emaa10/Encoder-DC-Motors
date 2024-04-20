@@ -281,7 +281,6 @@ void setup() {
   resetBelt();
   delay(1000);
   
-  // while(true) {driveUntilSwitch(true); delay(500000000);}
 
   setGripperAngle(0);
   delay(500);
@@ -294,8 +293,8 @@ void setup() {
   } else {
     teamYellow = false;
   }
-  // homing(true);
-  setDisplay(45);
+  homing(true);
+  setDisplay(65);
 
   while(pullCordConnected()) { delay(5); }
   // teamYellow = (digitalRead(teamSwitch) == 0);
@@ -312,70 +311,70 @@ void setup() {
   // startSIMAs();
 
 
-  // driveDistance(500);
-  // driveDistance(-100);
-  // turn(90);
-  // delay(500);
-  // setGripperHeight(1);
-  // delay(2000);
-  // setGripperAngle(3);
-  // delay(1500);
-  // driveDistance(900);
-  // setGripperAngle(2);
-  // delay(2000);
-  // setGripperHeight(4);
-  // delay(2000);
-  // turn(178);
-  // driveDistance(900);
-  // driveUntilSwitch(true);
-  // setGripperHeight(2);
-  // delay(2000);
-  // driveDistance(-400);
-  // gegi = true;
-  // setGripperAngle(0);
-  // delay(2000);
-  // setGripperHeight(1);
-  // turn(90);
-  // driveDistance(650);
-  // turn(90);
-  // setGripperAngle(3);
-  // delay(2000);
-  // driveDistance(400);
-  // setGripperAngle(2);
-  // delay(2000);
-  // setGripperHeight(4);
-  // delay(2000);
-  // driveDistance(-300);
-  // turn(90);
-  // driveDistance(1000);
-  // driveUntilSwitch(true);
-  // setGripperHeight(2);
-  // delay(2000);
-  // setGripperAngle(2);
-  // delay(1000);
-  // driveDistance(-500);
-  // //driveDistance(1400);
-  // setGripperAngle(0);
-  // delay(2000);
-  // setGripperHeight(1);
-  // turn(165);
-  // driveDistance(1000);
+  driveDistance(500);
+  driveDistance(-100);
+  turn(90);
+  delay(500);
+  setGripperHeight(1);
+  delay(2000);
+  setGripperAngle(3);
+  delay(1500);
+  driveDistance(900);
+  setGripperAngle(2);
+  delay(2000);
+  setGripperHeight(4);
+  delay(2000);
+  turn(178);
+  driveDistance(900);
+  driveUntilSwitch(true);
+  setGripperHeight(2);
+  delay(2000);
+  driveDistance(-400);
+  gegi = true;
+  setGripperAngle(0);
+  delay(2000);
+  setGripperHeight(1);
+  turn(90);
+  driveDistance(650);
+  turn(90);
+  setGripperAngle(3);
+  delay(2000);
+  driveDistance(400);
+  setGripperAngle(2);
+  delay(2000);
+  setGripperHeight(4);
+  delay(2000);
+  driveDistance(-300);
+  turn(90);
+  driveDistance(1000);
+  driveUntilSwitch(true);
+  setGripperHeight(2);
+  delay(2000);
+  setGripperAngle(2);
+  delay(1000);
+  driveDistance(-500);
+  //driveDistance(1400);
+  setGripperAngle(0);
+  delay(2000);
+  setGripperHeight(1);
+  turn(165);
+  driveDistance(1000);
 
 
   setGripperHeight(3);
   driveUntilSwitch(true);
   // while(true) delay(5);
 
-  driveDistance(-60);
+  driveDistance(-80);
   // drehding
-  turn(90);
+  turn(88);
   setSolar(1);
   driveDistance(1200);
   delay(1000);
   turn(8);
   driveDistance(-600);
-  turn(-5);
-  driveDistance(-600);
+  turn(-3);
+  driveDistance(-800);
   setSolar(0);
   gegi = true;
 
