@@ -276,10 +276,13 @@ void RCA() {
 
 
   setSolar(2);
-  turn(10);
-  driveDistance(-200);
-  turn(-5);
-  driveDistance(-600);
+  turn(-8);
+  driveDistance(225);
+  turn(9);
+  driveDistance(-500);
+  turn(-3);
+  driveDistance(-1500);
+
 }
 
 void normal() {
