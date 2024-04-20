@@ -222,11 +222,11 @@ void timingsThread() {
   // std::cout << "Sima action" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(9));
   stopMotor();
-  // delay(50);
-  // std::cout << "Stop monitor";
-  // system(command);
-  // delay(100);
-  // system(command1);
+  delay(50);
+  std::cout << "Stop monitor";
+  system(command);
+  delay(100);
+  system(command1);
 }
 
 void getDataThread() {
@@ -332,7 +332,7 @@ void setup() {
   turn(178);
   driveDistance(900);
   // abladen
-  // gegi = false;
+  gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
@@ -359,7 +359,7 @@ void setup() {
   turn(86);
   driveDistance(1000);
   // abladen
-  // gegi = false;
+  gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
@@ -378,7 +378,7 @@ void setup() {
 
 
   setGripperHeight(3);
-  // gegi = false;
+  gegi = false;
   driveUntilSwitch(true);
   gegi = true;
   // while(true) delay(5);
@@ -397,7 +397,7 @@ void setup() {
     driveDistance(-600);
     turn(3);
     driveDistance(-800);
-    // gegi = false;
+    gegi = false;
     driveUntilSwitch(false);
     setSolar(0);
   } else {
@@ -413,7 +413,7 @@ void setup() {
     driveDistance(600);
     turn(2);
     driveDistance(800);
-    // gegi = false;
+    gegi = false;
     driveUntilSwitch(true);
     setSolar(0);
   }
