@@ -17,7 +17,7 @@ String DEBUG = "";
 
 #define NMOTORS 2
 #define pwmCutoff 20 // Set minimum drivable pwm value
-#define pulsesCutoff 5
+#define pulsesCutoff 6
 #define pwmMax 175
 int currentPwm = 100;
 long prevT = 0;
@@ -235,7 +235,7 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-      fabs(rightEncChange) < pulsesCutoff && maxD < 15) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
+      fabs(rightEncChange) < pulsesCutoff && maxD < 20) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];

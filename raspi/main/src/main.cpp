@@ -24,6 +24,7 @@ float toy = 0;
 bool gegi = true;
 bool teamYellow = true;
 bool gegiTriggered = false;
+// unsigned long timingsBefore =0;
 
 bool driving = false;
 
@@ -215,15 +216,17 @@ void homing(bool teamYellowN) {
 }
 
 void timingsThread() {
-  delay(90000);
+  std::this_thread::sleep_for(std::chrono::seconds(90));
   startSIMAs();
   // drive home
-  delay(9000);
+  // std::cout << "Sima action" << std::endl;
+  std::this_thread::sleep_for(std::chrono::seconds(9));
   stopMotor();
-  delay(50);
-  system(command);
-  delay(100);
-  system(command1);
+  // delay(50);
+  // std::cout << "Stop monitor";
+  // system(command);
+  // delay(100);
+  // system(command1);
 }
 
 void getDataThread() {
@@ -306,7 +309,7 @@ void setup() {
   u.detach();
   
   // start
-  gegi = false;
+  // gegi = false;
   // delay(10000);
   // startSIMAs();
 
@@ -329,7 +332,7 @@ void setup() {
   turn(178);
   driveDistance(900);
   // abladen
-  gegi = false;
+  // gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
@@ -356,7 +359,7 @@ void setup() {
   turn(86);
   driveDistance(1000);
   // abladen
-  gegi = false;
+  // gegi = false;
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
@@ -375,7 +378,7 @@ void setup() {
 
 
   setGripperHeight(3);
-  gegi = false;
+  // gegi = false;
   driveUntilSwitch(true);
   gegi = true;
   // while(true) delay(5);
@@ -388,29 +391,31 @@ void setup() {
     delay(1000);
     turn(3);
     setSolar(1);
+    delay(1000);
     driveDistance(-100);
     turn(2);
     driveDistance(-600);
     turn(3);
     driveDistance(-800);
-    setSolar(0);
-    gegi = false;
+    // gegi = false;
     driveUntilSwitch(false);
+    setSolar(0);
   } else {
     driveDistance(-80);
-    turn(-91);
+    turn(-92);
     driveDistance(-1400);
     delay(1000);
     turn(3);
-    setSolar(1);
+    setSolar(2);
+    delay(1000);
     driveDistance(100);
     turn(3);
     driveDistance(600);
-    turn(3);
+    turn(2);
     driveDistance(800);
-    setSolar(0);
-    gegi = false;
+    // gegi = false;
     driveUntilSwitch(true);
+    setSolar(0);
   }
 
 
@@ -423,12 +428,12 @@ void loop() {
   // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
   // std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
-  if(pullCordConnected()) { // wenn pullcord nochmal eingesteckt wird, arduino reset
-    system(command);
-    delay(200);
-    system(command1);
-    std::exit(0); // brauche nen while loop vom betriebssystem her
-  }
+  // if(pullCordConnected()) { // wenn pullcord nochmal eingesteckt wird, arduino reset
+  //   system(command);
+  //   delay(200);
+  //   system(command1);
+  //   std::exit(0); // brauche nen while loop vom betriebssystem her
+  // }
 }
 
 int main() {
