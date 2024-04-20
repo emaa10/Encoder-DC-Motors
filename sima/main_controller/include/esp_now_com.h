@@ -94,19 +94,19 @@ void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
   message.path = 1;
-  message.pwmOffset = teamBlue? -7 : -11;
+  message.pwmOffset = teamBlue? -5 : -11;
   message.turnOffsetL = 0;
   message.turnOffsetR = -100;
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
-  message.gegi = gegi;
+  message.gegi = false;
   message.colourBlue = teamBlue;
   message.path = 2;
-  message.pwmOffset = teamBlue? 9 : -5;
+  message.pwmOffset = teamBlue? 7 : -5;
   message.turnOffsetL = 25;
-  message.turnOffsetR = 0;
+  message.turnOffsetR = -15;
 
   esp_now_send(sima2Address, (uint8_t *) &message, sizeof(message));
   delay(100);

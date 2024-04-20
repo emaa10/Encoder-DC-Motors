@@ -285,17 +285,17 @@ void setup() {
   delay(500);
   setGripperHeight(1);
   delay(500);
-  teamYellow = false;
+  // teamYellow = false;
+  if(digitalRead(teamSwitch) == 0) {
+    teamYellow = true;
+  } else {
+    teamYellow = false;
+  }
   homing(true);
-  setDisplay(15);
+  setDisplay(20);
 
   while(pullCordConnected()) { delay(5); }
   // teamYellow = (digitalRead(teamSwitch) == 0);
-  // if(digitalRead(teamSwitch) == 0) {
-  //   teamYellow = true;
-  // } else {
-  //   teamYellow = false;
-  // }
   // while(true) {
   // std::cout << teamYellow << std::endl;
   // delay(50);
@@ -326,6 +326,7 @@ void setup() {
   setGripperHeight(2);
   delay(2000);
   driveDistance(-400);
+  gegi = true;
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
@@ -354,6 +355,16 @@ void setup() {
   setGripperHeight(1);
   turn(175);
   driveDistance(1100);
+  setGripperHeight(3);
+  driveUntilSwitch(true);
+  driveDistance(60);
+  // drehding
+  turn(90);
+  driveDistance(1200);
+  setSolar(1);
+  turn(5);
+  driveDistance(-1200);
+  setSolar(0);
   gegi = true;
 
 }
