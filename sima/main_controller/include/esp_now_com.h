@@ -96,7 +96,7 @@ void sendSimas(){
   message.path = 1;
   message.pwmOffset = teamBlue? -6 : -11;
   message.turnOffsetL = 0;
-  message.turnOffsetR = -100;
+  message.turnOffsetR = -100; 
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
   delay(100);
@@ -106,7 +106,7 @@ void sendSimas(){
   message.path = 2;
   message.pwmOffset = teamBlue? 7 : -5;
   message.turnOffsetL = 25;
-  message.turnOffsetR = -50;
+  message.turnOffsetR = -75;
 
   esp_now_send(sima2Address, (uint8_t *) &message, sizeof(message));
   delay(100);
