@@ -204,6 +204,16 @@ void turnTo(int degree) {
   turn(toTurn);
 }
 
+void homing() {
+  gegi = false;
+  driveUntilSwitch(false);
+  driveDistance(160);
+  turn(90);
+  driveUntilSwitch(false);
+  driveDistance(210);
+  gegi = true;
+}
+
 void timingsThread() {
   delay(80000);
   startSIMAs();
@@ -272,32 +282,16 @@ void setup() {
   resetBelt();
   delay(1000);
 
+  // homing();
+
   // while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
   
   // start
-  // std::string message = "t,360";
-  // serialPrintf(sPort, "%s\n", message.c_str());
-  // driveDistance(-1000);
-  // setGripperHeight(1);
-  // setGripperAngle(3);
-  // delay(1000);
-  // driveDistance(1000);
-  // setGripperAngle(2);
-  // setGripperHeight(3);
-  // delay(1000);
-  // driveDistance(1000);
-  // setGripperAngle(2);
-  // setGripperHeight(2);
-  gegi = false;
-  driveUntilSwitch(false);
-  driveDistance(120);
-  turn(90);
-  driveUntilSwitch(false);
-  driveDistance(210);
-  gegi = true;
+
+
 }
 
 void loop() {
