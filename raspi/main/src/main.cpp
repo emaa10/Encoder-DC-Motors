@@ -287,6 +287,7 @@ void setup() {
   delay(500);
   setGripperHeight(1);
   delay(500);
+  setSolar(0);
   // teamYellow = false;
   if(digitalRead(teamSwitch) == 0) {
     teamYellow = true;
@@ -355,13 +356,14 @@ void setup() {
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
-  turn(175);
+  turn(165);
   driveDistance(1000);
 
-  // while(true) delay(5);
 
   setGripperHeight(3);
   driveUntilSwitch(true);
+  while(true) delay(5);
+
   driveDistance(-60);
   // drehding
   turn(90);
