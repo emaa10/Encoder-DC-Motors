@@ -278,10 +278,11 @@ void RCA() {
   setSolar(2);
   turn(-8);
   driveDistance(225);
-  turn(9);
+  turn(10);
   driveDistance(-500);
-  turn(-3);
-  driveDistance(-1500);
+  turn(-4);
+  driveDistance(-1300);
+  setSolar(0);
 
 }
 
