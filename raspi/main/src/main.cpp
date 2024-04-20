@@ -266,43 +266,22 @@ void getData() {
   }
 }
 
-void setup() {
-  if (wiringPiSetup() == -1) {
-    std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
-  }
+void RCA() {
+  setDisplay(50);
 
-  if (sPort < 0) {
-    std::cerr << "Fehler beim Öffnen des seriellen Ports. (Arduino)" << std::endl;
-  }
-  if (sPortE < 0) {
-    std::cerr << "Fehler beim Öffnen des seriellen Ports. (ESP)" << std::endl;
-  }
-  std::signal(SIGINT, signalHandler); // control c stops motors
-  pinMode(pullCord, INPUT);
-  pinMode(teamSwitch, INPUT);
-  std::thread t(getDataThread); // get current pos from arduino
-  t.detach();
+  while(pullCordConnected()) { delay(5); }
 
-  system(command1);
-  delay(100);
-  system(command);
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
 
-  delay(1000);
-  resetBelt();
-  delay(1000);
-  
 
-  setGripperAngle(0);
-  delay(500);
-  setGripperHeight(1);
-  delay(500);
-  setSolar(0);
-  // teamYellow = false;
-  if(digitalRead(teamSwitch) == 0) {
-    teamYellow = true;
-  } else {
-    teamYellow = false;
-  }
+  setSolar(2);
+  turn(10);
+  driveDistance(-100);
+  driveDistance(-1000);
+}
+
+void normal() {
   homing(true);
   setDisplay(50);
 
@@ -310,11 +289,6 @@ void setup() {
 
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
-  
-  // start
-  // gegi = false;
-  // delay(10000);
-  // startSIMAs();
 
   driveDistance(500);
   driveDistance(teamYellow? -75 : -85);
@@ -376,27 +350,27 @@ void setup() {
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
-  turn(165);
-  driveDistance(1000);
+  turn(-15);
+  driveDistance(-1150);
 
 
   setGripperHeight(3);
   gegi = false;
-  driveUntilSwitch(true);
+  driveUntilSwitch(false);
   gegi = true;
   // while(true) delay(5);
 
   // drehding
   if (teamYellow) {
-    driveDistance(-80);
-    turn(89);
+    driveDistance(130);
+    turn(-88);
     driveDistance(1400);
     delay(1000);
     turn(3);
     setSolar(1);
     delay(1000);
     driveDistance(-100);
-    turn(2);
+    turn(3);
     driveDistance(-600);
     turn(3);
     driveDistance(-800);
@@ -404,8 +378,8 @@ void setup() {
     driveUntilSwitch(false);
     setSolar(0);
   } else {
-    driveDistance(-80);
-    turn(-92);
+    driveDistance(60);
+    turn(92);
     driveDistance(-1400);
     delay(1000);
     turn(3);
@@ -421,6 +395,50 @@ void setup() {
     setSolar(0);
   }
 
+}
+
+void setup() {
+  if (wiringPiSetup() == -1) {
+    std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
+  }
+
+  if (sPort < 0) {
+    std::cerr << "Fehler beim Öffnen des seriellen Ports. (Arduino)" << std::endl;
+  }
+  if (sPortE < 0) {
+    std::cerr << "Fehler beim Öffnen des seriellen Ports. (ESP)" << std::endl;
+  }
+  std::signal(SIGINT, signalHandler); // control c stops motors
+  pinMode(pullCord, INPUT);
+  pinMode(teamSwitch, INPUT);
+  std::thread t(getDataThread); // get current pos from arduino
+  t.detach();
+
+  system(command1);
+  delay(100);
+  system(command);
+
+  delay(1000);
+  resetBelt();
+  delay(1000);
+  
+
+  setGripperAngle(0);
+  delay(500);
+  setGripperHeight(1);
+  delay(500);
+  setSolar(0);
+  // teamYellow = false;
+  if(digitalRead(teamSwitch) == 0) {
+    teamYellow = true;
+  } else {
+    teamYellow = false;
+  }
+
+  
+  // start
+
+  RCA();
 
 }
 
