@@ -280,6 +280,8 @@ void setup() {
   delay(1000);
   resetBelt();
   delay(1000);
+  
+  // while(true) {driveUntilSwitch(true); delay(500000000);}
 
   setGripperAngle(0);
   delay(500);
@@ -354,7 +356,7 @@ void setup() {
   delay(2000);
   setGripperHeight(1);
   turn(175);
-  driveDistance(1100);
+  driveDistance(1000);
   setGripperHeight(3);
   driveUntilSwitch(true);
   driveDistance(60);
