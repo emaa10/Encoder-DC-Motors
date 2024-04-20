@@ -291,6 +291,10 @@ void setup() {
   resetBelt();
   delay(1000);
 
+  setGripperAngle(0);
+  delay(500);
+  setGripperHeight(1);
+  delay(500);
   homing(true);
   setDisplay(15);
 
@@ -321,14 +325,12 @@ void setup() {
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
-  setGripperAngle(3);
-  delay(2000);
   driveDistance(-400);
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
   turn(90);
-  driveDistance(750);
+  driveDistance(650);
   turn(90);
   setGripperAngle(3);
   delay(2000);
@@ -343,11 +345,14 @@ void setup() {
   driveUntilSwitch(true);
   setGripperHeight(2);
   delay(2000);
-  setGripperAngle(0);
-  delay(2000);
+  setGripperAngle(2);
+  delay(1000);
   driveDistance(-500);
   //driveDistance(1400);
-
+  setGripperAngle(0);
+  delay(2000);
+  setGripperHeight(1);
+  turn(90);
   gegi = true;
 
 }
