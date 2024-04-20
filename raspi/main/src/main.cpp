@@ -357,9 +357,10 @@ void setup() {
   setGripperHeight(1);
   turn(175);
   driveDistance(1000);
+  while(true) delay(5);
   setGripperHeight(3);
   driveUntilSwitch(true);
-  driveDistance(60);
+  driveDistance(-60);
   // drehding
   turn(90);
   driveDistance(1200);
