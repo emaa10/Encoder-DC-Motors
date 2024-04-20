@@ -318,7 +318,7 @@ void setup() {
   driveDistance(900);
   setGripperAngle(2);
   delay(2000);
-  setGripperHeight(3);
+  setGripperHeight(4);
   delay(2000);
   turn(178);
   driveDistance(900);
@@ -338,7 +338,7 @@ void setup() {
   driveDistance(400);
   setGripperAngle(2);
   delay(2000);
-  setGripperHeight(3);
+  setGripperHeight(4);
   delay(2000);
   driveDistance(-300);
   turn(90);

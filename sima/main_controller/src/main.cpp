@@ -95,8 +95,10 @@ void loop()
   if(beltState == 1){
     beltDown();
   } else if(beltState == 2) {
-    beltMiddle();
+    beltDropping();
   } else if(beltState == 3) {
+    beltMiddle();
+  } else if(beltState == 4) {
     beltUp();
   }
 
