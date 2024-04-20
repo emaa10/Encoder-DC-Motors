@@ -134,7 +134,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 600 && (angle > 300 || angle < 60)) {
+                if (distance < 400 && (angle > 300 || angle < 60)) {
                     return false;
                 }
             }
@@ -164,7 +164,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 600) return false;
+                if (distance < 400) return false;
             }
         }
         return true;
@@ -193,7 +193,7 @@ public:
                 if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 || point.y > 1990) continue;
 
                 //Check if enemy is near
-                if (distance < 600 && angle > 120 && angle < 240) return false;
+                if (distance < 400 && angle > 120 && angle < 240) return false;
             }
         }
         return true;

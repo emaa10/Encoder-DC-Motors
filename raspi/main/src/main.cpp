@@ -281,7 +281,7 @@ void setup() {
   resetBelt();
   delay(1000);
 
-  // homing();
+  homing();
 
   while(pullCordConnected()) { delay(5); }
   teamYellow = (digitalRead(teamSwitch) == 1);
@@ -290,9 +290,9 @@ void setup() {
   
   // start
   // gegi = false;
-  delay(10000);
-  startSIMAs();
-  // driveDistance(2000);
+  // delay(10000);
+  // startSIMAs();
+  driveDistance(2000);
   gegi = true;
 
 }
