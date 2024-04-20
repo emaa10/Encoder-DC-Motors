@@ -291,7 +291,7 @@ void setup() {
   resetBelt();
   delay(1000);
 
-  homing();
+  homing(true);
   setDisplay(15);
 
   while(pullCordConnected()) { delay(5); }
@@ -303,9 +303,21 @@ void setup() {
   gegi = false;
   // delay(10000);
   // startSIMAs();
-  // driveDistance(400);
-  // turn(90);
-  driveDistance(1400);
+  driveDistance(500);
+  driveDistance(100);
+  turn(90);
+  setGripperHeight(1);
+  setGripperAngle(3);
+  driveDistance(90);
+  setGripperAngle(0);
+  setGripperHeight(3);
+  turn(175);
+  driveDistance(90);
+  driveUntilSwitch(true);
+  setGripperHeight(2);
+  driveDistance(-500);
+  // driveDistance(1400);
+
   gegi = true;
 
 }
