@@ -297,7 +297,7 @@ void setup() {
     teamYellow = false;
   }
   homing(true);
-  setDisplay(65);
+  setDisplay(50);
 
   while(pullCordConnected()) { delay(5); }
   // teamYellow = (digitalRead(teamSwitch) == 0);
