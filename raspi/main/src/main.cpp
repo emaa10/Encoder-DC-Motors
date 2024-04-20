@@ -85,7 +85,7 @@ void interruptDriving() {
 }
 void continueDriving() {
   std::string message = "c";
-  // std::cout << "interrupted driving" << std::endl;
+  std::cout << "continued driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
@@ -147,13 +147,13 @@ void driveDistance(int distance) {
     delay(5);
     // hier lidar check
     if (gegi) {
-      bool freeFront = distance > 0 && !ldr.freeBack({{1500, 1000}, theta * 180 / M_PI});
-      bool freeBack = distance < 0 && !ldr.freeFront({{1500, 1000}, theta * 180 / M_PI});
-      if ((freeFront || freeBack) && sentGegi == false) { // wenn vorne blockiert
+      bool blockedFront = distance > 0 && !ldr.freeBack({{1500, 1000}, 0 });
+      bool blockedBack = distance < 0 && !ldr.freeFront({{1500, 1000}, 0 });
+      if ((blockedFront || blockedBack) && sentGegi == false) { // wenn vorne blockiert
         interruptDriving();
         sentGegi = true;
         gegiTriggered = true;
-      } else if(!freeFront && !freeBack && sentGegi == false) {
+      } else if(!blockedFront && !blockedBack && sentGegi == true) {
         sentGegi = false;
         continueDriving();
       }
@@ -223,13 +223,17 @@ void timingsThread() {
   // drive home
   // std::cout << "Sima action" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(9));
-  stopMotor();
-  setSolar(0);
-  delay(50);
   std::cout << "Stop monitor";
   system(command);
   delay(100);
   system(command1);
+  while(true) {
+    stopMotor();
+    delay(2);
+    setSolar(0);
+    delay(2);
+  }
+  delay(50);
 }
 
 void getDataThread() {
