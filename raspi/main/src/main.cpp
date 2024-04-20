@@ -294,7 +294,7 @@ void setup() {
     teamYellow = false;
   }
   homing(true);
-  setDisplay(20);
+  setDisplay(45);
 
   while(pullCordConnected()) { delay(5); }
   // teamYellow = (digitalRead(teamSwitch) == 0);
@@ -357,7 +357,9 @@ void setup() {
   setGripperHeight(1);
   turn(175);
   driveDistance(1000);
-  while(true) delay(5);
+
+  // while(true) delay(5);
+
   setGripperHeight(3);
   driveUntilSwitch(true);
   driveDistance(-60);
