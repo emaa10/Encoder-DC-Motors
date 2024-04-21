@@ -267,7 +267,7 @@ void getData() {
 }
 
 void RCA() {
-  setDisplay(50);
+  setDisplay(30);
 
   while(pullCordConnected()) { delay(5); }
 
