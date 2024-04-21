@@ -273,17 +273,38 @@ void RCA() {
 
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
-
-
-  setSolar(2);
-  turn(-8);
-  driveDistance(225);
-  turn(10);
-  driveDistance(-500);
-  turn(-4);
-  driveDistance(-1300);
-  setSolar(0);
-
+  // setSolar(2);
+  if (!teamYellow) {
+    turn(8);
+    driveDistance(225);
+    turn(-10);
+    driveDistance(-500);
+    turn(6);
+    driveDistance(-250);
+    turn(3);
+    driveDistance(-250);
+    turn(3);
+    driveDistance(-500);
+    turn(3);
+    driveDistance(-250);
+    turn(3);
+    setSolar(0);
+  } else {
+    turn(8);
+    driveDistance(-215);
+    turn(-10);
+    driveDistance(500);
+    //turn(-3);
+    driveDistance(250);
+    //turn(-3);
+    driveDistance(250);
+    //turn(-3);
+    driveDistance(500);
+    //turn(-3);
+    driveDistance(250);
+    //turn(-3);
+    setSolar(0); 
+  }
 }
 
 void normal() {
@@ -364,9 +385,9 @@ void normal() {
   driveUntilSwitch(false);
   gegi = true;
   // while(true) delay(5);
-
+  // std::cout << "Team:" << teamYellow? "yellow" : "blue";
   // drehding
-  if (teamYellow) {
+  if (!teamYellow) {
     driveDistance(130);
     turn(-88);
     driveDistance(1400);
@@ -436,8 +457,10 @@ void setup() {
   // teamYellow = false;
   if(digitalRead(teamSwitch) == 0) {
     teamYellow = true;
+    // std::cout << "yellow" << std::endl;
   } else {
     teamYellow = false;
+    // std::cout << "blue" << std::endl;
   }
 
   

@@ -26,17 +26,17 @@ void initialiseStepper(){
 void spinnerTurnLeft() {
   digitalWrite(spinnerStepperDIR, HIGH);
   digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(750);
+  delayMicroseconds(400);
   digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(750);
+  delayMicroseconds(400);
 }
 
 void spinnerTurnRight() {
   digitalWrite(spinnerStepperDIR, LOW);
   digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(750);
+  delayMicroseconds(400);
   digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(750);
+  delayMicroseconds(400);
 }
 
 void beltUp() {
