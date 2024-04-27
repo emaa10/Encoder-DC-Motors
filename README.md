@@ -7,3 +7,5 @@ This repo is about a system that uses Encoders and DC Motors to drive using a ra
 - Started with PID tuning
 - Started with main raspi code
 - 
+### Until Gießen
+- Wrote some tactics and worked on new logic with PID tuning
