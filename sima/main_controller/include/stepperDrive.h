@@ -1,102 +1,99 @@
-#define spinnerStepperDIR 14
-#define spinnerStepperSTEP 12
+#define potterStepperDIR 14
+#define potterStepperSTEP 12
 
-#define beltStepperDIR 32
-#define beltStepperSTEP 33
+#define slotterStepperDIR 32
+#define slotterStepperSTEP 33
 
-#define limitSwitch 26
-
-#define beltLimit 705
+#define beltTopPos 705
 #define beltDroppingPos 440
 #define beltMiddlePos 200
 
+int beltState;
 
-int beltPos = beltLimit;
-int beltState = 0;
-int spinnerState = 0;
+int currentPosSlotter = 0;
+int currentPosPotter = 0;
 
 void initialiseStepper(){
-  pinMode(spinnerStepperDIR, OUTPUT); // Step
-  pinMode(spinnerStepperSTEP, OUTPUT); // Richtung
+  pinMode(potterStepperDIR, OUTPUT); // Step
+  pinMode(potterStepperSTEP, OUTPUT); // Richtung
 
-  pinMode(beltStepperDIR, OUTPUT);
-  pinMode(beltStepperSTEP, OUTPUT);
+  pinMode(slotterStepperDIR, OUTPUT);
+  pinMode(slotterStepperSTEP, OUTPUT);
 }
 
-void spinnerTurnLeft() {
-  digitalWrite(spinnerStepperDIR, HIGH);
-  digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(400);
-  digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(400);
-}
+void beltDrive(String input){
+  if(input == "S_DOWN_P_DOWN"){
+    digitalWrite(potterStepperDIR, LOW);
+    digitalWrite(slotterStepperDIR, HIGH);
 
-void spinnerTurnRight() {
-  digitalWrite(spinnerStepperDIR, LOW);
-  digitalWrite(spinnerStepperSTEP,HIGH);
-  delayMicroseconds(400);
-  digitalWrite(spinnerStepperSTEP,LOW);
-  delayMicroseconds(400);
-}
+    while(currentPosPotter > 0 && currentPosSlotter > 0){
+      digitalWrite(potterStepperSTEP,HIGH);
+      digitalWrite(slotterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(potterStepperSTEP,LOW);
+      digitalWrite(slotterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosPotter--;
+      currentPosSlotter--;
+    }
+    while(currentPosSlotter > 0){
+      digitalWrite(slotterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(slotterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosSlotter--;
+    }
+  } else if(input == "S_UP_P_DOWN"){ 
+    digitalWrite(slotterStepperDIR, LOW);
 
-void beltUp() {
-  if(beltPos > 0){
-    digitalWrite(beltStepperDIR, HIGH);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos --;
-  }
-}
+    while(currentPosSlotter < beltTopPos){
+      digitalWrite(slotterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(slotterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosSlotter++;
+    }
+  } else if(input == "S_UP_P_UP"){
+    digitalWrite(potterStepperDIR, HIGH);
+    digitalWrite(slotterStepperDIR, LOW);
 
-void beltDown() {
-  if(beltPos < beltLimit) {
-    digitalWrite(beltStepperDIR, LOW);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos++;
-  }
-}
+    while(currentPosPotter < beltTopPos && currentPosSlotter < beltTopPos){
+      digitalWrite(potterStepperSTEP,HIGH);
+      digitalWrite(slotterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(potterStepperSTEP,LOW);
+      digitalWrite(slotterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosPotter++;
+      currentPosSlotter++;
+    }
+    while(currentPosPotter < beltTopPos){
+      digitalWrite(potterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(potterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosPotter++;
+    }
+  } else if(input == "S_MID_P_MID"){
+    digitalWrite(potterStepperDIR, HIGH);
+    digitalWrite(slotterStepperDIR, LOW);
 
-void beltDropping() {
-  if(beltPos > beltDroppingPos) {
-    digitalWrite(beltStepperDIR, HIGH);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos --;    
-  } else if(beltPos < beltDroppingPos) {
-    digitalWrite(beltStepperDIR, LOW);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos++;
-  } else if(beltPos == beltDroppingPos) {
-    beltState = 0;
-  }
-}
-
-void beltMiddle() {
-  if(beltPos > beltMiddlePos) {
-    digitalWrite(beltStepperDIR, HIGH);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos --;    
-  } else if(beltPos < beltMiddlePos) {
-    digitalWrite(beltStepperDIR, LOW);
-    digitalWrite(beltStepperSTEP,HIGH);
-    delayMicroseconds(750);
-    digitalWrite(beltStepperSTEP,LOW);
-    delayMicroseconds(750);
-    beltPos++;
-  } else if(beltPos == beltMiddlePos) {
-    beltState = 0;
+    while(currentPosPotter < beltMiddlePos && currentPosSlotter < beltMiddlePos){
+      digitalWrite(potterStepperSTEP,HIGH);
+      digitalWrite(slotterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(potterStepperSTEP,LOW);
+      digitalWrite(slotterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosPotter++;
+      currentPosSlotter++;
+    }
+    while(currentPosPotter < beltMiddlePos){
+      digitalWrite(potterStepperSTEP,HIGH);
+      delayMicroseconds(750);
+      digitalWrite(potterStepperSTEP,LOW);
+      delayMicroseconds(750);
+      currentPosPotter++;
+    }
   }
 }

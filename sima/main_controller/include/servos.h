@@ -1,25 +1,73 @@
 #include <ESP32Servo.h>
 
 #define servo1 15
-#define servo2 2
-#define servo3 5
-#define servo4 4
-#define servo5 16
-#define servo6 17
+#define servoPotterPin 2
+#define servoSlotterFrontPin 5
+#define servoFlagRightPin 4
+#define servoFlagLeftPin 16
+#define servoSlotterBackPin 17
 
 Servo myservo;
-Servo myservo1;
-Servo myservo2;
-Servo myservo3;
-Servo myservo4;
-Servo myservo5;
+Servo servoPotter;
+Servo servoSlotterFront;
+Servo servoFlagRight;
+Servo servoFlagLeft;
+Servo servoSlotterBack;
 
 
 void initialiseServos(){
     myservo.attach(15);
-    myservo1.attach(2);
-    myservo2.attach(5);
-    myservo3.attach(4);
-    myservo4.attach(16);
-    myservo5.attach(17);
+    servoPotter.attach(servoPotterPin);
+    servoSlotterFront.attach(servoSlotterFrontPin);
+    servoFlagRight.attach(servoFlagRightPin);
+    servoFlagLeft.attach(servoFlagLeftPin);
+    servoSlotterBack.attach(servoSlotterBackPin);
+}
+
+void slotterFront(int input){
+    if(input == 1){
+        servoSlotterFront.write(122);    //all the way down slight negative tilt
+    } else if(input == 2){
+        servoSlotterFront.write(116);    //parallel to ground
+    } else if(input == 3){
+        servoSlotterFront.write(105);    //upwards tilted
+    } else if(input == 4){
+        servoSlotterFront.write(20);    //90°
+    }
+}
+
+void slotterBack(int input){
+    if(input == 1){
+        servoSlotterBack.write(37);    //all the way down slight negative tilt
+    } else if(input == 2){
+        servoSlotterBack.write(100);    //upwards tilted
+    } else if(input == 3){
+        servoSlotterBack.write(132);    //90°
+    }
+}
+
+void potter(int input){
+    if(input == 1){
+        servoPotter.write(60);    //all the way down slight negative tilt
+    } else if(input == 2){
+        servoPotter.write(63);    //parallel to ground
+    } else if(input == 3){
+        servoPotter.write(165);    //90°
+    }
+}
+
+void flagLeft(String input){
+    if(input == "out"){
+        servoFlagLeft.write(50);
+    } else if(input == "in"){
+        servoFlagLeft.write(180);
+    }
+}
+
+void flagRight(String input){
+    if(input == "out"){
+        servoFlagRight.write(160);
+    } else if(input == "in"){
+        servoFlagRight.write(50);
+    }
 }

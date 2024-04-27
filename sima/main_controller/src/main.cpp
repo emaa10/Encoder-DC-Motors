@@ -19,92 +19,97 @@ void getData() {
       teamBlue = color==1?true:false;
       sendSimas();
     }
+
     //spinner: stop, blue, yellow
     if(command == 'c') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
-      spinnerState = value;
+      
     }
-    //belt: home, up, down
+
+    //belt
     if(command == 'b') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
       
-      beltState = value;
+      if(value == 0){
+        beltDrive("S_DOWN_P_DOWN");
+      } else if(value == 1){
+        beltDrive("S_MID_P_MID");
+      } else if(value == 2){
+        beltDrive("S_UP_P_DOWN");
+      } else if(value == 3){
+        beltDrive("S_UP_P_UP");
+      }
     }
-    if(command == 'r') {
-      beltPos = beltLimit;
-    }
+
     //display: 0-999
     if(command == 'x') {
       String valueStr = input.substring(1);
       int displayCounter = valueStr.toInt();
       displayInteger(displayCounter);
     }
-    //gripper up
+
+    //slotter/potter 
     if(command == 'u') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
 
       if(value == 0){
-        myservo5.write(120);
-      } else if(value == 1) {
-        myservo5.write(35);
-      } else if(value == 2) {
-        myservo5.write(20);
-      } else if(value == 3) {
-        myservo5.write(15);
+        slotterFront(1);
+        potter(1);
+      } else if(value == 1){
+        slotterFront(2);
+        potter(2);
+      } else if(value == 2){
+        slotterFront(3);
+        potter(3);
+      } else if(value == 3){
+        slotterFront(4);
+        potter(4);
       }
     }
-    //gripper down
+
+    //slotter back
     if(command == 'l') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
 
       if(value == 0){
-        myservo3.write(130);
-        myservo4.write(25);
-      } else if(value == 1) {
-        myservo3.write(25);
-        myservo4.write(130);
+        slotterBack(0);
+      } else if(value == 1){
+        slotterBack(1);
+      }else if(value == 2){
+        slotterBack(2);
       }
+    }
+
+    //debug
+    if(command == 'd') {
+      String valueStr = input.substring(1);
+      int value = valueStr.toInt();
+      
+      slotterFront(4);
+      potter(3);
+      delay(1000);
+      potter(1);
+      slotterFront(1);
     }
   }
 }
 
-void setup()
-{
+void setup(){
   // Init Serial Monitor
   Serial.begin(115200);
 
   while(!Serial);
   
-  pinMode(limitSwitch, INPUT_PULLUP);
-
-
   initSimas();
   initialiseDisplay();
   initialiseServos();
   initialiseStepper();
 }
 
-void loop()
-{
+void loop(){
   getData();
-  
-  if(beltState == 1){
-    beltDown();
-  } else if(beltState == 2) {
-    beltDropping();
-  } else if(beltState == 3) {
-    beltMiddle();
-  } else if(beltState == 4) {
-    beltUp();
-  }
-
-  if(spinnerState == 1){
-    spinnerTurnLeft();
-  } else if(spinnerState == 2) {
-    spinnerTurnRight();
-  }
 }
