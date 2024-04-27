@@ -20,11 +20,19 @@ void getData() {
       sendSimas();
     }
 
-    //spinner: stop, blue, yellow
+    //flag: stop, blue, yellow
     if(command == 'c') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
-      
+      if(value == 1){
+        flagLeft("out");
+      } else if(value == 2){
+        flagLeft("in");
+      } else if(value == 3){
+        flagRight("out");
+      } else if(value == 4){
+        flagRight("in");
+      }
     }
 
     //belt
@@ -56,8 +64,8 @@ void getData() {
       int value = valueStr.toInt();
 
       if(value == 0){
-        slotterFront(1);
         potter(1);
+        slotterFront(1);
       } else if(value == 1){
         slotterFront(2);
         potter(2);
@@ -76,11 +84,11 @@ void getData() {
       int value = valueStr.toInt();
 
       if(value == 0){
-        slotterBack(0);
-      } else if(value == 1){
         slotterBack(1);
-      }else if(value == 2){
+      } else if(value == 1){
         slotterBack(2);
+      }else if(value == 2){
+        slotterBack(3);
       }
     }
 
@@ -91,9 +99,6 @@ void getData() {
       
       slotterFront(4);
       potter(3);
-      delay(1000);
-      potter(1);
-      slotterFront(1);
     }
   }
 }
