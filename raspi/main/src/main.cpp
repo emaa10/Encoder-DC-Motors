@@ -267,7 +267,8 @@ void getData() {
 }
 
 void RCA() {
-  setDisplay(30);
+  teamYellow = false;
+  setDisplay(25);
 
   while(pullCordConnected()) { delay(5); }
 
@@ -291,7 +292,7 @@ void RCA() {
     setSolar(0);
   } else {
     turn(8);
-    driveDistance(-215);
+    driveDistance(-210);
     turn(-10);
     driveDistance(500);
     //turn(-3);
@@ -308,8 +309,9 @@ void RCA() {
 }
 
 void normal() {
+  teamYellow = false;
   homing(true);
-  setDisplay(50);
+  setDisplay(42);
 
   while(pullCordConnected()) { delay(5); }
 
@@ -378,6 +380,7 @@ void normal() {
   setGripperHeight(1);
   turn(-15);
   driveDistance(-1150);
+  while(true) delay(5);
 
 
   setGripperHeight(3);
@@ -466,7 +469,7 @@ void setup() {
   
   // start
 
-  RCA();
+  normal();
 
 }
 
