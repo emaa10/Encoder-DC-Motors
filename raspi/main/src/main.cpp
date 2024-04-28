@@ -487,7 +487,7 @@ void setup() {
   // start
 
   //normal();
-  driveDistance(1000);
+  turn(180);
 
 }
 

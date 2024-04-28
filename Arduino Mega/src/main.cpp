@@ -9,8 +9,8 @@
 #define RIGHT_ENC_A_PHASE 18
 #define RIGHT_ENC_B_PHASE 19
 
-const int lpwm[] = {9, 11};
-const int rpwm[] = {8, 10};
+const int lpwm[] = {9, 10};
+const int rpwm[] = {8, 11};
 String DEBUG = "";
 
 // Define Globals
@@ -337,6 +337,7 @@ void loop() {
     if (stopped) {
       setMotor(0, 0, lpwm[k], rpwm[k]);
     } else {
+      // Serial.println("Pwm left: " + String(pwm[1]) + " pwm right: " + String(pwm[0]));
       setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
     }
   }
