@@ -314,7 +314,7 @@ void loop() {
   // loop through the motors
 
   lastpwm = lastpwm + 1;
-  lastpwm = lastpwm > currentPwm ? currentPwm : lastpwm;
+  lastpwm = lastpwm > currentPwm ? currentPwm : lastpwm < pwmCutoff ? pwmCutoff : lastpwm;
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
