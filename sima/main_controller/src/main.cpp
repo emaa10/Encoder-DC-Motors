@@ -24,13 +24,13 @@ void getData() {
     if(command == 'c') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
-      if(value == 1){
+      if(value == 0){
         flagLeft("out");
-      } else if(value == 2){
+      } else if(value == 1){
         flagLeft("in");
-      } else if(value == 3){
+      } else if(value == 2){
         flagRight("out");
-      } else if(value == 4){
+      } else if(value == 3){
         flagRight("in");
       }
     }
@@ -71,10 +71,10 @@ void getData() {
         potter(2);
       } else if(value == 2){
         slotterFront(3);
-        potter(3);
+        potter(2);
       } else if(value == 3){
         slotterFront(4);
-        potter(4);
+        potter(3);
       }
     }
 

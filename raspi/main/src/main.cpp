@@ -83,10 +83,29 @@ void interruptDriving() {
   std::cout << "interrupted driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
 }
+
 void continueDriving() {
   std::string message = "c";
   std::cout << "continued driving" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
+}
+
+// 0 unten, 3 oben
+void setSlotter(int mode) {
+  std::string message = "u" + std::to_string(mode);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+// leftout, leftin, right out, right in
+void setFlag(int mode) {
+  std::string message = "c" + std::to_string(mode);
+  serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+// beide unten, beide mitte, slotter oben, potter unten
+void setBelt(int mode) {
+  std::string message = "b" + std::to_string(mode);
+  serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed);  delay(1500);}
@@ -451,13 +470,13 @@ void setup() {
   resetBelt();
   delay(1000);
   
-
+  setSlotter(3);
   setGripperAngle(0);
   delay(500);
   setGripperHeight(1);
   delay(500);
   setSolar(0);
-  
+
   // teamYellow = false;
   if(digitalRead(teamSwitch) == 0) {
     teamYellow = true;
