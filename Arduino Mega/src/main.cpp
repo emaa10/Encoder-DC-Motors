@@ -269,7 +269,7 @@ void setup() {
 
   for (int k = 0; k < NMOTORS; k++) {
     // pid[k].setParams(0.7, 0.2, 0.05, 100);
-    pid[k].setParams(0.7, 0.2, 0.05, 100);
+    pid[k].setParams(0.7, 0.15, 0.05, 100);
   }
 
   lastPosUpdate = micros();
