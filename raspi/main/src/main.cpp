@@ -457,6 +457,7 @@ void setup() {
   setGripperHeight(1);
   delay(500);
   setSolar(0);
+  
   // teamYellow = false;
   if(digitalRead(teamSwitch) == 0) {
     teamYellow = true;
@@ -469,7 +470,8 @@ void setup() {
   
   // start
 
-  normal();
+  //normal();
+  driveDistance(1000);
 
 }
 
