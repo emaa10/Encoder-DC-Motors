@@ -269,7 +269,7 @@ void setup() {
 
   for (int k = 0; k < NMOTORS; k++) {
     // pid[k].setParams(0.7, 0.2, 0.05, 100);
-    pid[k].setParams(0.7, 0.15, 0.05, 100);
+    pid[k].setParams(0.7, 0.0, 0.0, 100);
   }
 
   lastPosUpdate = micros();
@@ -328,6 +328,7 @@ void loop() {
   //  String(pwm[0]));
   float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
+    pwm[1] *= 1.025;
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
@@ -342,4 +343,5 @@ void loop() {
     }
   }
   lastpwm = max(pwm[0], pwm[1]);
+  Serial.println(pwm[0] + "_" + pwm[1]);
 }
