@@ -20,6 +20,7 @@ String DEBUG = "";
 #define pulsesCutoff 6
 #define pwmMax 175
 int currentPwm = 110;
+int lastpwm = 0;
 long prevT = 0;
 volatile int posi[] = {0, 0};
 int lastPos[] = {0, 0};
@@ -121,7 +122,7 @@ void resetPosition() {
   while (theta > 2 * M_PI) {
     theta -= 2 * M_PI;
   }
-  while (theta < -2 *M_PI) {
+  while (theta < -2 * M_PI) {
     theta += 2 * M_PI;
   }
   extraTheta = 0;
@@ -168,7 +169,7 @@ void getData() { // get the data and run the actions
     } else if (command == 'w') {
       String valueStr = input.substring(2);
       bool dir = valueStr.toInt();
-      driveDistance(dir?300:-300);
+      driveDistance(dir ? 300 : -300);
       limitSwitchDrive = true;
     } else if (command == 't') {
       String valueStr = input.substring(2);
@@ -178,10 +179,10 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       int speed = valueStr.toInt();
       currentPwm = speed < pwmMax ? speed : pwmMax;
-    } else if(command == 't') { // set team
+    } else if (command == 't') { // set team
       String valueStr = input.substring(2);
       int value = valueStr.toInt();
-      teamYellow = (value=1)?true:false;
+      teamYellow = (value = 1) ? true : false;
     }
   }
 }
@@ -235,7 +236,9 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-      fabs(rightEncChange) < pulsesCutoff && maxD < 20) || (limitSwitchDrive && fabs(leftEncChange) < 10 && fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
+       fabs(rightEncChange) < pulsesCutoff && maxD < 20) ||
+      (limitSwitchDrive && fabs(leftEncChange) < 10 &&
+       fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
     target[0] = pos[0];
     target[1] = pos[1];
@@ -269,7 +272,6 @@ void setup() {
   }
 
   lastPosUpdate = micros();
-
 }
 
 // Loop function
@@ -310,15 +312,19 @@ void loop() {
   int dir[NMOTORS];
   float scaledFactor[NMOTORS];
   // loop through the motors
+
+  lastpwm = lastpwm + 1;
+  lastpwm = lastpwm > currentPwm ? currentPwm : lastpwm;
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
     // if (pwm[k] > currentPwm) {
     //   pwm[k] = currentPwm;
     // }
-    scaledFactor[k] = (float)pwm[k] / currentPwm;
+    scaledFactor[k] = (float)pwm[k] / lastpwm;
   }
-  //  Serial.println("pwmleft: " + String(pwm[1]) + " pwmright: " + String(pwm[0]));
+  //  Serial.println("pwmleft: " + String(pwm[1]) + " pwmright: " +
+  //  String(pwm[0]));
   float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
     pwm[0] /= maxFactor;
@@ -326,13 +332,12 @@ void loop() {
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
-  pwm[0] *= 1;
-
   for (int k = 0; k < NMOTORS; k++) {
     if (stopped) {
-      setMotor(0, 0, lpwm[k], rpwm[k]); 
+      setMotor(0, 0, lpwm[k], rpwm[k]);
     } else {
       setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
     }
   }
+  lastpwm = max(pwm[0], pwm[1]);
 }
