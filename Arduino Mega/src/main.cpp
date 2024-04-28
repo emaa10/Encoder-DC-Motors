@@ -336,7 +336,7 @@ void loop() {
     if (stopped) {
       setMotor(0, 0, lpwm[k], rpwm[k]);
     } else {
-      setMotor(-dir[k], pwm[k], lpwm[k], rpwm[k]);
+      setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
     }
   }
   lastpwm = max(pwm[0], pwm[1]);
