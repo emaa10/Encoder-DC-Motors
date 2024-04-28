@@ -18,8 +18,8 @@ String DEBUG = "";
 #define NMOTORS 2
 #define pwmCutoff 20 // Set minimum drivable pwm value
 #define pulsesCutoff 6
-#define pwmMax 175
-int currentPwm = 110;
+#define pwmMax 200
+int currentPwm = 200;
 int lastpwm = 0;
 long prevT = 0;
 volatile int posi[] = {0, 0};

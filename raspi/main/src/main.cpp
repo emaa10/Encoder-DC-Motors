@@ -471,11 +471,8 @@ void setup() {
   delay(1000);
   
   setSlotter(3);
-  setGripperAngle(0);
   delay(500);
-  setGripperHeight(1);
   delay(500);
-  setSolar(0);
 
   // teamYellow = false;
   if(digitalRead(teamSwitch) == 0) {

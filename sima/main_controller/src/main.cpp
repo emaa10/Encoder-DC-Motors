@@ -35,6 +35,15 @@ void getData() {
       }
     }
 
+    //reset belt height
+    if(command == 'r') {
+      String valueStr = input.substring(1);
+      int value = valueStr.toInt();
+      
+      currentPosSlotter = 0;
+      currentPosPotter = 0;
+    }
+
     //belt
     if(command == 'b') {
       String valueStr = input.substring(1);
