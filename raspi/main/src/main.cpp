@@ -21,7 +21,7 @@ float y = 225;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
-bool gegi = true;
+bool gegi = false;
 bool teamYellow = true;
 bool gegiTriggered = false;
 // unsigned long timingsBefore =0;
@@ -487,7 +487,14 @@ void setup() {
   // start
 
   //normal();
-  turn(180);
+  driveDistance(2000);
+  turn(90);
+  driveDistance(1000);
+  turn(90);
+  driveDistance(2000);
+  turn(90);
+  driveDistance(1000);
+  turn(90);
 
 }
 
