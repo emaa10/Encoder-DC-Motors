@@ -9,8 +9,8 @@
 #define RIGHT_ENC_A_PHASE 18
 #define RIGHT_ENC_B_PHASE 19
 
-const int lpwm[] = {8, 11};
-const int rpwm[] = {9, 10};
+const int lpwm[] = {9, 11};
+const int rpwm[] = {8, 10};
 String DEBUG = "";
 
 // Define Globals
