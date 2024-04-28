@@ -488,13 +488,21 @@ void setup() {
 
   //normal();
   driveDistance(2000);
-  turn(90);
-  driveDistance(1000);
-  turn(90);
-  driveDistance(2000);
-  turn(90);
-  driveDistance(1000);
-  turn(90);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(1000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(2000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(1000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
 
 }
 
