@@ -22,12 +22,13 @@ public:
   }
 
   // A function to compute the control signal
-  void evalu(int value, int target, float deltaT, long &pwr, int &dir) {
+  void evalu(int value1, int value2, int target, float deltaT, long &pwr,
+             int &dir) {
     // error
-    int e = target - value;
+    int e = target - value1;
 
     // derivative
-    float dedt = (e - eprev) / (deltaT);
+    float dedt = (fabs(value2) - fabs(value1)) / (deltaT);
 
     // integral
     eintegral = eintegral + e * deltaT;

@@ -269,7 +269,7 @@ void setup() {
 
   for (int k = 0; k < NMOTORS; k++) {
     // pid[k].setParams(0.7, 0.2, 0.05, 100);
-    pid[k].setParams(0.7, 0.0, 0.0, 100);
+    pid[k].setParams(0.7, 0.05, 0.0, 100);
   }
 
   lastPosUpdate = micros();
@@ -315,10 +315,12 @@ void loop() {
   // loop through the motors
 
   lastpwm = lastpwm + 1;
-  lastpwm = lastpwm > currentPwm ? currentPwm : lastpwm < pwmCutoff ? pwmCutoff : lastpwm;
+  lastpwm = lastpwm > currentPwm  ? currentPwm
+            : lastpwm < pwmCutoff ? pwmCutoff
+                                  : lastpwm;
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
-    pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
+    pid[k].evalu(pos[k], pos[!k], target[k], deltaT, pwm[k], dir[k]);
     // if (pwm[k] > currentPwm) {
     //   pwm[k] = currentPwm;
     // }
@@ -328,7 +330,7 @@ void loop() {
   //  String(pwm[0]));
   float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
-    pwm[1] *= 1.025;
+    // pwm[1] *= 1.025;
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
@@ -338,7 +340,8 @@ void loop() {
     if (stopped) {
       setMotor(0, 0, lpwm[k], rpwm[k]);
     } else {
-      // Serial.println("Pwm left: " + String(pwm[1]) + " pwm right: " + String(pwm[0]));
+      // Serial.println("Pwm left: " + String(pwm[1]) + " pwm right: " +
+      // String(pwm[0]));
       setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
     }
   }
