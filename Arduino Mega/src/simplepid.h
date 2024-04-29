@@ -29,6 +29,7 @@ public:
 
     // derivative
     float dedt = (fabs(value2) - fabs(value1)) / (deltaT);
+    dedt = e < 0 ? -dedt : dedt;
 
     // integral
     eintegral = eintegral + e * deltaT;
