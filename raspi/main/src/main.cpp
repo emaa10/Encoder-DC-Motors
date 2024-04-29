@@ -487,7 +487,7 @@ void setup() {
   // start
 
   //normal();
-  driveDistance(2000);
+  driveDistance(-1000);
   // delay(5000);
   // turn(90);
   // delay(5000);
