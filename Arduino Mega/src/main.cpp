@@ -152,6 +152,31 @@ void turnAngle(int degree) {
   target[1] = pulsesValue * distance;
 }
 
+void calibrateDrift() {
+  for (int i = 0; i < 200; i++) {
+    setMotor(1, i, lpwm[0], rpwm[0]);
+    setMotor(1, i, lpwm[1], rpwm[1]);
+    delay(5);
+  }
+  delay(500);
+  for (int i = 200; i >= 0; i--) {
+    setMotor(1, i, lpwm[0], rpwm[0]);
+    setMotor(1, i, lpwm[1], rpwm[1]);
+    delay(5);
+  }
+
+  int pos[NMOTORS];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    for (int k = 0; k < NMOTORS; k++) {
+      pos[k] = posi[k];
+    }
+  }
+
+  double drift = pos[0] / pos[1];
+  Serial.println(drift);
+  delay(5000);
+}
+
 // Serial Communication
 
 void getData() { // get the data and run the actions
