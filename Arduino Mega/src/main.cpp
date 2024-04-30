@@ -345,7 +345,8 @@ void loop() {
                                   : lastpwm;
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
-    pid[k].evalu(pos[k], pos[!k], target[k], deltaT, pwm[k], dir[k]);
+    pid[k].evalu(pos[k], pos[!k], target[k], target[!k], deltaT, pwm[k],
+                 dir[k]);
     // if (pwm[k] > currentPwm) {
     //   pwm[k] = currentPwm;
     // }
@@ -371,5 +372,5 @@ void loop() {
     }
   }
   lastpwm = max(pwm[0], pwm[1]);
-  //Serial.println(pwm[0] + "_" + pwm[1]);
+  // Serial.println(pwm[0] + "_" + pwm[1]);
 }
