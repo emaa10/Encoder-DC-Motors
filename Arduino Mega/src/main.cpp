@@ -16,10 +16,10 @@ String DEBUG = "";
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 20 // Set minimum drivable pwm value
-#define pulsesCutoff 6
-#define pwmMax 200
-int currentPwm = 200;
+#define pwmCutoff 10 // Set minimum drivable pwm value
+#define pulsesCutoff 4
+#define pwmMax 250
+int currentPwm = 250;
 int lastpwm = 0;
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -261,7 +261,7 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-       fabs(rightEncChange) < pulsesCutoff && maxD < 20) ||
+       fabs(rightEncChange) < pulsesCutoff && maxD < 30) ||
       (limitSwitchDrive && fabs(leftEncChange) < 10 &&
        fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
@@ -294,7 +294,7 @@ void setup() {
 
   for (int k = 0; k < NMOTORS; k++) {
     // pid[k].setParams(0.7, 0.2, 0.05, 100);
-    pid[k].setParams(0.7, 0.0025, 0.0, 100);
+    pid[k].setParams(0.45, 0.005, 0.0, 100);
   }
 
   lastPosUpdate = micros();
@@ -372,5 +372,5 @@ void loop() {
     }
   }
   lastpwm = max(pwm[0], pwm[1]);
-  // Serial.println(pwm[0] + "_" + pwm[1]);
+  //Serial.println(pwm[0] + "_" + pwm[1]);
 }
