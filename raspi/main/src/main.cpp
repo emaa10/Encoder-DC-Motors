@@ -497,7 +497,7 @@ void setup() {
   //normal();
 
   driveDistance(1000);
-  
+
   /*
   setSlotter(0);
   delay(400);

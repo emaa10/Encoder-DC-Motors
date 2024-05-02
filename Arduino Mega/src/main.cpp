@@ -18,8 +18,8 @@ String DEBUG = "";
 #define NMOTORS 2
 #define pwmCutoff 10 // Set minimum drivable pwm value
 #define pulsesCutoff 4
-#define pwmMax 250
-int currentPwm = 250;
+#define pwmMax 100
+int currentPwm = 100;
 int lastpwm = 0;
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -365,9 +365,8 @@ void loop() {
 
   if (stopped) {
     // Decelerate for enemy
-    int decelerationStart = lastpwm;
     while (lastpwm >= pwmCutoff) {
-      lastpwm--;
+      lastpwm -=2;
       setMotor(dir[0], lastpwm, lpwm[0], rpwm[0]);
       setMotor(dir[1], lastpwm, lpwm[1], rpwm[1]);
       delay(3);
