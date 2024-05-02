@@ -368,8 +368,8 @@ void loop() {
     int decelerationStart = lastpwm;
     while (lastpwm >= pwmCutoff) {
       lastpwm--;
-      setMotor(dir[0], pwm[0] * lastpwm / decelerationStart, lpwm[0], rpwm[0]);
-      setMotor(dir[1], pwm[1] * lastpwm / decelerationStart, lpwm[1], rpwm[1]);
+      setMotor(dir[0], lastpwm, lpwm[0], rpwm[0]);
+      setMotor(dir[1], lastpwm, lpwm[1], rpwm[1]);
       delay(3);
     }
     dir[0] = 0;
