@@ -338,11 +338,12 @@ void loop() {
   int dir[NMOTORS];
   float scaledFactor[NMOTORS];
   // loop through the motors
-
-  lastpwm = lastpwm + 1;
-  lastpwm = lastpwm > currentPwm  ? currentPwm
-            : lastpwm < pwmCutoff ? pwmCutoff
-                                  : lastpwm;
+  if (!stopped) {
+    lastpwm = lastpwm + 1;
+    lastpwm = lastpwm > currentPwm  ? currentPwm
+              : lastpwm < pwmCutoff ? pwmCutoff
+                                    : lastpwm;
+  }
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
     pid[k].evalu(pos[k], pos[!k], target[k], target[!k], deltaT, pwm[k],
@@ -362,15 +363,24 @@ void loop() {
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
-  for (int k = 0; k < NMOTORS; k++) {
-    if (stopped) {
-      setMotor(0, 0, lpwm[k], rpwm[k]);
-    } else {
-      // Serial.println("Pwm left: " + String(pwm[1]) + " pwm right: " +
-      // String(pwm[0]));
-      setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
+  if (stopped) {
+    // Decelerate for enemy
+    int decelerationStart = lastpwm;
+    while (lastpwm >= pwmCutoff) {
+      lastpwm--;
+      setMotor(dir[0], pwm[0] * lastpwm / decelerationStart, lpwm[0], rpwm[0]);
+      setMotor(dir[1], pwm[1] * lastpwm / decelerationStart, lpwm[1], rpwm[1]);
+      delay(3);
     }
+    dir[0] = 0;
+    dir[1] = 0;
+    pwm[0] = 0;
+    pwm[1] = 0;
   }
+  for (int k = 0; k < NMOTORS; k++) {
+    setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
+  }
+
   lastpwm = max(pwm[0], pwm[1]);
-  //Serial.println(pwm[0] + "_" + pwm[1]);
+  // Serial.println(pwm[0] + "_" + pwm[1]);
 }
