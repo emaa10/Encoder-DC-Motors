@@ -46,9 +46,13 @@ void startSIMAs(bool teamBlue = !teamYellow) {
 }
 
 // 0: aus, 1 und 2 an
-void setSolar(int mode = 1) {
+void setflag(int mode = 1) {
   std::string message = "c" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+void setGripperAngle(int i){
+
 }
 
 void setDisplay(int number) { //
@@ -57,15 +61,19 @@ void setDisplay(int number) { //
 }
 
 // 0 oben, 1, 2, 3 ganz ausgeklappt
-void setGripperAngle(int mode = 3) {
+void setSlotterPotter(int mode = 3) {
   std::string message = "u" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
 // 1 unten, 2 mitte, 3 oben
-void setGripperHeight(int mode = 1) {
+void setGripperHeight(int mode) {
   std::string message = "b" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
+}
+
+void setSolar(int i){
+
 }
 
 void resetBelt() {
@@ -487,7 +495,42 @@ void setup() {
   // start
 
   //normal();
-  driveDistance(1000);
+  changeSpeed(250);
+  driveDistance(-1000);
+
+  /*
+  setSlotter(0);
+  delay(400);
+  driveDistance(500);
+  setGripperHeight(2);
+  setSlotter(1);
+  delay(400);
+  driveDistance(550);
+  setGripperHeight(3);
+  setSlotter(1);
+  delay(400);
+  setGripperHeight(1);
+  setSlotter(3);
+  driveDistance(-450);
+  turn(180);
+  driveDistance(300);
+  */
+
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(1000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(2000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
+  // driveDistance(1000);
+  // delay(5000);
+  // turn(90);
+  // delay(5000);
 
 }
 

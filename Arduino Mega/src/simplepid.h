@@ -22,18 +22,23 @@ public:
   }
 
   // A function to compute the control signal
-  void evalu(int value, int target, float deltaT, long &pwr, int &dir) {
+  void evalu(int value1, int value2, int target1, int target2, float deltaT,
+             long &pwr, int &dir) {
     // error
-    int e = target - value;
+    int e1 = target1 - value1;
+    int e2 = target2 - value2;
 
     // derivative
-    float dedt = (e - eprev) / (deltaT);
+    float dedt = (fabs(value2) - fabs(value1)) / (deltaT);
+    dedt = e1 < 0 ? -dedt : dedt;
+    if (kp * e1 < 255 || kp * e2 < 255)
+      dedt = 0;
 
     // integral
-    eintegral = eintegral + e * deltaT;
+    eintegral = eintegral + e1 * deltaT;
 
     // control signal
-    float u = kp * e + kd * dedt + ki * eintegral;
+    float u = kp * e1 + kd * dedt + ki * eintegral;
 
     // motor power
     pwr = (long)fabs(u);
@@ -41,7 +46,7 @@ public:
     // motor direction
     dir = u > 0 ? 1 : u < 0 ? -1 : 0;
     // store previous error
-    eprev = e;
+    eprev = e1;
   }
 };
 

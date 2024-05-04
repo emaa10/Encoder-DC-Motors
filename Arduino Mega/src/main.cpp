@@ -9,17 +9,17 @@
 #define RIGHT_ENC_A_PHASE 18
 #define RIGHT_ENC_B_PHASE 19
 
-const int lpwm[] = {8, 11};
-const int rpwm[] = {9, 10};
+const int lpwm[] = {9, 10};
+const int rpwm[] = {8, 11};
 String DEBUG = "";
 
 // Define Globals
 
 #define NMOTORS 2
-#define pwmCutoff 20 // Set minimum drivable pwm value
-#define pulsesCutoff 6
-#define pwmMax 200
-int currentPwm = 200;
+#define pwmCutoff 10 // Set minimum drivable pwm value
+#define pulsesCutoff 4
+#define pwmMax 254
+int currentPwm = 254;
 int lastpwm = 0;
 long prevT = 0;
 volatile int posi[] = {0, 0};
@@ -152,6 +152,31 @@ void turnAngle(int degree) {
   target[1] = pulsesValue * distance;
 }
 
+void calibrateDrift() {
+  for (int i = 0; i < 200; i++) {
+    setMotor(1, i, lpwm[0], rpwm[0]);
+    setMotor(1, i, lpwm[1], rpwm[1]);
+    delay(5);
+  }
+  delay(500);
+  for (int i = 200; i >= 0; i--) {
+    setMotor(1, i, lpwm[0], rpwm[0]);
+    setMotor(1, i, lpwm[1], rpwm[1]);
+    delay(5);
+  }
+
+  int pos[NMOTORS];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    for (int k = 0; k < NMOTORS; k++) {
+      pos[k] = posi[k];
+    }
+  }
+
+  double drift = pos[0] / pos[1];
+  Serial.println(drift);
+  delay(5000);
+}
+
 // Serial Communication
 
 void getData() { // get the data and run the actions
@@ -232,7 +257,7 @@ void updatePosition() {
   int maxD = fabs(target[0] - pos[0]);
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
-       fabs(rightEncChange) < pulsesCutoff && maxD < 20) ||
+       fabs(rightEncChange) < pulsesCutoff && maxD < 30) ||
       (limitSwitchDrive && fabs(leftEncChange) < 10 &&
        fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
@@ -264,7 +289,8 @@ void setup() {
   target[1] = 0;
 
   for (int k = 0; k < NMOTORS; k++) {
-    pid[k].setParams(1, 0, 0, 100);
+    // pid[k].setParams(0.7, 0.2, 0.05, 100);
+    pid[k].setParams(0.45, 0.005, 0.0, 100);
   }
 
   lastPosUpdate = micros();
@@ -308,12 +334,16 @@ void loop() {
   int dir[NMOTORS];
   float scaledFactor[NMOTORS];
   // loop through the motors
-
-  lastpwm = lastpwm + 1;
-  lastpwm = lastpwm > currentPwm ? currentPwm : lastpwm < pwmCutoff ? pwmCutoff : lastpwm;
+  if (!stopped) {
+    lastpwm = lastpwm + 1;
+    lastpwm = lastpwm > currentPwm  ? currentPwm
+              : lastpwm < pwmCutoff ? pwmCutoff
+                                    : lastpwm;
+  }
   for (int k = 0; k < NMOTORS; k++) {
     // evaluate the control signal
-    pid[k].evalu(pos[k], target[k], deltaT, pwm[k], dir[k]);
+    pid[k].evalu(pos[k], pos[!k], target[k], target[!k], deltaT, pwm[k],
+                 dir[k]);
     // if (pwm[k] > currentPwm) {
     //   pwm[k] = currentPwm;
     // }
@@ -323,17 +353,29 @@ void loop() {
   //  String(pwm[0]));
   float maxFactor = max(scaledFactor[0], scaledFactor[1]);
   if (maxFactor > 1) {
+    // pwm[1] *= 1.025;
     pwm[0] /= maxFactor;
     pwm[1] /= maxFactor;
     // Serial.println("Pwm 0: " + String(pwm[0]) + " Pwm 1: " + String(pwm[1]));
   }
 
-  for (int k = 0; k < NMOTORS; k++) {
-    if (stopped) {
-      setMotor(0, 0, lpwm[k], rpwm[k]);
-    } else {
-      setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
+  if (stopped) {
+    // Decelerate for enemy
+    while (lastpwm >= pwmCutoff) {
+      lastpwm -=2;
+      setMotor(dir[0], lastpwm, lpwm[0], rpwm[0]);
+      setMotor(dir[1], lastpwm, lpwm[1], rpwm[1]);
+      delay(3);
     }
+    dir[0] = 0;
+    dir[1] = 0;
+    pwm[0] = 0;
+    pwm[1] = 0;
   }
+  for (int k = 0; k < NMOTORS; k++) {
+    setMotor(dir[k], pwm[k], lpwm[k], rpwm[k]);
+  }
+
   lastpwm = max(pwm[0], pwm[1]);
+  // Serial.println(pwm[0] + "_" + pwm[1]);
 }

@@ -6,7 +6,7 @@
 
 #define beltTopPos 705
 #define beltDroppingPos 440
-#define beltMiddlePos 200
+#define beltMiddlePos 300
 
 int beltState;
 
@@ -77,23 +77,39 @@ void beltDrive(String input){
   } else if(input == "S_MID_P_MID"){
     digitalWrite(potterStepperDIR, HIGH);
     digitalWrite(slotterStepperDIR, LOW);
-
-    while(currentPosPotter < beltMiddlePos && currentPosSlotter < beltMiddlePos){
-      digitalWrite(potterStepperSTEP,HIGH);
-      digitalWrite(slotterStepperSTEP,HIGH);
-      delayMicroseconds(750);
-      digitalWrite(potterStepperSTEP,LOW);
-      digitalWrite(slotterStepperSTEP,LOW);
-      delayMicroseconds(750);
-      currentPosPotter++;
-      currentPosSlotter++;
-    }
-    while(currentPosPotter < beltMiddlePos){
-      digitalWrite(potterStepperSTEP,HIGH);
-      delayMicroseconds(750);
-      digitalWrite(potterStepperSTEP,LOW);
-      delayMicroseconds(750);
-      currentPosPotter++;
+    if(currentPosPotter < beltTopPos){
+      digitalWrite(potterStepperDIR, HIGH);
+      digitalWrite(slotterStepperDIR, LOW);
+      while(currentPosPotter < beltMiddlePos && currentPosSlotter < beltMiddlePos){
+        digitalWrite(potterStepperSTEP,HIGH);
+        digitalWrite(slotterStepperSTEP,HIGH);
+        delayMicroseconds(750);
+        digitalWrite(potterStepperSTEP,LOW);
+        digitalWrite(slotterStepperSTEP,LOW);
+        delayMicroseconds(750);
+        currentPosPotter++;
+        currentPosSlotter++;
+      }
+      while(currentPosPotter < beltMiddlePos){
+        digitalWrite(potterStepperSTEP,HIGH);
+        delayMicroseconds(750);
+        digitalWrite(potterStepperSTEP,LOW);
+        delayMicroseconds(750);
+        currentPosPotter++;
+      }
+    } else if(currentPosPotter > beltMiddlePos){
+      digitalWrite(potterStepperDIR, LOW);
+      digitalWrite(slotterStepperDIR, HIGH);
+      while(currentPosPotter > beltMiddlePos && currentPosSlotter > beltMiddlePos){
+        digitalWrite(potterStepperSTEP,HIGH);
+        digitalWrite(slotterStepperSTEP,HIGH);
+        delayMicroseconds(750);
+        digitalWrite(potterStepperSTEP,LOW);
+        digitalWrite(slotterStepperSTEP,LOW);
+        delayMicroseconds(750);
+        currentPosPotter--;
+        currentPosSlotter--;
+      }
     }
   }
 }
