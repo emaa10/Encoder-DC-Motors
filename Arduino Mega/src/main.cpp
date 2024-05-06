@@ -261,6 +261,9 @@ void updatePosition() {
       (limitSwitchDrive && fabs(leftEncChange) < 10 &&
        fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
+
+    Serial.println(String(pos[0]) + String(pos[1]));
+
     target[0] = pos[0];
     target[1] = pos[1];
     limitSwitchDrive = false;
