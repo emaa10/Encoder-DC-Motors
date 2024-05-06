@@ -40,7 +40,7 @@ const float pwmSpeed = 100; // default pwm speed
 const float pulsesPerSec =
     pulsesPerRev; // goal pulses per sec 1680, 1 round per second
 const float wheelDistance =
-    127; // abstand der encoderräder in mm, muss vllt geändert werden
+    127.5; // abstand der encoderräder in mm, muss vllt geändert werden
 const float wheelDistanceBig = 204; // in mm, muss vllt geändert werden
 // const float turnValue =
 //     wheelDistance * M_PI / 360; // abstand beider räder um 1° zu fahren
