@@ -147,9 +147,9 @@ void driveDistance(int distance) {
 void turnAngle(int degree) {
   resetPosition();
 
-  int distance = wheelDistance * M_PI / 360 * degree;
-  target[0] = -pulsesValue * distance;
-  target[1] = pulsesValue * distance;
+  int pulses_distance = wheelDistance * pulsesValue * M_PI * degree / 360;
+  target[0] = -pulses_distance;
+  target[1] = pulses_distance;
 }
 
 void calibrateDrift() {
@@ -362,7 +362,7 @@ void loop() {
   if (stopped) {
     // Decelerate for enemy
     while (lastpwm >= pwmCutoff) {
-      lastpwm -=2;
+      lastpwm -= 2;
       setMotor(dir[0], lastpwm, lpwm[0], rpwm[0]);
       setMotor(dir[1], lastpwm, lpwm[1], rpwm[1]);
       delay(3);
