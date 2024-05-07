@@ -72,16 +72,12 @@ void setGripperHeight(int mode) {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void setSolar(int i){
-
-}
-
 void resetBelt() {
   std::string message = "r";
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void stopMotor() { //
+void stopMotor() { 
   std::string message = "s";
   serialPrintf(sPort, "%s\n", message.c_str());
 }
@@ -152,14 +148,12 @@ void turn(float degrees) {
 
 void driveUntilSwitch(bool dir = false) {
   std::string message = "w," + std::to_string(dir);
-  // std::cout << "drive until switch triggered" << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
   while (driving == false) {
     delay(5);
   }
   while (driving == true) {
     delay(5);
-    // hier lidar check
   }
 }
 
@@ -172,7 +166,6 @@ void driveDistance(int distance) {
   bool sentGegi = false;
   while (driving == true) {
     delay(5);
-    // hier lidar check
     if (gegi) {
       bool blockedFront = distance > 0 && !ldr.freeBack({{1500, 1000}, 0 });
       bool blockedBack = distance < 0 && !ldr.freeFront({{1500, 1000}, 0 });
