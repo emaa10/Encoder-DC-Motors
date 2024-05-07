@@ -250,7 +250,7 @@ void timingsThread() {
   while(true) {
     stopMotor();
     delay(2);
-    setSolar(0);
+    // setSolar(0);
     delay(2);
   }
   delay(50);
@@ -309,7 +309,7 @@ void RCA() {
     turn(3);
     driveDistance(-250);
     turn(3);
-    setSolar(0);
+    // setSolar(0);
   } else {
     turn(8);
     driveDistance(-210);
@@ -324,7 +324,7 @@ void RCA() {
     //turn(-3);
     driveDistance(250);
     //turn(-3);
-    setSolar(0); 
+    // setSolar(0); 
   }
 }
 
@@ -416,7 +416,7 @@ void normal() {
     driveDistance(1400);
     delay(1000);
     turn(3);
-    setSolar(1);
+    // setSolar(1);
     delay(1000);
     driveDistance(-100);
     turn(3);
@@ -425,14 +425,14 @@ void normal() {
     driveDistance(-800);
     gegi = false;
     driveUntilSwitch(false);
-    setSolar(0);
+    // setSolar(0);
   } else {
     driveDistance(60);
     turn(92);
     driveDistance(-1400);
     delay(1000);
     turn(3);
-    setSolar(2);
+    // setSolar(2);
     delay(1000);
     driveDistance(100);
     turn(3);
@@ -441,7 +441,7 @@ void normal() {
     driveDistance(800);
     gegi = false;
     driveUntilSwitch(true);
-    setSolar(0);
+    // setSolar(0);
   }
 
 }
