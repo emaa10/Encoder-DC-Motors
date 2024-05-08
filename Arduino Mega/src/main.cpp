@@ -200,6 +200,14 @@ void getData() { // get the data and run the actions
       String valueStr = input.substring(2);
       int speed = valueStr.toInt();
       currentPwm = speed < pwmMax ? speed : pwmMax;
+    } else if (command == 'x') {
+      resetPosition();
+      String valueStr = input.substring(2);
+      x = valueStr.toInt();
+    } else if (command == 'y') {
+      resetPosition();
+      String valueStr = input.substring(2);
+      y = valueStr.toInt();
     }
   }
 }
