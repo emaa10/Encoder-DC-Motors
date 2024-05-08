@@ -117,6 +117,16 @@ void changeSpeed(int newSpeed) {
   delay(1500);
 }
 
+void setX(int nx) {
+  std::string message = "x," + std::to_string(nx);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
+void setY(int ny) {
+  std::string message = "y," + std::to_string(ny);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
   while (degrees >= 360) {
