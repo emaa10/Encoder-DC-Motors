@@ -495,7 +495,12 @@ void setup() {
   // start
 
   // normal();
+  // COMMENT OUT 
   while(pullCordConnected()) {delay(5);}
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
+  // COMMENT OUT
+
   changeSpeed(250);
   turn(45);
   driveDistance(1000);
