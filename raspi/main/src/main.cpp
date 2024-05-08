@@ -117,6 +117,21 @@ void changeSpeed(int newSpeed) {
   delay(1500);
 }
 
+void setX(int nx) {
+  std::string message = "x," + std::to_string(nx);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
+void setY(int ny) {
+  std::string message = "y," + std::to_string(ny);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
+void setTheta(float nt) {
+  std::string message = "h," + std::to_string(nt);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
   while (degrees >= 360) {
@@ -232,12 +247,13 @@ void turnTo(int degree) {
 }
 
 void homing(bool teamYellowN) {
+  changeSpeed(100);
   gegi = false;
   driveUntilSwitch(false);
   driveDistance(170);
   turn(-90);
   driveUntilSwitch(false);
-  driveDistance(205);
+  driveDistance(160); //205
   gegi = true;
 }
 
@@ -285,13 +301,13 @@ void getData() {
     ss >> tempchar;
     ss >> theta;
 
-    std::cout << "Line: " << line << std::endl;
+    // std::cout << "Line: " << line << std::endl;
+    //std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
     line = "";
   }
 }
 
 void RCA() {
-  teamYellow = false;
   setDisplay(25);
 
   while (pullCordConnected()) {
@@ -335,7 +351,6 @@ void RCA() {
 }
 
 void normal() {
-  teamYellow = false;
   homing(true);
   setDisplay(42);
 
@@ -453,6 +468,42 @@ void normal() {
   }
 }
 
+
+void pottenfirst() {
+  homing(true);
+  setDisplay(42);
+
+  turn(30);
+
+  setTheta(0.5235987756);
+  setY(310);
+  setX(teamYellow?235:2765);
+
+  while (pullCordConnected()) {
+    delay(5);
+  }
+
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
+
+
+  driveDistance(530);
+  turn(65);
+  setSlotterPotter(0);
+  driveDistance(500);
+  setBelt(2);
+  setSlotterPotter(1);
+  turn(172);
+  driveDistance(480);
+  turn(10);
+  driveDistance(200);
+  setBelt(3);
+  driveUntilSwitch(true);
+  setBelt(2);
+  driveDistance(-300);
+}
+
+
 void setup() {
   if (wiringPiSetup() == -1) {
     std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
@@ -483,6 +534,7 @@ void setup() {
   delay(500);
   delay(500);
 
+
   // teamYellow = false;
   if (digitalRead(teamSwitch) == 0) {
     teamYellow = true;
@@ -492,16 +544,24 @@ void setup() {
     // std::cout << "blue" << std::endl;
   }
 
+  // while(true) {
+  //   std::cout << "freefront: " << ldr.freeFront({{0, 1000}, 70}) << " freeback: " << ldr.freeBack({{0, 1000}, 70}) << std::endl;
+  // }
   // start
+//  normal();
+  // COMMENT OUT 
+  // while(pullCordConnected()) {delay(5);}
+  // std::thread u(timingsThread); // check if simas, drive home, etc.
+  // u.detach();
+  // // COMMENT OUT
 
-  // normal();
-  while(pullCordConnected()) {delay(5);}
-  changeSpeed(250);
-  turn(45);
-  driveDistance(1000);
-  turn(90);
-  driveDistance(1000);
+  // changeSpeed(250);
+  // turn(45);
+  // driveDistance(1000);
+  // turn(90);
+  // driveDistance(1000);
   // turn(180);
+  pottenfirst();
 
   /*
   setSlotter(0);
