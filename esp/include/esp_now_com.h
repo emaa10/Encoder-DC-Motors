@@ -5,22 +5,18 @@ bool gegi = true;
 bool teamBlue = false;
 
 // REPLACE WITH YOUR ESP RECEIVER'S MAC ADDRESS
-uint8_t sima1Address[] = {0x08, 0x3A, 0x8D, 0xCF, 0xAF, 0xBA};
-uint8_t sima2Address[] = {0xC8, 0xC9, 0xA3, 0x1B, 0x0E, 0x23};
+
+uint8_t sima1Address[] = {0x4C, 0x75, 0x25, 0x37, 0x19, 0xF4};
+uint8_t sima2Address[] = {0xC8, 0xC9, 0xA3, 0x1A, 0xB9, 0x87};
 uint8_t sima3Address[] = {0xC8, 0xC9, 0xA3, 0x1B, 0x0A, 0xE3};
-uint8_t sima4Address[] = {0xC8, 0xC9, 0xA3, 0x1A, 0xB9, 0x87};
-uint8_t sima5Address[] = {0xC8, 0xC9, 0xA3, 0x1A, 0xDF, 0x19};
-uint8_t sima6Address[] = {0x4C, 0x75, 0x25, 0x37, 0x19, 0xF4};
-  
+uint8_t sima4Address[] = {0xC8, 0xC9, 0xA3, 0x1A, 0xE5, 0x77};
+
 
 typedef struct struct_message
 {
   bool gegi;
   bool colourBlue;
   int path;
-  int pwmOffset;
-  int turnOffsetL;
-  int turnOffsetR;
 } struct_message;
 
 struct_message message;
@@ -76,67 +72,34 @@ void initSimas() {
     Serial.println("Failed to add peer");
     return;
   }
-  /// register fifth peer
-  memcpy(peerInfo.peer_addr, sima5Address, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-  /// register sixth peer
-  memcpy(peerInfo.peer_addr, sima6Address, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
 }
 
 void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 1;
-  message.pwmOffset = teamBlue? -5 : -11;
-  message.turnOffsetL = 0;
-  message.turnOffsetR = -100; 
+  message.path = 12;
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = false;
   message.colourBlue = teamBlue;
-  message.path = 2;
-  message.pwmOffset = teamBlue? 7 : -5;
-  message.turnOffsetL = 25;
-  message.turnOffsetR = -75;
+  message.path = 11;
 
   esp_now_send(sima2Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 3;
-  message.pwmOffset = teamBlue? -4 : -4;
-  message.turnOffsetL = -75;
-  message.turnOffsetR = 15;
+  message.path = 13;
 
   esp_now_send(sima3Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 5;
-  message.pwmOffset = teamBlue? 5 : 1;
-  message.turnOffsetL = 200;
-  message.turnOffsetR = 135;
-
-  esp_now_send(sima5Address, (uint8_t *) &message, sizeof(message));
-  delay(100);
-
-  message.gegi = gegi;
-  message.colourBlue = teamBlue;
   message.path = 11;
-  message.pwmOffset = teamBlue? -1 : +1;
-  message.turnOffsetL = 290;
-  message.turnOffsetR = 145;
 
-  esp_now_send(sima6Address, (uint8_t *) &message, sizeof(message));
+  esp_now_send(sima4Address, (uint8_t *) &message, sizeof(message));
+  delay(100);
 }

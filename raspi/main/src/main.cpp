@@ -4,7 +4,7 @@
 using namespace std;
 
 const std::string serialMega = "/dev/ttyACM0"; // enc and dc
-const std::string serialESP = "/dev/ttyUSB0";  // sima and fahne
+const std::string serialESP = "/dev/ttyUSB0"; // sima and fahne
 int sPort = serialOpen(serialMega.c_str(), 115200);
 // int sPortE = 0;
 int sPortE = serialOpen(serialESP.c_str(), 115200);
@@ -16,8 +16,8 @@ std::ifstream serialE(serialESP.c_str());
 LIDAR ldr;
 
 // odom
-float x = 225;   // curent bot x
-float y = 225;   // current bot y
+float x = 225;     // curent bot x
+float y = 225;     // current bot y
 float theta = 0; // current bot theta
 float tox = 0;   // for COA
 float toy = 0;
@@ -30,9 +30,7 @@ bool driving = false;
 
 template <typename T> void print(const T &input) { std::cout << input; }
 void print(const char *input) { std::cout << input; }
-template <typename T> void println(const T &input) {
-  std::cout << input << std::endl;
-}
+template <typename T> void println(const T &input) { std::cout << input << std::endl; }
 void println(const char *input) { std::cout << input << std::endl; }
 
 void signalHandler(int signal) {
@@ -53,7 +51,9 @@ void setflag(int mode = 1) {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void setGripperAngle(int i) {}
+void setGripperAngle(int i){
+
+}
 
 void setDisplay(int number) { //
   std::string message = "x" + std::to_string(number);
@@ -77,7 +77,7 @@ void resetBelt() {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void stopMotor() {
+void stopMotor() { 
   std::string message = "s";
   serialPrintf(sPort, "%s\n", message.c_str());
 }
@@ -112,10 +112,7 @@ void setBelt(int mode) {
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-void changeSpeed(int newSpeed) {
-  serialPrintf(sPort, "g,%d", newSpeed);
-  delay(1500);
-}
+void changeSpeed(int newSpeed) { serialPrintf(sPort, "g,%d", newSpeed);  delay(1500);}
 
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
@@ -138,7 +135,8 @@ void turn(float degrees) {
     delay(5);
     // hier lidar check
     if (gegi) {
-      if (!ldr.freeTurn({{x, y}, theta * 180 / M_PI})) { // wenn vorne blockiert
+      if (!ldr.freeTurn(
+              {{1500, 1000}, theta * 180 / M_PI})) { // wenn vorne blockiert
         interruptDriving();
         gegiTriggered = true;
       } else {
@@ -169,21 +167,19 @@ void driveDistance(int distance) {
   while (driving == true) {
     delay(5);
     if (gegi) {
-      bool blockedFront =
-          distance > 0 && !ldr.freeBack({{x, y}, theta * 180 / M_PI});
-      bool blockedBack =
-          distance < 0 && !ldr.freeFront({{x, y}, theta * 180 / M_PI});
-      if ((blockedFront || blockedBack) &&
-          sentGegi == false) { // wenn vorne blockiert
+      bool blockedFront = distance > 0 && !ldr.freeBack({{1500, 1000}, 0 });
+      bool blockedBack = distance < 0 && !ldr.freeFront({{1500, 1000}, 0 });
+      if ((blockedFront || blockedBack) && sentGegi == false) { // wenn vorne blockiert
         interruptDriving();
         sentGegi = true;
         gegiTriggered = true;
-      } else if (!blockedFront && !blockedBack && sentGegi == true) {
+      } else if(!blockedFront && !blockedBack && sentGegi == true) {
         sentGegi = false;
         continueDriving();
       }
     }
   }
+
 }
 
 void driveTo(int to_x, int to_y) {
@@ -251,7 +247,7 @@ void timingsThread() {
   system(command);
   delay(100);
   system(command1);
-  while (true) {
+  while(true) {
     stopMotor();
     delay(2);
     // setSolar(0);
@@ -294,9 +290,7 @@ void RCA() {
   teamYellow = false;
   setDisplay(25);
 
-  while (pullCordConnected()) {
-    delay(5);
-  }
+  while(pullCordConnected()) { delay(5); }
 
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
@@ -321,16 +315,16 @@ void RCA() {
     driveDistance(-210);
     turn(-10);
     driveDistance(500);
-    // turn(-3);
+    //turn(-3);
     driveDistance(250);
-    // turn(-3);
+    //turn(-3);
     driveDistance(250);
-    // turn(-3);
+    //turn(-3);
     driveDistance(500);
-    // turn(-3);
+    //turn(-3);
     driveDistance(250);
-    // turn(-3);
-    //  setSolar(0);
+    //turn(-3);
+    // setSolar(0); 
   }
 }
 
@@ -339,27 +333,25 @@ void normal() {
   homing(true);
   setDisplay(42);
 
-  while (pullCordConnected()) {
-    delay(5);
-  }
+  while(pullCordConnected()) { delay(5); }
 
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
 
   driveDistance(500);
-  driveDistance(teamYellow ? -75 : -85);
+  driveDistance(teamYellow? -75 : -85);
   turn(90);
   delay(500);
   // setGripperHeight(1);
   // delay(2000);
   setGripperAngle(3);
   delay(1500);
-  // Fahre zu den ersten Pflanzen
+  //Fahre zu den ersten Pflanzen
   gegi = true;
   driveDistance(900);
   setGripperAngle(2);
   delay(2000);
-  // Sammle erste Pflanzen auf
+  //Sammle erste Pflanzen auf
   setGripperHeight(4);
   delay(2000);
   turn(178);
@@ -402,14 +394,14 @@ void normal() {
   driveDistance(-500);
   gegi = true;
   changeSpeed(110);
-  // driveDistance(1400);
+  //driveDistance(1400);
   setGripperAngle(0);
   delay(2000);
   setGripperHeight(1);
   turn(-15);
   driveDistance(-1150);
-  while (true)
-    delay(5);
+  while(true) delay(5);
+
 
   setGripperHeight(3);
   gegi = false;
@@ -451,6 +443,7 @@ void normal() {
     driveUntilSwitch(true);
     // setSolar(0);
   }
+
 }
 
 void setup() {
@@ -459,8 +452,7 @@ void setup() {
   }
 
   if (sPort < 0) {
-    std::cerr << "Fehler beim Öffnen des seriellen Ports. (Arduino)"
-              << std::endl;
+    std::cerr << "Fehler beim Öffnen des seriellen Ports. (Arduino)" << std::endl;
   }
   if (sPortE < 0) {
     std::cerr << "Fehler beim Öffnen des seriellen Ports. (ESP)" << std::endl;
@@ -478,13 +470,13 @@ void setup() {
   delay(1000);
   resetBelt();
   delay(1000);
-
+  
   setSlotter(3);
   delay(500);
   delay(500);
 
   // teamYellow = false;
-  if (digitalRead(teamSwitch) == 0) {
+  if(digitalRead(teamSwitch) == 0) {
     teamYellow = true;
     // std::cout << "yellow" << std::endl;
   } else {
@@ -492,13 +484,14 @@ void setup() {
     // std::cout << "blue" << std::endl;
   }
 
+  
   // start
 
-  // normal();
+  //normal();
   changeSpeed(250);
   driveDistance(300);
 
-  // turn(180);
+  //turn(180);
 
   /*
   setSlotter(0);
@@ -533,18 +526,17 @@ void setup() {
   // delay(5000);
   // turn(90);
   // delay(5000);
+
 }
 
 void loop() {
-  // std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: "
-  // + std::to_string(digitalRead(teamSwitch)) << std::endl; std::cout <<
-  // "Freefront: " << ldr.freeFront({{500, 500}, 0}); std::cout << " Freeback: "
-  // << ldr.freeBack({{500, 500}, 0}); std::cout << " Freeturn: " <<
-  // ldr.freeTurn({{500, 500}, 0}) << std::endl; std::cout << "X: " << x << " Y:
-  // " << y << " Angle: " << theta*180/M_PI << std::endl;
+  // std::cout << "pullcord: " + std::to_string(digitalRead(pullCord)) + " sw: " + std::to_string(digitalRead(teamSwitch)) << std::endl;
+  // std::cout << "Freefront: " << ldr.freeFront({{500, 500}, 0});
+  // std::cout << " Freeback: " << ldr.freeBack({{500, 500}, 0});
+  // std::cout << " Freeturn: " << ldr.freeTurn({{500, 500}, 0}) << std::endl;
+  // std::cout << "X: " << x << " Y: " << y << " Angle: " << theta*180/M_PI << std::endl;
   delay(5);
-  // if(pullCordConnected()) { // wenn pullcord nochmal eingesteckt wird,
-  // arduino reset
+  // if(pullCordConnected()) { // wenn pullcord nochmal eingesteckt wird, arduino reset
   //   system(command);
   //   delay(200);
   //   system(command1);
