@@ -126,7 +126,8 @@ public:
         Vector point;
         // Calculate point
         int distance = nodes[pos].dist_mm_q2 / 4.0f;
-        double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
+        double rel_angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f + 180;
+        rel_angle = fmod(rel_angle + 360.0, 360.0);
         double angle = rel_angle + current_pos.angle;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
@@ -141,9 +142,8 @@ public:
             point.y > 1900)
           continue;
 
-        std::cout << "continue" << std::endl;
         if (distance < 400 && (rel_angle > 300 || rel_angle < 60)) {
-          std::cout << "x: " << point.x << ", y: " << point.y << std::endl;
+          std::cout << "x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
           return false;
         }
       }
@@ -192,7 +192,8 @@ public:
       for (int pos = 0; pos < (int)count; ++pos) {
         Vector point;
         // Calculate point
-        double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
+        double rel_angle = -(nodes[pos].angle_z_q14 * 90.f) / 16384.f + 180;
+        rel_angle = fmod(rel_angle + 360.0, 360.0);
         double angle = rel_angle + current_pos.angle;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
@@ -204,13 +205,13 @@ public:
         point += current_pos.position;
 
         // Check if point is inside field
-        if (distance < 10 || point.x < 100 || point.x > 2900 || point.y < 100 ||
-            point.y > 1900)
+        if (distance < 10 || point.x < 150 || point.x > 2850 || point.y < 150 ||
+            point.y > 1850)
           continue;
 
         // Check if enemy is near
         if (distance < 400 && rel_angle > 120 && rel_angle < 240) {
-          std::cout << "x: " << point.x << ", y: " << point.y << std::endl;
+          std::cout << "x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
           return false;
         }
       }
