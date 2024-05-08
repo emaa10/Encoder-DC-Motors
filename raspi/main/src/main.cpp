@@ -495,6 +495,7 @@ void setup() {
   // start
 
   // normal();
+  while(pullCordConnected()) {delay(5);}
   changeSpeed(250);
   turn(45);
   driveDistance(1000);
