@@ -127,7 +127,7 @@ void setY(int ny) {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
-void setTheta(int nt) {
+void setTheta(float nt) {
   std::string message = "h," + std::to_string(nt);
   serialPrintf(sPort, "%s\n", message.c_str());
 }
@@ -247,6 +247,7 @@ void turnTo(int degree) {
 }
 
 void homing(bool teamYellowN) {
+  changeSpeed(100);
   gegi = false;
   driveUntilSwitch(false);
   driveDistance(170);
@@ -301,6 +302,7 @@ void getData() {
     ss >> theta;
 
     // std::cout << "Line: " << line << std::endl;
+    //std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
     line = "";
   }
 }
@@ -466,6 +468,26 @@ void normal() {
   }
 }
 
+
+void pottenfirst() {
+  // homing(true);
+  setDisplay(42);
+
+  while (pullCordConnected()) {
+    delay(5);
+  }
+
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
+
+  setTheta(1.5707963268);
+  setY(310);
+  setX(teamYellow?235:2765);
+
+  driveDistance(1500);
+}
+
+
 void setup() {
   if (wiringPiSetup() == -1) {
     std::cerr << "Fehler beim Initialisieren von WiringPi." << std::endl;
@@ -496,9 +518,6 @@ void setup() {
   delay(500);
   delay(500);
 
-  while(true) {
-    std::cout << "freefront: " << ldr.freeFront({{0, 1000}, 0}) << " freeback: " << ldr.freeBack({{0, 1000}, 0}) << std::endl;
-  }
 
   // teamYellow = false;
   if (digitalRead(teamSwitch) == 0) {
@@ -509,21 +528,24 @@ void setup() {
     // std::cout << "blue" << std::endl;
   }
 
+  // while(true) {
+  //   std::cout << "freefront: " << ldr.freeFront({{0, 1000}, 70}) << " freeback: " << ldr.freeBack({{0, 1000}, 70}) << std::endl;
+  // }
   // start
-
-  // normal();
+//  normal();
   // COMMENT OUT 
-  while(pullCordConnected()) {delay(5);}
-  std::thread u(timingsThread); // check if simas, drive home, etc.
-  u.detach();
-  // COMMENT OUT
+  // while(pullCordConnected()) {delay(5);}
+  // std::thread u(timingsThread); // check if simas, drive home, etc.
+  // u.detach();
+  // // COMMENT OUT
 
-  changeSpeed(250);
-  turn(45);
-  driveDistance(1000);
-  turn(90);
-  driveDistance(1000);
+  // changeSpeed(250);
+  // turn(45);
+  // driveDistance(1000);
+  // turn(90);
+  // driveDistance(1000);
   // turn(180);
+  pottenfirst();
 
   /*
   setSlotter(0);

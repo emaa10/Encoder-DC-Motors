@@ -127,7 +127,7 @@ public:
         // Calculate point
         int distance = nodes[pos].dist_mm_q2 / 4.0f;
         double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
-        double angle = rel_angle + current_pos.angle + 180.0;
+        double angle = rel_angle + current_pos.angle;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
 
@@ -137,11 +137,15 @@ public:
         point += current_pos.position;
 
         // Check if point is inside field
-        if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 ||
-            point.y > 1990)
+        if (distance < 100 || point.x < 100 || point.x > 2900 || point.y < 100 ||
+            point.y > 1900)
           continue;
-        if (distance < 400 && (rel_angle > 300 || rel_angle < 60))
+
+        std::cout << "continue" << std::endl;
+        if (distance < 400 && (rel_angle > 300 || rel_angle < 60)) {
+          std::cout << "x: " << point.x << ", y: " << point.y << std::endl;
           return false;
+        }
       }
     }
     return true;
@@ -189,7 +193,7 @@ public:
         Vector point;
         // Calculate point
         double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
-        double angle = rel_angle + current_pos.angle+180.0;
+        double angle = rel_angle + current_pos.angle;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
         int distance = nodes[pos].dist_mm_q2 / 4.0f;
@@ -200,13 +204,15 @@ public:
         point += current_pos.position;
 
         // Check if point is inside field
-        if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 ||
-            point.y > 1990)
+        if (distance < 10 || point.x < 100 || point.x > 2900 || point.y < 100 ||
+            point.y > 1900)
           continue;
 
         // Check if enemy is near
-        if (distance < 400 && rel_angle > 120 && rel_angle < 240)
+        if (distance < 400 && rel_angle > 120 && rel_angle < 240) {
+          std::cout << "x: " << point.x << ", y: " << point.y << std::endl;
           return false;
+        }
       }
     }
     return true;

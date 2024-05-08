@@ -169,7 +169,7 @@ void calibrateDrift() {
   }
 
   double drift = pos[0] / pos[1];
-  Serial.println(drift);
+  // Serial.println(drift);
   delay(5000);
 }
 
@@ -211,7 +211,7 @@ void getData() { // get the data and run the actions
     } else if (command == 'h') {
       resetPosition();
       String valueStr = input.substring(2);
-      theta = valueStr.toInt();
+      theta = valueStr.toFloat();
     }
   }
 }
@@ -225,8 +225,8 @@ void sendData() {
   data += String(y + extray);
   data += "t";
   data += String(theta + extraTheta);
-  DEBUG += "Theta: " + String(theta * 180 / PI);
-  DEBUG += " ExtraTheta: " + String(extraTheta * 180 / PI);
+  DEBUG += "Theta: " + String(theta * 180.0 / PI);
+  DEBUG += " ExtraTheta: " + String(extraTheta * 180.0 / PI);
   data += " ";
   data += DEBUG;
   Serial.println(data);
@@ -269,7 +269,7 @@ void updatePosition() {
        fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
     isDriving = false;
 
-    Serial.println(String(pos[0]) + String(pos[1]));
+    // Serial.println(String(pos[0]) + String(pos[1]));
 
     target[0] = pos[0];
     target[1] = pos[1];
