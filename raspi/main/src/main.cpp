@@ -306,7 +306,6 @@ void getData() {
 }
 
 void RCA() {
-  teamYellow = false;
   setDisplay(25);
 
   while (pullCordConnected()) {
@@ -350,7 +349,6 @@ void RCA() {
 }
 
 void normal() {
-  teamYellow = false;
   homing(true);
   setDisplay(42);
 
