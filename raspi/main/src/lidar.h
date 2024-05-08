@@ -108,6 +108,7 @@ public:
             return {0,0};
         }
 
+        std::cout << "Enemy pos: " << fullestSquare.x*100 << ", " << fullestSquare.y*100 << std::endl;
         return {fullestSquare.x*100, fullestSquare.y*100};
     }
 

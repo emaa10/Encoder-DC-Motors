@@ -77,7 +77,7 @@ void initSimas() {
 void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 12;
+  message.path = 11;
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
   delay(100);
@@ -91,7 +91,7 @@ void sendSimas(){
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 13;
+  message.path = 11;
 
   esp_now_send(sima3Address, (uint8_t *) &message, sizeof(message));
   delay(100);

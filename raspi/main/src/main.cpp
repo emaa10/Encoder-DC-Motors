@@ -489,7 +489,10 @@ void setup() {
 
   //normal();
   changeSpeed(250);
-  driveDistance(300);
+  turn(45);
+  driveDistance(1000);
+  turn(90);
+  driveDistance(1000);
 
   //turn(180);
 
