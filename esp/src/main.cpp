@@ -71,20 +71,26 @@ void getData() {
     if(command == 'u') {
       String valueStr = input.substring(1);
       int value = valueStr.toInt();
+      slotterFront(value);
+      // if(value == 0){
+      //   potter(1);
+      //   slotterFront(1);
+      // } else if(value == 1){
+      //   slotterFront(2);
+      //   potter(2);
+      // } else if(value == 2){
+      //   slotterFront(3);
+      //   potter(2);
+      // } else if(value == 3){
+      //   slotterFront(4);
+      //   potter(3);
+      // }
+    }
 
-      if(value == 0){
-        potter(1);
-        slotterFront(1);
-      } else if(value == 1){
-        slotterFront(2);
-        potter(2);
-      } else if(value == 2){
-        slotterFront(3);
-        potter(2);
-      } else if(value == 3){
-        slotterFront(4);
-        potter(3);
-      }
+    if(command == 'p') {
+      String valueStr = input.substring(1);
+      int value = valueStr.toInt();
+      potter(value);
     }
 
     //slotter back
