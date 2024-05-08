@@ -60,9 +60,9 @@ void setDisplay(int number) { //
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
-// 0 oben, 1, 2, 3 ganz ausgeklappt
-void setSlotterPotter(int mode = 3) {
-  std::string message = "u" + std::to_string(mode);
+// 0 oben, 1, 2, 3, 4 ganz ausgeklappt
+void setPotter(int mode = 4) {
+  std::string message = "p" + std::to_string(mode);
   serialPrintf(sPortE, "%s\n", message.c_str());
 }
 
@@ -470,10 +470,12 @@ void normal() {
 
 
 void pottenfirst() {
+  setSlotter(4);
+  setPotter(3);
   homing(true);
   setDisplay(42);
 
-  //turn(30);
+  turn(30);
 
   setTheta(0.5235987756);
   setY(310);
@@ -486,24 +488,24 @@ void pottenfirst() {
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
 
-  driveDistance(1500);
-
-  // driveDistance(530);
-  // turn(65);
-  // setSlotterPotter(0);
-  // driveDistance(500);
-  // setBelt(2);
-  // setSlotterPotter(1);
-  // delay(1000);
-  // turn(172);
-  // driveDistance(480);
-  // turn(13);
-  // driveDistance(210);
-  // setBelt(3);
-  // delay(1000);
-  // driveUntilSwitch(true);
-  // setBelt(2);
-  // driveDistance(-300);
+  driveDistance(530);
+  turn(65);
+  setSlotter(0);
+  setPotter(0);
+  driveDistance(500);
+  setBelt(2);
+  setSlotter(1);
+  delay(1000);
+  turn(172);
+  driveDistance(480);
+  turn(13);
+  driveDistance(210);
+  setPotter(1);
+  setBelt(3);
+  delay(1000);
+  driveUntilSwitch(true);
+  setBelt(2);
+  driveDistance(-300);
 }
 
 
@@ -547,10 +549,6 @@ void setup() {
     // std::cout << "blue" << std::endl;
   }
 
-  while(true) {
-    ldr.freeFront({{1000, 1000}, 0});
-    //std::cout << "freefront: " << ldr.freeFront({{0, 1000}, 70}) << " freeback: " << ldr.freeBack({{0, 1000}, 70}) << std::endl;
-  }
   // start
 //  normal();
   // COMMENT OUT 
@@ -565,7 +563,7 @@ void setup() {
   // turn(90);
   // driveDistance(1000);
   // turn(180);
-  //pottenfirst();
+  pottenfirst();
 
   /*
   setSlotter(0);
