@@ -285,7 +285,7 @@ void getData() {
     ss >> tempchar;
     ss >> theta;
 
-    std::cout << "Line: " << line << std::endl;
+    // std::cout << "Line: " << line << std::endl;
     line = "";
   }
 }
@@ -484,7 +484,7 @@ void setup() {
   delay(500);
 
   while(true) {
-    std::cout << "freefront: " << ldr.freeFront({{1500, 1500}, 0}) << " freeback: " << ldr.freeBack({{1500, 1500}, 0}) << std::endl;
+    std::cout << "freefront: " << ldr.freeFront({{0, 1000}, 0}) << " freeback: " << ldr.freeBack({{0, 1000}, 0}) << std::endl;
   }
 
   // teamYellow = false;

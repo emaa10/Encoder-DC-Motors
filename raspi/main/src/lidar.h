@@ -127,7 +127,7 @@ public:
         // Calculate point
         int distance = nodes[pos].dist_mm_q2 / 4.0f;
         double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
-        double angle = rel_angle + current_pos.angle;
+        double angle = rel_angle + current_pos.angle + 180.0;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
 
@@ -189,7 +189,7 @@ public:
         Vector point;
         // Calculate point
         double rel_angle = (nodes[pos].angle_z_q14 * 90.f) / 16384.f;
-        double angle = rel_angle + current_pos.angle;
+        double angle = rel_angle + current_pos.angle+180.0;
         angle = fmod(angle + 360.0, 360.0);
         // std::cout << "ANGLE: " << angle << std::endl;
         int distance = nodes[pos].dist_mm_q2 / 4.0f;
