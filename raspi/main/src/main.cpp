@@ -127,6 +127,11 @@ void setY(int ny) {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
+void setTheta(int nt) {
+  std::string message = "h," + std::to_string(nt);
+  serialPrintf(sPort, "%s\n", message.c_str());
+}
+
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
   while (degrees >= 360) {

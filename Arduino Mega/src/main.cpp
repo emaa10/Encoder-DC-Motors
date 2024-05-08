@@ -208,6 +208,10 @@ void getData() { // get the data and run the actions
       resetPosition();
       String valueStr = input.substring(2);
       y = valueStr.toInt();
+    } else if (command == 'h') {
+      resetPosition();
+      String valueStr = input.substring(2);
+      theta = valueStr.toInt();
     }
   }
 }
