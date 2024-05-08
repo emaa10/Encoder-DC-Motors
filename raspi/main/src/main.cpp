@@ -253,7 +253,7 @@ void homing(bool teamYellowN) {
   driveDistance(170);
   turn(-90);
   driveUntilSwitch(false);
-  driveDistance(205);
+  driveDistance(160); //205
   gegi = true;
 }
 
@@ -470,8 +470,14 @@ void normal() {
 
 
 void pottenfirst() {
-  // homing(true);
+  homing(true);
   setDisplay(42);
+
+  turn(30);
+
+  setTheta(0.5235987756);
+  setY(310);
+  setX(teamYellow?235:2765);
 
   while (pullCordConnected()) {
     delay(5);
@@ -480,11 +486,21 @@ void pottenfirst() {
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
 
-  setTheta(1.5707963268);
-  setY(310);
-  setX(teamYellow?235:2765);
 
-  driveDistance(1500);
+  driveDistance(530);
+  turn(65);
+  setSlotterPotter(0);
+  driveDistance(500);
+  setBelt(2);
+  setSlotterPotter(1);
+  turn(172);
+  driveDistance(480);
+  turn(10);
+  driveDistance(200);
+  setBelt(3);
+  driveUntilSwitch(true);
+  setBelt(2);
+  driveDistance(-300);
 }
 
 
