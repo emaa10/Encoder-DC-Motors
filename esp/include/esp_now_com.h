@@ -77,28 +77,28 @@ void initSimas() {
 void sendSimas(){
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 11;
+  message.path = 1;
 
   esp_now_send(sima1Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 11;
+  message.path = 2;
 
   esp_now_send(sima2Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 11;
+  message.path = 3;
 
   esp_now_send(sima3Address, (uint8_t *) &message, sizeof(message));
   delay(100);
 
   message.gegi = gegi;
   message.colourBlue = teamBlue;
-  message.path = 11;
+  message.path = 4;
 
   esp_now_send(sima4Address, (uint8_t *) &message, sizeof(message));
   delay(100);
