@@ -483,6 +483,10 @@ void setup() {
   delay(500);
   delay(500);
 
+  while(true) {
+    std::cout << "freefront: " << ldr.freeFront({{1500, 1500}, 0}) << " freeback: " << ldr.freeBack({{1500, 1500}, 0}) << std::endl;
+  }
+
   // teamYellow = false;
   if (digitalRead(teamSwitch) == 0) {
     teamYellow = true;
