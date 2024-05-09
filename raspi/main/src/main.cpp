@@ -294,15 +294,15 @@ void getData() {
 
     ss >> tempchar;
     ss >> x; // Lese den Wert
-    x = teamYellow ? x : -x;
+    // x = teamYellow ? x : -x;
     ss >> tempchar;
     ss >> y;
-    y = teamYellow ? y : -y;
+    // y = teamYellow ? y : -y;
     ss >> tempchar;
     ss >> theta;
 
     // std::cout << "Line: " << line << std::endl;
-    //std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
+    std::cout << "X: " << x << " Y: " << y << " Theta: " << theta << std::endl;
     line = "";
   }
 }
@@ -478,6 +478,7 @@ void pottenfirst() {
   turn(30);
 
   setTheta(0.5235987756);
+  //setTheta(1.5707);
   setY(310);
   setX(teamYellow?235:2765);
 
@@ -490,8 +491,8 @@ void pottenfirst() {
 
   driveDistance(530);
   turn(65);
-  setSlotter(0);
-  setPotter(0);
+  setSlotter(1);
+  setPotter(1);
   driveDistance(500);
   setBelt(2);
   setSlotter(1);
