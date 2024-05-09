@@ -616,10 +616,10 @@ void twoPots() {
   delay(100);
   setPotter(4);
   delay(1000);
-  turn(-183);
-  driveDistance(520);
+  turn(teamYellow? -183 : -185);
+  driveDistance(teamYellow? 520 :500);
   turn(-14);
-  driveDistance(172);
+  driveDistance(teamYellow? 172 : 167);
   turn(13);
   driveDistance(10);
   // setPotter(2);
@@ -704,7 +704,7 @@ void twoPots() {
 
   //Solarpanel action
   driveUntilSwitch(false);
-  driveDistance(teamYellow? 145 :120);
+  driveDistance(teamYellow? 150 :120);
 
   setTheta(2*M_PI-1.5707963268);
   setY(1000); //safety distance
