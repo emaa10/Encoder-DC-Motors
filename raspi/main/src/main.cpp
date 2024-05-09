@@ -473,9 +473,11 @@ void pottenfirst() {
   gegi=false;
   setSlotter(4);
   setPotter(3);
+  setflag(1);
+  setflag(3);
   homing(true);
   gegi=false;
-  setDisplay(42);
+  setDisplay(0);
 
   setTheta(1.5707963268);
   setY(310);
@@ -506,11 +508,27 @@ void pottenfirst() {
   turn(172);
   driveDistance(480);
   turn(13);
-  driveDistance(220);
+  driveDistance(215);
   setPotter(2);
   setBelt(3);
   delay(1000);
+  // driveUntilSwitch(true);
+  
+  // delay(250);
+  // setSlotter(4);
+  // setPotter(3);
+  // turn(90);
+  // driveDistance(1200);
+  driveDistance(-450);
+  turn(-90);
+  driveDistance(300);
   driveUntilSwitch(true);
+
+  //Home position
+  setTheta(2*M_PI-1.5707963268);
+  setY(110); //safety distance
+  setX(teamYellow?1130:1870);
+
   changeSpeed(250);
   delay(250);
   setPotter(1);
@@ -518,12 +536,60 @@ void pottenfirst() {
   setBelt(1);
   delay(1000);
   driveDistance(-300);
+  setDisplay(24);
   changeSpeed(100);
-  delay(250);
   setSlotter(4);
   setPotter(3);
-  turn(90);
-  driveDistance(1200);
+  turn(-20);
+  driveDistance(-1500);
+  setDisplay(34);
+
+  driveUntilSwitch(false);
+  driveDistance(135);
+
+  setTheta(2*M_PI-1.5707963268);
+  setY(1000); //safety distance
+  setX(teamYellow?300:2700);
+  
+  if(teamYellow) {
+    turn(-88);
+    driveDistance(-200);
+    setflag(0);
+    driveDistance(1650);
+    setflag(1);
+    turn(-5);
+    // driveDistance(-1700);
+    //driveUntilSwitch();
+    turn(140);
+  } else{
+    turn(-92);
+    driveDistance(-200);
+    setflag(2);
+    driveDistance(1650);
+    setflag(3);
+    turn(-5);
+    //driveDistance(-1700);
+    turn(140);
+    //driveUntilSwitch();
+  }
+  setDisplay(49);
+
+  setBelt(0);
+  setPotter(1);
+  setSlotter(1);
+  delay(300);
+  driveDistance(700);
+  setBelt(2);
+  delay(200);
+  turn(45);
+  driveDistance(700);
+  turn(45);
+  driveDistance(400);
+  driveDistance(-200);
+  turn(-30);
+  setBelt(0);
+  delay(200);
+  driveDistance(-150);
 }
 
 
