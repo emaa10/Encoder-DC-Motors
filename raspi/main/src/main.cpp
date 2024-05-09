@@ -470,17 +470,21 @@ void normal() {
 
 
 void pottenfirst() {
+  gegi=false;
   setSlotter(4);
   setPotter(3);
   homing(true);
+  gegi=false;
   setDisplay(42);
 
-  turn(30);
-
-  setTheta(0.5235987756);
-  //setTheta(1.5707);
+  setTheta(1.5707963268);
   setY(310);
   setX(teamYellow?235:2765);
+  turn(30);
+  gegi=true;
+  //setTheta(1.5707);
+
+  // changeSpeed(250);
 
   while (pullCordConnected()) {
     delay(5);
@@ -493,20 +497,33 @@ void pottenfirst() {
   turn(65);
   setSlotter(1);
   setPotter(1);
+  changeSpeed(100);
+  delay(250);
   driveDistance(500);
+  setSlotter(3);
   setBelt(2);
-  setSlotter(1);
   delay(1000);
   turn(172);
   driveDistance(480);
   turn(13);
-  driveDistance(210);
-  setPotter(1);
+  driveDistance(220);
+  setPotter(2);
   setBelt(3);
   delay(1000);
   driveUntilSwitch(true);
-  setBelt(2);
+  changeSpeed(250);
+  delay(250);
+  setPotter(1);
+  setSlotter(2);
+  setBelt(1);
+  delay(1000);
   driveDistance(-300);
+  changeSpeed(100);
+  delay(250);
+  setSlotter(4);
+  setPotter(3);
+  turn(90);
+  driveDistance(1200);
 }
 
 

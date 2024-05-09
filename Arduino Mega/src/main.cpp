@@ -250,7 +250,7 @@ void updatePosition() {
   float leftDistance = pos[1] / pulsesPerMM;
   float rightDistance = pos[0] / pulsesPerMM;
   float distance = (leftDistance + rightDistance) / 2;
-  float dTheta = (leftDistance - rightDistance) / wheelDistance;
+  float dTheta = (rightDistance - leftDistance) / wheelDistance;
   extrax = distance * cos(theta + dTheta);
   extray = distance * sin(theta + dTheta);
   extraTheta = dTheta;

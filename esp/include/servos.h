@@ -48,11 +48,11 @@ void slotterBack(int input){
 
 void potter(int input){
     if(input == 1){
-        servoPotter.write(60);    //all the way down slight negative tilt
+        servoPotter.write(80);    //all the way down slight negative tilt
     } else if(input == 2){
-        servoPotter.write(63);    //parallel to ground
+        servoPotter.write(94);    //parallel to ground
     } else if(input == 3){
-        servoPotter.write(165);    //90°
+        servoPotter.write(185);    //90°
     }
 }
 
