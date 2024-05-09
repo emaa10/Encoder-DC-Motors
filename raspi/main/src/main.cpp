@@ -617,9 +617,9 @@ void twoPots() {
   setPotter(4);
   delay(1000);
   turn(-183);
-  driveDistance(510);
-  turn(-13);
-  driveDistance(178);
+  driveDistance(520);
+  turn(-14);
+  driveDistance(172);
   turn(13);
   driveDistance(10);
   // setPotter(2);
@@ -636,7 +636,7 @@ void twoPots() {
 
   //Pots ablegen
   driveUntilSwitch(true);
-  driveDistance(-5);
+  driveDistance(-10);
   setTheta(teamYellow? M_PI : 0);
   setY(610); //safety distance
   setX(teamYellow?110:2890);
@@ -654,8 +654,8 @@ void twoPots() {
 
   //zweiten Pflanzen aufheben
   turn(90);
-  driveDistance(630);
-  turn(90);
+  driveDistance(620);
+  turn(95);
   setSlotter(1);
   setPotter(1);
   setBelt(0);
@@ -667,7 +667,7 @@ void twoPots() {
   setPotter(4);
   delay(1000);
   turn(180);
-  driveDistance(550);
+  driveDistance(650);
   turn(13);
   driveDistance(213);
   turn(-13);
@@ -679,10 +679,11 @@ void twoPots() {
   delay(1500);
 
   //Pflanzen ablegen
-  driveDistance(-750);
+  driveDistance(-470);
   turn(-90);
-  driveDistance(1300);
+  driveDistance(1100);
   driveUntilSwitch(true);
+  driveDistance(-10);
 
   changeSpeed(250);
   delay(250);
@@ -695,6 +696,10 @@ void twoPots() {
   setDisplay(24);
   changeSpeed(100); 
 
+  setSlotter(1);
+  setPotter(1);
+  turn(-20);
+  driveDistance(-1500);
 
 
   //Solarpanel action
