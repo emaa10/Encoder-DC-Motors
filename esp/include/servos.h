@@ -30,7 +30,7 @@ void slotterFront(int input){
     } else if(input == 2){
         servoSlotterFront.write(116);    //parallel to ground
     } else if(input == 3){
-        servoSlotterFront.write(105);    //upwards tilted
+        servoSlotterFront.write(85);    //upwards tilted
     } else if(input == 4){
         servoSlotterFront.write(20);    //90°
     }
@@ -50,9 +50,11 @@ void potter(int input){
     if(input == 1){
         servoPotter.write(80);    //all the way down slight negative tilt
     } else if(input == 2){
-        servoPotter.write(94);    //parallel to ground
+        servoPotter.write(115);    //parallel to ground
     } else if(input == 3){
         servoPotter.write(185);    //90°
+    } else if(input == 4) {
+        servoPotter.write(88);
     }
 }
 

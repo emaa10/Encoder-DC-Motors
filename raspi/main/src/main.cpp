@@ -137,12 +137,12 @@ void turn(float degrees) {
   while (degrees >= 360) {
     degrees -= 360;
   }
-  while (degrees > 180) {
-    degrees -= 180;
-  }
-  while (degrees <= -180) {
-    degrees += 360;
-  }
+  // while (degrees > 180) {
+  //   degrees -= 180;
+  // }
+  // while (degrees <= -180) {
+  //   degrees += 360;
+  // }
   std::string message = "t," + std::to_string(degrees);
   std::cout << "degrees: " << degrees << std::endl;
   serialPrintf(sPort, "%s\n", message.c_str());
@@ -504,14 +504,18 @@ void pottenfirst() {
   driveDistance(500);
   setSlotter(3);
   setBelt(2);
+  delay(100);
+  setPotter(4);
   delay(1000);
   turn(172);
   driveDistance(480);
   turn(13);
   driveDistance(215);
+  delay(100);
+  setSlotter(3);
   setPotter(2);
   setBelt(3);
-  delay(1000);
+  delay(1500);
   // driveUntilSwitch(true);
   
   // delay(250);
@@ -531,9 +535,10 @@ void pottenfirst() {
 
   changeSpeed(250);
   delay(250);
+  setBelt(1);
+  delay(1000);
   setPotter(1);
   setSlotter(2);
-  setBelt(1);
   delay(1000);
   driveDistance(-300);
   setDisplay(24);
@@ -545,43 +550,181 @@ void pottenfirst() {
   setDisplay(34);
 
   driveUntilSwitch(false);
-  driveDistance(135);
+  driveDistance(teamYellow? 145 :120);
 
   setTheta(2*M_PI-1.5707963268);
   setY(1000); //safety distance
   setX(teamYellow?300:2700);
   
   if(teamYellow) {
-    turn(-88);
+    turn(-86);
     driveUntilSwitch(false);
     setflag(0);
     driveDistance(1650);
     setflag(1);
-    turn(-5);
+    driveDistance(-1450);
+    driveUntilSwitch(false);
     // driveDistance(-1700);
     //driveUntilSwitch();
-    turn(140);
   } else{
-    turn(-92);
+    turn(-94);
     driveUntilSwitch(false);
     setflag(2);
-    driveDistance(1000);
-    turn(-3);
-    driveDistance(650);
+    driveDistance(1650);
     setflag(3);
-    driveDistance(350);
-    turn(-5);
-    //driveDistance(-1700);
-    turn(165);
-    //driveUntilSwitch();
+    driveDistance(-1450);
+    driveUntilSwitch(false);
   }
   setDisplay(49);
+}
 
-  setBelt(0);
-  setPotter(1);
+void twoPots() {
+  gegi=false;
+  setSlotter(4);
+  setPotter(3);
+  setflag(1);
+  setflag(3);
+  homing(true);
+  gegi=false;
+  setDisplay(0);
+
+  setTheta(1.5707963268);
+  setY(310);
+  setX(teamYellow?235:2765);
+  turn(30);
+  gegi=true;
+  //setTheta(1.5707);
+
+  // changeSpeed(250);
+
+  while (pullCordConnected()) {
+    delay(5);
+  }
+
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
+
+  driveDistance(530);
+  turn(65);
   setSlotter(1);
+  setPotter(1);
+  changeSpeed(100);
+  delay(250);
+  driveDistance(500);
+  setSlotter(3);
+  setBelt(2);
+  delay(100);
+  setPotter(4);
   delay(1000);
-  driveDistance(1650);
+  turn(-183);
+  driveDistance(510);
+  turn(-13);
+  driveDistance(178);
+  turn(13);
+  driveDistance(10);
+  // setPotter(2);
+  // driveDistance(-10);
+  // turn(20);
+  // turn(-40);
+  // turn(20);
+
+  delay(100);
+  setSlotter(3);
+  setPotter(2);
+  setBelt(3);
+  delay(1500);
+
+  //Pots ablegen
+  driveUntilSwitch(true);
+  driveDistance(-5);
+  setTheta(teamYellow? M_PI : 0);
+  setY(610); //safety distance
+  setX(teamYellow?110:2890);
+
+  changeSpeed(250);
+  delay(250);
+  setBelt(1);
+  delay(1000);
+  setPotter(1);
+  setSlotter(2);
+  delay(1000);
+  driveDistance(-300);
+  setDisplay(24);
+  changeSpeed(100);
+
+  //zweiten Pflanzen aufheben
+  turn(90);
+  driveDistance(630);
+  turn(90);
+  setSlotter(1);
+  setPotter(1);
+  setBelt(0);
+  delay(100); 
+  driveDistance(750);
+  setSlotter(3);
+  setBelt(2);
+  delay(1000);
+  setPotter(4);
+  delay(1000);
+  turn(180);
+  driveDistance(550);
+  turn(13);
+  driveDistance(213);
+  turn(-13);
+  driveDistance(10);
+  delay(100);
+  setSlotter(3);
+  setPotter(2);
+  setBelt(3);
+  delay(1500);
+
+  //Pflanzen ablegen
+  driveDistance(-750);
+  turn(-90);
+  driveDistance(1300);
+  driveUntilSwitch(true);
+
+  changeSpeed(250);
+  delay(250);
+  setBelt(1);
+  delay(1000);
+  setPotter(1);
+  setSlotter(2);
+  delay(1000);
+  driveDistance(-300);
+  setDisplay(24);
+  changeSpeed(100); 
+
+
+
+  //Solarpanel action
+  driveUntilSwitch(false);
+  driveDistance(teamYellow? 145 :120);
+
+  setTheta(2*M_PI-1.5707963268);
+  setY(1000); //safety distance
+  setX(teamYellow?300:2700);
+  
+  if(teamYellow) {
+    turn(-86);
+    driveUntilSwitch(false);
+    setflag(0);
+    driveDistance(1650);
+    setflag(1);
+    driveDistance(-1450);
+    driveUntilSwitch(false);
+    // driveDistance(-1700);
+    //driveUntilSwitch();
+  } else{
+    turn(-94);
+    driveUntilSwitch(false);
+    setflag(2);
+    driveDistance(1650);
+    setflag(3);
+    driveDistance(-1450);
+    driveUntilSwitch(false);
+  }
+  setDisplay(49);
 }
 
 
@@ -639,7 +782,7 @@ void setup() {
   // turn(90);
   // driveDistance(1000);
   // turn(180);
-  pottenfirst();
+  twoPots();
 
   /*
   setSlotter(0);
