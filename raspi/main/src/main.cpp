@@ -553,7 +553,7 @@ void pottenfirst() {
   
   if(teamYellow) {
     turn(-88);
-    driveDistance(-200);
+    driveUntilSwitch(false);
     setflag(0);
     driveDistance(1650);
     setflag(1);
@@ -563,13 +563,16 @@ void pottenfirst() {
     turn(140);
   } else{
     turn(-92);
-    driveDistance(-200);
+    driveUntilSwitch(false);
     setflag(2);
-    driveDistance(1650);
+    driveDistance(1000);
+    turn(-3);
+    driveDistance(650);
     setflag(3);
+    driveDistance(350);
     turn(-5);
     //driveDistance(-1700);
-    turn(140);
+    turn(165);
     //driveUntilSwitch();
   }
   setDisplay(49);
@@ -577,19 +580,8 @@ void pottenfirst() {
   setBelt(0);
   setPotter(1);
   setSlotter(1);
-  delay(300);
-  driveDistance(700);
-  setBelt(2);
-  delay(200);
-  turn(45);
-  driveDistance(700);
-  turn(45);
-  driveDistance(400);
-  driveDistance(-200);
-  turn(-30);
-  setBelt(0);
-  delay(200);
-  driveDistance(-150);
+  delay(1000);
+  driveDistance(1650);
 }
 
 
