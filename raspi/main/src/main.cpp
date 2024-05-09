@@ -696,8 +696,8 @@ void twoPots() {
   setDisplay(24);
   changeSpeed(100); 
 
-  setSlotter(1);
-  setPotter(1);
+  setSlotter(4);
+  setPotter(3);
   turn(-20);
   driveDistance(-1500);
 
