@@ -132,6 +132,7 @@ void setTheta(float nt) {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
+
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
   while (degrees >= 360) {
@@ -681,7 +682,11 @@ void twoPots() {
   //Pflanzen ablegen
   driveDistance(-470);
   turn(-90);
+  changeSpeed(250);
+  delay(100);
   driveDistance(1100);
+  changeSpeed(100);
+  delay(100);
   driveUntilSwitch(true);
   driveDistance(-10);
 
@@ -699,8 +704,11 @@ void twoPots() {
   setSlotter(4);
   setPotter(3);
   turn(-20);
-  driveDistance(-1500);
-
+  changeSpeed(250);
+  delay(100);
+  driveDistance(-1400);
+  changeSpeed(100);
+  delay(100);
 
   //Solarpanel action
   driveUntilSwitch(false);

@@ -122,6 +122,7 @@ public:
     sl_result result = drv->grabScanDataHq(nodes, count);
     if (SL_IS_OK(result)) {
       drv->ascendScanData(nodes, count);
+      int enemyCounter = 0;
       for (int pos = 0; pos < (int)count; ++pos) {
         Vector point;
         // Calculate point
@@ -143,10 +144,12 @@ public:
           continue;
 
         if (distance < 400 && (rel_angle > 300 || rel_angle < 60)) {
-          std::cout << "x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
-          return false;
+          //std::cout << "enemy: x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
+          //return false;
+          enemyCounter++;
         }
       }
+      return enemyCounter < 10;
     }
     return true;
   }
@@ -157,6 +160,7 @@ public:
     sl_result result = drv->grabScanDataHq(nodes, count);
     if (SL_IS_OK(result)) {
       drv->ascendScanData(nodes, count);
+      int enemyCounter = 0;
       for (int pos = 0; pos < (int)count; ++pos) {
         Vector point;
         // Calculate point
@@ -171,14 +175,15 @@ public:
         point += current_pos.position;
 
         // Check if point is inside field
-        if (distance < 10 || point.x < 10 || point.x > 2990 || point.y < 10 ||
-            point.y > 1990)
+        if (distance < 10) //|| point.x < 10 || point.x > 2990 || point.y < 10 ||
+        //     point.y > 1990)
           continue;
 
         // Check if enemy is near
         if (distance < 400)
-          return false;
+          enemyCounter++;
       }
+      return enemyCounter < 10;
     }
     return true;
   }
@@ -189,6 +194,7 @@ public:
     sl_result result = drv->grabScanDataHq(nodes, count);
     if (SL_IS_OK(result)) {
       drv->ascendScanData(nodes, count);
+      int enemyCounter = 0;
       for (int pos = 0; pos < (int)count; ++pos) {
         Vector point;
         // Calculate point
@@ -211,10 +217,12 @@ public:
 
         // Check if enemy is near
         if (distance < 400 && rel_angle > 120 && rel_angle < 240) {
-          std::cout << "x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
-          return false;
+          // std::cout << "enemy back: x: " << point.x << ", y: " << point.y << "angle" << rel_angle << std::endl;
+          // return false;
+          enemyCounter++;
         }
       }
+      return enemyCounter < 10;
     }
     return true;
   }
