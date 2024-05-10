@@ -316,7 +316,7 @@ void getData() {
 void solarPanelDrive() {
   //Fahre zurück and die Wand
   driveUntilSwitch(false);
-  driveDistance(teamYellow? 148 :121);
+  driveDistance(teamYellow? 140 :135);
 
   //Home Position
   setTheta(2*M_PI-1.5707963268);
@@ -324,22 +324,24 @@ void solarPanelDrive() {
   setX(teamYellow?300:2700);
   
   if(teamYellow) {
-    turn(-86);
+    turn(-90);
     driveUntilSwitch(false);
     setflag(0);
+    delay(100);
     driveDistance(1650);
     //Add points for solar panels
-    addPoints(25);
+    addPoints(20);
     setflag(1);
     driveDistance(-1450);
     driveUntilSwitch(false);
   } else{
-    turn(-94);
+    turn(-90);
     driveUntilSwitch(false);
     setflag(2);
+    delay(100);
     driveDistance(1650);
     //Add ponts for solar panels
-    addPoints(25);
+    addPoints(20);
     setflag(3);
     driveDistance(-1450);
     driveUntilSwitch(false);
@@ -502,7 +504,7 @@ void pottenfirst() {
   turn(172);
   driveDistance(480);
   turn(13);
-  driveDistance(215);
+  driveDistance(teamYellow? 212: 215);
   delay(100);
   setSlotter(3);
   setPotter(2);
@@ -510,7 +512,7 @@ void pottenfirst() {
   delay(1500);
 
   //Drive to planter
-  driveDistance(-450);
+  driveDistance(teamYellow? -450: -480);
   turn(-90);
   driveDistance(300);
   driveUntilSwitch(true);
@@ -530,7 +532,7 @@ void pottenfirst() {
   delay(1000);
   driveDistance(-300);
   //Add points for first planter
-  addPoints(24);
+  addPoints(19);
   changeSpeed(100);
   setSlotter(4);
   setPotter(3);
@@ -619,7 +621,7 @@ void twoPots() {
   driveDistance(-300);
 
   //Add Points for plants with pots
-  addPoints(29);
+  addPoints(24);
   changeSpeed(100);
 
   //zweiten Pflanzen aufheben
@@ -745,7 +747,19 @@ void setup() {
   // turn(180);
   //twoPots();
   //startMiddle();
-  solarPanelDrive();
+  pointEstimation = 0;
+  setDisplay(pointEstimation);
+  setSlotter(4);
+  setPotter(3);
+  setFlag(1);
+  setFlag(3);
+  changeSpeed(100);
+  delay(100);
+
+  //Strategy
+  //solarPanelDrive();
+  //pottenfirst();
+  twoPots();
 
   /*
   setSlotter(0);
