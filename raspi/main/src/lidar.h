@@ -180,7 +180,7 @@ public:
           continue;
 
         // Check if enemy is near
-        if (distance < 400)
+        if (distance < 350)
           enemyCounter++;
       }
       return enemyCounter < 10;

@@ -27,6 +27,7 @@ bool gegiTriggered = false;
 // unsigned long timingsBefore =0;
 
 bool driving = false;
+int pointEstimation = 0;
 
 template <typename T> void print(const T &input) { std::cout << input; }
 void print(const char *input) { std::cout << input; }
@@ -132,6 +133,10 @@ void setTheta(float nt) {
   serialPrintf(sPort, "%s\n", message.c_str());
 }
 
+void addPoints(int points) {
+  pointEstimation += points;
+  setDisplay(pointEstimation);
+}
 
 void turn(float degrees) {
   degrees = teamYellow ? degrees : -degrees;
@@ -308,169 +313,152 @@ void getData() {
   }
 }
 
-void RCA() {
-  setDisplay(25);
-
-  while (pullCordConnected()) {
-    delay(5);
-  }
-
-  std::thread u(timingsThread); // check if simas, drive home, etc.
-  u.detach();
-  // setSolar(2);
-  if (!teamYellow) {
-    turn(8);
-    driveDistance(225);
-    turn(-10);
-    driveDistance(-500);
-    turn(6);
-    driveDistance(-250);
-    turn(3);
-    driveDistance(-250);
-    turn(3);
-    driveDistance(-500);
-    turn(3);
-    driveDistance(-250);
-    turn(3);
-    // setSolar(0);
-  } else {
-    turn(8);
-    driveDistance(-210);
-    turn(-10);
-    driveDistance(500);
-    // turn(-3);
-    driveDistance(250);
-    // turn(-3);
-    driveDistance(250);
-    // turn(-3);
-    driveDistance(500);
-    // turn(-3);
-    driveDistance(250);
-    // turn(-3);
-    //  setSolar(0);
-  }
-}
-
-void normal() {
-  homing(true);
-  setDisplay(42);
-
-  while (pullCordConnected()) {
-    delay(5);
-  }
-
-  std::thread u(timingsThread); // check if simas, drive home, etc.
-  u.detach();
-
-  driveDistance(500);
-  driveDistance(teamYellow ? -75 : -85);
-  turn(90);
-  delay(500);
-  // setGripperHeight(1);
-  // delay(2000);
-  setGripperAngle(3);
-  delay(1500);
-  // Fahre zu den ersten Pflanzen
-  gegi = true;
-  driveDistance(900);
-  setGripperAngle(2);
-  delay(2000);
-  // Sammle erste Pflanzen auf
-  setGripperHeight(4);
-  delay(2000);
-  turn(178);
-  driveDistance(900);
-  // abladen
-  gegi = false;
-  driveUntilSwitch(true);
-  setGripperHeight(2);
-  delay(2000);
-  setGripperAngle(2);
-  delay(1000);
-  changeSpeed(150);
-  driveDistance(-400);
-  gegi = true;
-  changeSpeed(110);
-  setGripperAngle(0);
-  delay(2000);
-  setGripperHeight(1);
-  turn(90);
-  driveDistance(teamYellow ? 590 : 630);
-  turn(90);
-  setGripperAngle(3);
-  delay(2000);
-  driveDistance(450);
-  setGripperAngle(2);
-  delay(2000);
-  setGripperHeight(4);
-  delay(2000);
-  driveDistance(-350);
-  turn(86);
-  driveDistance(1000);
-  // abladen
-  gegi = false;
-  driveUntilSwitch(true);
-  setGripperHeight(2);
-  delay(2000);
-  setGripperAngle(2);
-  delay(1000);
-  changeSpeed(150);
-  driveDistance(-500);
-  gegi = true;
-  changeSpeed(110);
-  // driveDistance(1400);
-  setGripperAngle(0);
-  delay(2000);
-  setGripperHeight(1);
-  turn(-15);
-  driveDistance(-1150);
-  while (true)
-    delay(5);
-
-  setGripperHeight(3);
-  gegi = false;
+void solarPanelDrive() {
+  //Fahre zurück and die Wand
   driveUntilSwitch(false);
-  gegi = true;
-  // while(true) delay(5);
-  // std::cout << "Team:" << teamYellow? "yellow" : "blue";
-  // drehding
-  if (!teamYellow) {
-    driveDistance(130);
-    turn(-88);
-    driveDistance(1400);
-    delay(1000);
-    turn(3);
-    // setSolar(1);
-    delay(1000);
-    driveDistance(-100);
-    turn(3);
-    driveDistance(-600);
-    turn(3);
-    driveDistance(-800);
-    gegi = false;
+  driveDistance(teamYellow? 148 :121);
+
+  //Home Position
+  setTheta(2*M_PI-1.5707963268);
+  setY(1000); //safety distance
+  setX(teamYellow?300:2700);
+  
+  if(teamYellow) {
+    turn(-86);
     driveUntilSwitch(false);
-    // setSolar(0);
-  } else {
-    driveDistance(60);
-    turn(92);
-    driveDistance(-1400);
-    delay(1000);
-    turn(3);
-    // setSolar(2);
-    delay(1000);
-    driveDistance(100);
-    turn(3);
-    driveDistance(600);
-    turn(2);
-    driveDistance(800);
-    gegi = false;
-    driveUntilSwitch(true);
-    // setSolar(0);
+    setflag(0);
+    driveDistance(1650);
+    //Add points for solar panels
+    addPoints(25);
+    setflag(1);
+    driveDistance(-1450);
+    driveUntilSwitch(false);
+  } else{
+    turn(-94);
+    driveUntilSwitch(false);
+    setflag(2);
+    driveDistance(1650);
+    //Add ponts for solar panels
+    addPoints(25);
+    setflag(3);
+    driveDistance(-1450);
+    driveUntilSwitch(false);
   }
 }
 
+void startMiddle() {
+  pointEstimation = 0;
+  setDisplay(pointEstimation);
+  //Homing sequence
+  gegi = false;
+  setSlotter(4);
+  setPotter(3);
+  setflag(1);
+  setflag(3);
+  changeSpeed(100);
+  delay(100);
+  driveUntilSwitch(false);
+
+  setTheta(teamYellow? M_PI : 0);
+  setY(teamYellow? 960: 1040);
+  setX(teamYellow?2890 : 110);
+
+  driveDistance(140);
+  turn(60);
+  driveDistance(20);
+  gegi = true;
+
+  
+  while (pullCordConnected()) {
+    delay(5);
+  }
+
+  std::thread u(timingsThread); // check if simas, drive home, etc.
+  u.detach();
+
+  /*STRATEGY*/
+  setPotter(1);
+  setSlotter(1);
+  driveDistance(380);
+  turn(-60);
+
+  //Collect plants
+  driveDistance(550);
+  setSlotter(3);
+  setBelt(2);
+  delay(100);
+  setPotter(4);
+  delay(1000);
+
+  //Drive to Pots and Planter
+  turn(teamYellow? 180: 182);
+  driveDistance(500);
+  turn(-13);
+  driveDistance(167);
+  turn(13);
+  driveDistance(12);
+
+  //Collect pots
+  delay(100);
+  setSlotter(3);
+  setPotter(2);
+  setBelt(3);
+  delay(1500);
+
+  //Pots ablegen
+  turn(-7);
+  driveUntilSwitch(true);
+  driveDistance(-10);
+
+  setTheta(teamYellow? 0 : M_PI);
+  setY(1400); //safety distance
+  setX(teamYellow?2890 : 110);
+
+  changeSpeed(250);
+  delay(250);
+  setBelt(1);
+  delay(1000);
+  setPotter(1);
+  setSlotter(2);
+  delay(1000);
+  driveDistance(-300);
+  changeSpeed(100);
+  delay(100);
+
+  addPoints(24);
+
+  //Put plants in end zone
+  setPotter(3);
+  setSlotter(4);
+  setBelt(0);
+
+  turn(90);
+  driveDistance(400);
+  turn(70);
+  
+  setPotter(1);
+  driveDistance(1050);
+  turn(17);
+  driveDistance(1150);
+
+  driveDistance(-200);
+
+  addPoints(18);
+
+  setPotter(3);
+  delay(100);
+  turn(-95);
+  driveDistance(-1400);
+
+  solarPanelDrive();
+
+  addPoints(10);
+}
 
 void pottenfirst() {
+  pointEstimation = 0;
+  setDisplay(pointEstimation);
+
   gegi=false;
   setSlotter(4);
   setPotter(3);
@@ -485,9 +473,7 @@ void pottenfirst() {
   setX(teamYellow?235:2765);
   turn(30);
   gegi=true;
-  //setTheta(1.5707);
 
-  // changeSpeed(250);
 
   while (pullCordConnected()) {
     delay(5);
@@ -495,7 +481,10 @@ void pottenfirst() {
 
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
+  
+  /*STRATEGY*/
 
+  //Drive to first plants
   driveDistance(530);
   turn(65);
   setSlotter(1);
@@ -508,6 +497,8 @@ void pottenfirst() {
   delay(100);
   setPotter(4);
   delay(1000);
+
+  //Drive to pots
   turn(172);
   driveDistance(480);
   turn(13);
@@ -517,13 +508,8 @@ void pottenfirst() {
   setPotter(2);
   setBelt(3);
   delay(1500);
-  // driveUntilSwitch(true);
-  
-  // delay(250);
-  // setSlotter(4);
-  // setPotter(3);
-  // turn(90);
-  // driveDistance(1200);
+
+  //Drive to planter
   driveDistance(-450);
   turn(-90);
   driveDistance(300);
@@ -534,6 +520,7 @@ void pottenfirst() {
   setY(110); //safety distance
   setX(teamYellow?1130:1870);
 
+  //Put pots in planter
   changeSpeed(250);
   delay(250);
   setBelt(1);
@@ -542,44 +529,26 @@ void pottenfirst() {
   setSlotter(2);
   delay(1000);
   driveDistance(-300);
-  setDisplay(24);
+  //Add points for first planter
+  addPoints(24);
   changeSpeed(100);
   setSlotter(4);
   setPotter(3);
+
+  //Drive to solar panel area
   turn(-20);
   driveDistance(-1500);
-  setDisplay(34);
 
-  driveUntilSwitch(false);
-  driveDistance(teamYellow? 145 :120);
-
-  setTheta(2*M_PI-1.5707963268);
-  setY(1000); //safety distance
-  setX(teamYellow?300:2700);
-  
-  if(teamYellow) {
-    turn(-86);
-    driveUntilSwitch(false);
-    setflag(0);
-    driveDistance(1650);
-    setflag(1);
-    driveDistance(-1450);
-    driveUntilSwitch(false);
-    // driveDistance(-1700);
-    //driveUntilSwitch();
-  } else{
-    turn(-94);
-    driveUntilSwitch(false);
-    setflag(2);
-    driveDistance(1650);
-    setflag(3);
-    driveDistance(-1450);
-    driveUntilSwitch(false);
-  }
-  setDisplay(49);
+  //turn solar panels
+  solarPanelDrive();
+  //Add points for end zone
+  addPoints(10);
 }
 
 void twoPots() {
+  pointEstimation = 0;
+  setDisplay(pointEstimation);
+
   gegi=false;
   setSlotter(4);
   setPotter(3);
@@ -594,9 +563,6 @@ void twoPots() {
   setX(teamYellow?235:2765);
   turn(30);
   gegi=true;
-  //setTheta(1.5707);
-
-  // changeSpeed(250);
 
   while (pullCordConnected()) {
     delay(5);
@@ -605,6 +571,9 @@ void twoPots() {
   std::thread u(timingsThread); // check if simas, drive home, etc.
   u.detach();
 
+  /*STRATEGY*/
+
+  //Drive to first plants
   driveDistance(530);
   turn(65);
   setSlotter(1);
@@ -617,18 +586,16 @@ void twoPots() {
   delay(100);
   setPotter(4);
   delay(1000);
+
+  //Drive to first planter with pots 
   turn(teamYellow? -183 : -185);
   driveDistance(teamYellow? 520 :500);
   turn(-14);
   driveDistance(teamYellow? 172 : 167);
   turn(13);
   driveDistance(10);
-  // setPotter(2);
-  // driveDistance(-10);
-  // turn(20);
-  // turn(-40);
-  // turn(20);
 
+  //Collect pots
   delay(100);
   setSlotter(3);
   setPotter(2);
@@ -650,7 +617,9 @@ void twoPots() {
   setSlotter(2);
   delay(1000);
   driveDistance(-300);
-  setDisplay(24);
+
+  //Add Points for plants with pots
+  addPoints(29);
   changeSpeed(100);
 
   //zweiten Pflanzen aufheben
@@ -665,6 +634,8 @@ void twoPots() {
   setSlotter(3);
   setBelt(2);
   delay(1000);
+
+  //Drive to pots
   setPotter(4);
   delay(1000);
   turn(180);
@@ -679,7 +650,7 @@ void twoPots() {
   setBelt(3);
   delay(1500);
 
-  //Pflanzen ablegen
+  //Drive to second planter
   driveDistance(-470);
   turn(-90);
   changeSpeed(250);
@@ -690,6 +661,7 @@ void twoPots() {
   driveUntilSwitch(true);
   driveDistance(-10);
 
+  //Place pots with plants
   changeSpeed(250);
   delay(250);
   setBelt(1);
@@ -698,9 +670,10 @@ void twoPots() {
   setSlotter(2);
   delay(1000);
   driveDistance(-300);
-  setDisplay(24);
+  addPoints(24);
   changeSpeed(100); 
 
+  //Drive to solar panels
   setSlotter(4);
   setPotter(3);
   turn(-20);
@@ -711,33 +684,8 @@ void twoPots() {
   delay(100);
 
   //Solarpanel action
-  driveUntilSwitch(false);
-  driveDistance(teamYellow? 150 :120);
-
-  setTheta(2*M_PI-1.5707963268);
-  setY(1000); //safety distance
-  setX(teamYellow?300:2700);
-  
-  if(teamYellow) {
-    turn(-86);
-    driveUntilSwitch(false);
-    setflag(0);
-    driveDistance(1650);
-    setflag(1);
-    driveDistance(-1450);
-    driveUntilSwitch(false);
-    // driveDistance(-1700);
-    //driveUntilSwitch();
-  } else{
-    turn(-94);
-    driveUntilSwitch(false);
-    setflag(2);
-    driveDistance(1650);
-    setflag(3);
-    driveDistance(-1450);
-    driveUntilSwitch(false);
-  }
-  setDisplay(49);
+  solarPanelDrive();
+  addPoints(10);
 }
 
 
@@ -795,7 +743,9 @@ void setup() {
   // turn(90);
   // driveDistance(1000);
   // turn(180);
-  twoPots();
+  //twoPots();
+  //startMiddle();
+  solarPanelDrive();
 
   /*
   setSlotter(0);
