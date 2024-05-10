@@ -655,10 +655,8 @@ void twoPots() {
   //Drive to second planter
   driveDistance(-470);
   turn(-90);
-  changeSpeed(250);
   delay(100);
   driveDistance(1100);
-  changeSpeed(100);
   delay(100);
   driveUntilSwitch(true);
   driveDistance(-10);
@@ -679,10 +677,8 @@ void twoPots() {
   setSlotter(4);
   setPotter(3);
   turn(-20);
-  changeSpeed(250);
   delay(100);
   driveDistance(-1400);
-  changeSpeed(100);
   delay(100);
 
   //Solarpanel action
