@@ -265,8 +265,8 @@ void updatePosition() {
   maxD = maxD < fabs(target[1] - pos[1]) ? fabs(target[1] - pos[1]) : maxD;
   if ((fabs(leftEncChange) < pulsesCutoff &&
        fabs(rightEncChange) < pulsesCutoff && maxD < 30) ||
-      (limitSwitchDrive && fabs(leftEncChange) < 10 &&
-       fabs(rightEncChange) < 10 && fabs(pos[0]) > 10)) {
+      (limitSwitchDrive && fabs(leftEncChange) < 7 &&
+       fabs(rightEncChange) < 7 && fabs(pos[0]) > 10)) {
     isDriving = false;
 
     // Serial.println(String(pos[0]) + String(pos[1]));

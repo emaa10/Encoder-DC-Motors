@@ -114,8 +114,7 @@ void setBelt(int mode) {
 }
 
 void changeSpeed(int newSpeed) {
-  serialPrintf(sPort, "g,%d", newSpeed);
-  delay(1500);
+  serialPrintf(sPort, "g,%d\n", newSpeed);
 }
 
 void setX(int nx) {
@@ -316,7 +315,7 @@ void getData() {
 void solarPanelDrive() {
   //Fahre zurück and die Wand
   driveUntilSwitch(false);
-  driveDistance(teamYellow? 140 :135);
+  driveDistance(teamYellow? 148 :135);
 
   //Home Position
   setTheta(2*M_PI-1.5707963268);
@@ -330,8 +329,10 @@ void solarPanelDrive() {
     delay(100);
     driveDistance(1650);
     //Add points for solar panels
-    addPoints(20);
+    addPoints(25);
     setflag(1);
+    turn(-3);
+    changeSpeed(200);
     driveDistance(-1450);
     driveUntilSwitch(false);
   } else{
@@ -341,7 +342,7 @@ void solarPanelDrive() {
     delay(100);
     driveDistance(1650);
     //Add ponts for solar panels
-    addPoints(20);
+    addPoints(25);
     setflag(3);
     driveDistance(-1450);
     driveUntilSwitch(false);
@@ -565,6 +566,9 @@ void twoPots() {
   setX(teamYellow?235:2765);
   turn(30);
   gegi=true;
+  
+  changeSpeed(100);
+  delay(250);
 
   while (pullCordConnected()) {
     delay(5);
@@ -576,57 +580,63 @@ void twoPots() {
   /*STRATEGY*/
 
   //Drive to first plants
-  driveDistance(530);
+  driveDistance(535);
   turn(65);
   setSlotter(1);
   setPotter(1);
-  changeSpeed(100);
-  delay(250);
   driveDistance(500);
   setSlotter(3);
   setBelt(2);
   delay(100);
   setPotter(4);
-  delay(1000);
+  delay(100);
 
   //Drive to first planter with pots 
-  turn(teamYellow? -183 : -185);
+  turn(teamYellow? -182 : -184);
   driveDistance(teamYellow? 520 :500);
-  turn(-14);
-  driveDistance(teamYellow? 172 : 167);
+  turn(-13);
+  driveDistance(teamYellow? 169 : 185);
   turn(13);
-  driveDistance(10);
+  //driveDistance(17);
+  changeSpeed(50);
+  //delay(100);
+  driveUntilSwitch(true);
+  changeSpeed(100);
+  //delay(100);
+  driveDistance(-12);
 
   //Collect pots
   delay(100);
   setSlotter(3);
   setPotter(2);
   setBelt(3);
-  delay(1500);
+  delay(200);
 
   //Pots ablegen
+  turn(-4);
+  changeSpeed(150);
   driveUntilSwitch(true);
-  driveDistance(-10);
+  changeSpeed(100);
+  driveDistance(-6);
   setTheta(teamYellow? M_PI : 0);
   setY(610); //safety distance
   setX(teamYellow?110:2890);
 
   changeSpeed(250);
-  delay(250);
   setBelt(1);
-  delay(1000);
+  delay(100);
   setPotter(1);
   setSlotter(2);
-  delay(1000);
+  delay(600);
   driveDistance(-300);
 
   //Add Points for plants with pots
-  addPoints(24);
+  addPoints(29);
   changeSpeed(100);
 
   //zweiten Pflanzen aufheben
   turn(90);
-  driveDistance(620);
+  driveDistance(teamYellow? 700:670);
   turn(95);
   setSlotter(1);
   setPotter(1);
@@ -635,53 +645,59 @@ void twoPots() {
   driveDistance(750);
   setSlotter(3);
   setBelt(2);
-  delay(1000);
+  delay(500);
 
   //Drive to pots
   setPotter(4);
-  delay(1000);
-  turn(180);
+  //delay(500);
+  turn(181);
   driveDistance(650);
   turn(13);
-  driveDistance(213);
+  driveDistance(210);
   turn(-13);
-  driveDistance(10);
+  changeSpeed(50);
+  //delay(100);
+  driveUntilSwitch(true);
+  changeSpeed(100);
+  //delay(100);
+  driveDistance(-13);
+
   delay(100);
   setSlotter(3);
   setPotter(2);
   setBelt(3);
-  delay(1500);
+  delay(300);
 
   //Drive to second planter
   driveDistance(-470);
   turn(-90);
-  delay(100);
+  //delay(100);
   driveDistance(1100);
-  delay(100);
   driveUntilSwitch(true);
-  driveDistance(-10);
+  driveDistance(-6);
 
   //Place pots with plants
   changeSpeed(250);
-  delay(250);
+  //delay(100);
   setBelt(1);
-  delay(1000);
+  delay(200);
   setPotter(1);
   setSlotter(2);
-  delay(1000);
+  delay(600);
   driveDistance(-300);
   addPoints(24);
-  changeSpeed(100); 
+  changeSpeed(150); 
 
   //Drive to solar panels
   setSlotter(4);
   setPotter(3);
   turn(-20);
-  delay(100);
+  //delay(100);
   driveDistance(-1400);
-  delay(100);
+  //delay(100);
 
   //Solarpanel action
+  changeSpeed(100);
   solarPanelDrive();
   addPoints(10);
 }
