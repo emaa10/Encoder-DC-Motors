@@ -331,20 +331,25 @@ void solarPanelDrive() {
     //Add points for solar panels
     addPoints(25);
     setflag(1);
-    turn(-3);
+    turn(-5);
     changeSpeed(200);
     driveDistance(-1450);
+    changeSpeed(100);
     driveUntilSwitch(false);
   } else{
     turn(-90);
     driveUntilSwitch(false);
+    turn(-2);
     setflag(2);
     delay(100);
     driveDistance(1650);
     //Add ponts for solar panels
     addPoints(25);
     setflag(3);
+    turn(-5);
+    changeSpeed(200);
     driveDistance(-1450);
+    changeSpeed(100);
     driveUntilSwitch(false);
   }
 }
@@ -592,10 +597,10 @@ void twoPots() {
   delay(100);
 
   //Drive to first planter with pots 
-  turn(teamYellow? -182 : -184);
-  driveDistance(teamYellow? 520 :500);
+  turn(teamYellow? -182 : -182);
+  driveDistance(teamYellow? 520 :520);
   turn(-13);
-  driveDistance(teamYellow? 169 : 185);
+  driveDistance(teamYellow? 169 : 162);
   turn(13);
   //driveDistance(17);
   changeSpeed(50);
@@ -603,20 +608,18 @@ void twoPots() {
   driveUntilSwitch(true);
   changeSpeed(100);
   //delay(100);
-  driveDistance(-12);
+  driveDistance(-16);
 
   //Collect pots
   delay(100);
   setSlotter(3);
   setPotter(2);
   setBelt(3);
-  delay(200);
+  delay(800);
 
   //Pots ablegen
   turn(-4);
-  changeSpeed(150);
   driveUntilSwitch(true);
-  changeSpeed(100);
   driveDistance(-6);
   setTheta(teamYellow? M_PI : 0);
   setY(610); //safety distance
@@ -630,13 +633,14 @@ void twoPots() {
   delay(600);
   driveDistance(-300);
 
+
   //Add Points for plants with pots
   addPoints(29);
   changeSpeed(100);
 
   //zweiten Pflanzen aufheben
   turn(90);
-  driveDistance(teamYellow? 700:670);
+  driveDistance(teamYellow? 700:700);
   turn(95);
   setSlotter(1);
   setPotter(1);
@@ -660,7 +664,7 @@ void twoPots() {
   driveUntilSwitch(true);
   changeSpeed(100);
   //delay(100);
-  driveDistance(-13);
+  driveDistance(-16);
 
   delay(100);
   setSlotter(3);
@@ -670,7 +674,7 @@ void twoPots() {
 
   //Drive to second planter
   driveDistance(-470);
-  turn(-90);
+  turn(-95);
   //delay(100);
   driveDistance(1100);
   driveUntilSwitch(true);
