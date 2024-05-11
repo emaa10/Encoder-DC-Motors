@@ -315,7 +315,7 @@ void getData() {
 void solarPanelDrive() {
   //Fahre zurück and die Wand
   driveUntilSwitch(false);
-  driveDistance(teamYellow? 148 :135);
+  driveDistance(teamYellow? 142 :135);
 
   //Home Position
   setTheta(2*M_PI-1.5707963268);
@@ -339,7 +339,6 @@ void solarPanelDrive() {
   } else{
     turn(-90);
     driveUntilSwitch(false);
-    turn(-2);
     setflag(2);
     delay(100);
     driveDistance(1650);
@@ -640,7 +639,7 @@ void twoPots() {
 
   //zweiten Pflanzen aufheben
   turn(90);
-  driveDistance(teamYellow? 700:700);
+  driveDistance(teamYellow? 650:650);
   turn(95);
   setSlotter(1);
   setPotter(1);
@@ -657,7 +656,7 @@ void twoPots() {
   turn(181);
   driveDistance(650);
   turn(13);
-  driveDistance(210);
+  driveDistance(teamYellow? 205 : 205);
   turn(-13);
   changeSpeed(50);
   //delay(100);
@@ -674,7 +673,7 @@ void twoPots() {
 
   //Drive to second planter
   driveDistance(-470);
-  turn(-95);
+  turn(-93);
   //delay(100);
   driveDistance(1100);
   driveUntilSwitch(true);
